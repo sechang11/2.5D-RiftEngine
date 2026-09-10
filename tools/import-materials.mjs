@@ -14,7 +14,7 @@
  * by scripts/materials.py on the generation host.
  */
 
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync, readdirSync, statSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync, readdirSync, statSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
 const args = process.argv.slice(2);
@@ -42,18 +42,21 @@ try {
 }
 
 mkdirSync(outDir, { recursive: true });
-for (const f of readdirSync(outDir)) {
-  if (f.endsWith('.jpg')) rmSync(join(outDir, f));
-}
 
 const materials = [];
 const skipped = [];
 const bytesByGroup = {};
+// Several variants share one pair of files, and copying the same destination
+// twice trips EPERM on Windows when anything is reading it.
+const copied = new Set();
 
 for (const id of Object.keys(raw).sort()) {
   const def = raw[id];
-  const albedo = `${id}_a.jpg`;
-  const packed = `${id}_nr.jpg`;
+  // A tinted variant reads another material's files, so its maps are copied
+  // once, under the name that owns them.
+  const maps = def.maps ?? id;
+  const albedo = `${maps}_a.jpg`;
+  const packed = `${maps}_nr.jpg`;
   // Both maps or neither: the shader reads roughness out of the packed map, so
   // a material with only an albedo would render shiny and wrong rather than
   // merely flat.
@@ -63,8 +66,16 @@ for (const id of Object.keys(raw).sort()) {
   }
   let bytes = 0;
   for (const f of [albedo, packed]) {
-    copyFileSync(join(mapDir, f), join(outDir, f));
-    bytes += statSync(join(mapDir, f)).size;
+    const src = join(mapDir, f);
+    const dst = join(outDir, f);
+    // Only write what actually differs. Re-importing to add tinted variants
+    // changes no image at all, and rewriting eighty files the dev server is
+    // serving is how you get EPERM on Windows for no benefit.
+    if (!copied.has(f) && (!existsSync(dst) || statSync(dst).size !== statSync(src).size)) {
+      copyFileSync(src, dst);
+    }
+    copied.add(f);
+    if (maps === id) bytes += statSync(src).size;
   }
   bytesByGroup[def.group] = (bytesByGroup[def.group] ?? 0) + bytes;
 
@@ -77,7 +88,13 @@ for (const id of Object.keys(raw).sort()) {
     metalness: def.metalness ?? 0,
     normalStrength: def.normalStrength ?? 1,
     tint: def.tint ?? null,
+    ...(def.maps && def.maps !== id ? { maps: def.maps } : {}),
   });
+}
+
+// Anything left over from a previous pack that this one no longer names.
+for (const f of readdirSync(outDir)) {
+  if (f.endsWith('.jpg') && !copied.has(f)) rmSync(join(outDir, f));
 }
 
 writeFileSync(

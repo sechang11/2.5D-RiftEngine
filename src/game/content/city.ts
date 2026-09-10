@@ -164,32 +164,40 @@ const PALETTES: Record<string, string[]> = {
   citadel: [
     'civic_keep_great', 'civic_keep_round', 'civic_palace_wing', 'civic_great_hall',
     'civic_barracks', 'civic_treasury', 'civic_prison', 'civic_bell_tower',
+    'civic_mint', 'civic_granary_tower', 'fort_tower_corner',
   ],
   temple: [
     'civic_cathedral', 'civic_abbey', 'civic_chapel', 'civic_temple_round',
-    'civic_library', 'civic_observatory',
+    'civic_library', 'civic_observatory', 'civic_hospital', 'civic_almshouse',
+    'civic_university',
   ],
   noble: [
     'house_manor', 'house_stone_b', 'house_timber_tall', 'civic_guildhall',
-    'civic_courthouse', 'house_row_b', 'civic_wizard_tower',
+    'civic_courthouse', 'house_row_b', 'civic_wizard_tower', 'house_tower_house',
+    'house_courtyard', 'house_oriel', 'house_balcony', 'civic_university',
   ],
   craft: [
     'house_smithy', 'house_tannery', 'house_potter', 'house_weaver', 'house_brewery',
     'house_bakery', 'house_butcher', 'house_apothecary', 'house_alchemist',
-    'house_bathhouse', 'house_stable_town',
+    'house_bathhouse', 'house_stable_town', 'house_workshop', 'house_cellar',
+    'house_stair_outside', 'civic_baths',
   ],
   residential: [
     'house_timber_a', 'house_timber_b', 'house_timber_c', 'house_stone_a',
     'house_row_a', 'house_row_b', 'house_cottage_a', 'house_shop_front',
-    'house_timber_tall', 'house_tenement', 'house_stone_b',
+    'house_timber_tall', 'house_tenement', 'house_stone_b', 'house_gable_step',
+    'house_gable_curved', 'house_arcade', 'house_oriel', 'house_dormer',
+    'house_overhang', 'house_leaning', 'house_narrow', 'house_broad',
+    'house_balcony', 'house_stair_outside', 'house_cellar',
   ],
   dockside: [
     'house_warehouse', 'house_granary_town', 'house_tenement', 'dock_boathouse',
-    'house_hovel', 'house_cottage_b', 'house_ruin_house',
+    'house_hovel', 'house_cottage_b', 'house_ruin_house', 'house_half_ruin',
+    'house_leaning', 'house_narrow', 'civic_customs', 'civic_granary_tower',
   ],
   suburb: [
     'house_cottage_a', 'house_cottage_b', 'house_hovel', 'house_longhouse',
-    'rural_farmhouse', 'house_stone_a',
+    'rural_farmhouse', 'house_stone_a', 'house_broad', 'house_half_ruin',
   ],
 };
 
@@ -341,15 +349,15 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
 
   const districts: District[] = [
     { name: 'Citadel', rect: CITADEL, palette: usable(PALETTES.citadel), minPlot: 21, fill: 0.78 },
-    { name: 'Noble Quarter', rect: { x0: -78, y0: -62, x1: 78, y1: -34 }, palette: usable(PALETTES.noble), minPlot: 15, fill: 0.74 },
+    { name: 'Noble Quarter', rect: { x0: -78, y0: -62, x1: 78, y1: -34 }, palette: usable(PALETTES.noble), minPlot: 13.5, fill: 0.78 },
     { name: 'Temple Precinct', rect: { x0: 36, y0: -30, x1: 88, y1: 4 }, palette: usable(PALETTES.temple), minPlot: 20, fill: 0.76 },
-    { name: 'Craft Quarter', rect: { x0: -88, y0: -30, x1: -34, y1: 6 }, palette: usable(PALETTES.craft), minPlot: 12, fill: 0.76 },
-    { name: 'Old Town', rect: { x0: -88, y0: 6, x1: -8, y1: 20 }, palette: usable(PALETTES.residential), minPlot: 11, fill: 0.78 },
-    { name: 'East Ward', rect: { x0: 34, y0: 6, x1: 88, y1: 20 }, palette: usable(PALETTES.residential), minPlot: 11, fill: 0.78 },
-    { name: 'Dockside', rect: { x0: -86, y0: 20, x1: 86, y1: 26 }, palette: usable(PALETTES.dockside), minPlot: 11, fill: 0.8 },
-    { name: 'Southbank', rect: { x0: -84, y0: 47, x1: 84, y1: 58 }, palette: usable(PALETTES.suburb), minPlot: 10, fill: 0.76 },
-    { name: 'Upper Ward', rect: { x0: -88, y0: -104, x1: -42, y1: -66 }, palette: usable(PALETTES.residential), minPlot: 12, fill: 0.76 },
-    { name: 'North Ward', rect: { x0: 42, y0: -104, x1: 88, y1: -66 }, palette: usable(PALETTES.residential), minPlot: 12, fill: 0.76 },
+    { name: 'Craft Quarter', rect: { x0: -88, y0: -30, x1: -34, y1: 6 }, palette: usable(PALETTES.craft), minPlot: 10.5, fill: 0.8 },
+    { name: 'Old Town', rect: { x0: -88, y0: 6, x1: -8, y1: 20 }, palette: usable(PALETTES.residential), minPlot: 9.5, fill: 0.82 },
+    { name: 'East Ward', rect: { x0: 34, y0: 6, x1: 88, y1: 20 }, palette: usable(PALETTES.residential), minPlot: 9.5, fill: 0.82 },
+    { name: 'Dockside', rect: { x0: -86, y0: 20, x1: 86, y1: 26 }, palette: usable(PALETTES.dockside), minPlot: 10, fill: 0.84 },
+    { name: 'Southbank', rect: { x0: -84, y0: 47, x1: 84, y1: 58 }, palette: usable(PALETTES.suburb), minPlot: 9.5, fill: 0.8 },
+    { name: 'Upper Ward', rect: { x0: -88, y0: -104, x1: -42, y1: -66 }, palette: usable(PALETTES.residential), minPlot: 10.5, fill: 0.8 },
+    { name: 'North Ward', rect: { x0: 42, y0: -104, x1: 88, y1: -66 }, palette: usable(PALETTES.residential), minPlot: 10.5, fill: 0.8 },
   ];
 
   // --- the curtain wall ---------------------------------------------------
@@ -484,6 +492,26 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
 
   // --- fill the districts -------------------------------------------------
 
+  const yardKit = [
+    'street_firewood', 'street_barrel_stack', 'street_crate_stack', 'street_sack_pile',
+    'street_rain_barrel', 'street_cart_hand', 'street_planter', 'street_laundry_line',
+    'street_bench_wood', 'street_dung_heap', 'street_rubble_pile', 'street_table_long',
+    'rural_hay_bales', 'rural_chicken_coop', 'rural_beehives', 'rural_crop_cabbage',
+    'nature_hedge_section', 'nature_flowerbed', 'nature_topiary', 'street_wheelbarrow',
+  ].filter(has);
+
+  /** Scatters a few small things across a plot no building would fit. */
+  const dressYard = (plot: Rect): void => {
+    if (!yardKit.length) return;
+    const count = Math.min(4, 1 + Math.floor((width(plot) * depth(plot)) / 46));
+    for (let i = 0; i < count; i++) {
+      const x = plot.x0 + 1 + rng.next() * Math.max(0.1, width(plot) - 2);
+      const y = plot.y0 + 1 + rng.next() * Math.max(0.1, depth(plot) - 2);
+      if (!nav.isWalkableWorld(x, y)) continue;
+      place(yardKit[rng.int(0, yardKit.length - 1)], x, y, rng.next() * Math.PI * 2, 1, false);
+    }
+  };
+
   for (const district of districts) {
     const plots: Rect[] = [];
     subdivide(district.rect, district.minPlot, rng, streets, plots);
@@ -523,7 +551,13 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
           if (!best || score > best.score) best = { id, rotation, scale, score };
         }
       }
-      if (!best) continue;
+      if (!best) {
+        // Nothing in the palette fits without being visibly stretched, so the
+        // plot becomes a yard instead of bare ground. Cities are full of these:
+        // the space behind and between the houses, with the woodpile in it.
+        dressYard(foot);
+        continue;
+      }
       // A quarter turn either way, so a street is not a row of identical fronts.
       const flip = rng.int(0, 1) === 1 ? Math.PI : 0;
       place(best.id, cx, cy, best.rotation + flip, best.scale);
@@ -651,6 +685,8 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
   // point of a lamp post is that you walk past it.
 
   const furniture = [
+    'street_pump', 'street_pillory', 'street_dovecote', 'street_shrine_corner',
+    'street_awning_row', 'street_drain',
     'street_lamp_post', 'street_cart_wagon', 'street_cart_hand', 'street_barrel_stack',
     'street_crate_stack', 'street_sack_pile', 'street_firewood', 'street_rain_barrel',
     'street_bench_wood', 'street_signpost', 'street_notice_board', 'street_planter',

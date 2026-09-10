@@ -15,6 +15,7 @@
 import {
   BufferAttribute,
   BufferGeometry,
+  Color,
   DataTexture,
   DoubleSide,
   Group,
@@ -98,6 +99,9 @@ const groundFragmentShader = /* glsl */ `
   uniform sampler2D uDirtTex;
   uniform sampler2D uDirtNrm;
   uniform vec3 uGroundTiles;
+  uniform vec3 uBaseTint;
+  uniform vec3 uLaneTint;
+  uniform vec3 uDirtTint;
   uniform float uGroundTextured;
   uniform vec3 uSunDir;
   uniform float uFogEnabled;
@@ -116,8 +120,15 @@ const groundFragmentShader = /* glsl */ `
     // A single stretched noise field breaks up the tiling at map scale.
     vec3 macro = texture2D(uMacro, vMapUv).rgb;
 
-    // R: lane, G: brush, B: river. Authored by the map generator.
-    vec4 splat = texture2D(uSplat, vMapUv);
+    // R: lane, G: brush, B: river, A: bare earth. Authored by the map generator.
+    //
+    // The lookup is displaced by a noise field before it is read. Masks are
+    // painted as rectangles, and a rectangle of dirt in a meadow reads as a
+    // rectangle no matter what texture fills it. Wobbling the coordinate turns
+    // every boundary on the map into a natural edge for one texture fetch,
+    // rather than feathering each of them where it is authored.
+    vec3 local = texture2D(uMacro, vWorld.xz * 0.075).rgb;
+    vec4 splat = texture2D(uSplat, vMapUv + (local.rg - 0.5) * 0.024);
     float lane = clamp(splat.r * 1.15, 0.0, 1.0);
     // Alpha carries bare earth. Paving wins where they overlap, because a road
     // through a yard is still a road.
@@ -138,14 +149,17 @@ const groundFragmentShader = /* glsl */ `
       // shows. Cross-fading a second sample at a very different scale, driven
       // by the macro field, breaks the period without breaking the seam: both
       // samples tile, so their blend does too.
+      // Mixed at thirteen-unit patches, not at map scale: the artifact being
+      // hidden is a two-and-a-half-unit grid, and a blend that varies over a
+      // hundred units leaves that grid perfectly visible inside each patch.
       vec3 baseCol = mix(
         texture2D(uBaseTex, uvBase).rgb,
-        texture2D(uBaseTex, uvBase * 0.31 + 0.37).rgb,
-        smoothstep(0.34, 0.66, macro.r)
-      );
+        texture2D(uBaseTex, uvBase * 0.23 + 0.37).rgb,
+        smoothstep(0.32, 0.68, local.b)
+      ) * uBaseTint;
 
-      base = mix(baseCol, texture2D(uDirtTex, uvDirt).rgb, dirt);
-      base = mix(base, texture2D(uLaneTex, uvLane).rgb, lane);
+      base = mix(baseCol, texture2D(uDirtTex, uvDirt).rgb * uDirtTint, dirt);
+      base = mix(base, texture2D(uLaneTex, uvLane).rgb * uLaneTint, lane);
       base *= 0.86 + macro * 0.5;
 
       // The ground is drawn unlit, so relief has to be faked. Reconstructing a
@@ -286,10 +300,17 @@ export class Terrain {
     const ground = opts.ground ?? DEFAULT_GROUND;
     const textured = !!surfaces?.ready;
     const blank = new Texture();
-    const pick = (id: string, kind: 'a' | 'nr') =>
-      textured && surfaces ? surfaces.texture(id, kind) : blank;
+    const pick = (id: string, kind: 'a' | 'nr') => {
+      if (!textured || !surfaces) return blank;
+      const def = surfaces.def(id);
+      return surfaces.texture(def.maps ?? def.id, kind);
+    };
     const tilesPerUnit = (id: string) =>
       textured && surfaces ? 1 / surfaces.def(id).scale : 1 / GROUND_TILE;
+    const tintOf = (id: string): Color => {
+      const t = textured && surfaces ? surfaces.def(id).tint : null;
+      return t ? new Color(t) : new Color(1, 1, 1);
+    };
 
     this.groundMaterial = new ShaderMaterial({
       vertexShader: groundVertexShader,
@@ -319,6 +340,12 @@ export class Terrain {
             tilesPerUnit(ground.dirt ?? DEFAULT_GROUND.dirt),
           ),
         },
+        // A tinted variant is a real material choice here as much as it is on a
+        // building: the generated dirt is dry orange earth, and the same file
+        // cooled is the trodden mud a city yard is actually made of.
+        uBaseTint: { value: tintOf(ground.base) },
+        uLaneTint: { value: tintOf(ground.lane) },
+        uDirtTint: { value: tintOf(ground.dirt ?? DEFAULT_GROUND.dirt) },
         uGroundTextured: { value: textured ? 1 : 0 },
         // Matches the renderer's sun, so ground relief is lit from the same
         // side as everything standing on it.

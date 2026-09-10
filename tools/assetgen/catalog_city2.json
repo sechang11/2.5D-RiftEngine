@@ -1,0 +1,641 @@
+[
+ {
+  "id": "house_gable_step",
+  "name": "Stepped Gable",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 7.2,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "a narrow townhouse with a tall crow-stepped brick gable facing the street, a hoist beam at the peak and shuttered windows, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "brick_red",
+   "top": "roof_clay_dark",
+   "scale": 1.0,
+   "jitter": 0.1,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_gable_curved",
+  "name": "Bell Gable",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 6.8,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "a townhouse with an ornate curved bell gable and a round window near the top, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "plaster_cream",
+   "top": "roof_clay_dark",
+   "scale": 1.0,
+   "jitter": 0.14,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_arcade",
+  "name": "Arcade House",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 6.4,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "a townhouse standing on a stone arcade of five round arches, shops in the shadow beneath, two storeys of windows above, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_limestone",
+   "top": "roof_slate",
+   "scale": 1.05,
+   "jitter": 0.06,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_oriel",
+  "name": "Oriel House",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 6.2,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "a corner townhouse with a carved wooden oriel window projecting over the street corner, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "plaster_sage",
+   "top": "roof_shingle",
+   "scale": 1.0,
+   "jitter": 0.14,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_tower_house",
+  "name": "Tower House",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 9.5,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "a narrow fortified stone tower house, four storeys, tiny windows, a battlemented parapet, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_rubble_dark",
+   "top": "roof_slate_blue",
+   "scale": 1.0,
+   "jitter": 0.11,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_courtyard",
+  "name": "Courtyard House",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 6.0,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "a house built around a small square courtyard, an arched carriage entrance through the front range, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "plaster_white",
+   "top": "roof_clay",
+   "scale": 1.0,
+   "jitter": 0.14,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_overhang",
+  "name": "Alley Bridge",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 6.6,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "two half-timbered houses joined by an upper floor that bridges the alley between them, a dark passage underneath, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "plaster_pink",
+   "top": "roof_clay_pale",
+   "scale": 1.0,
+   "jitter": 0.14,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_dormer",
+  "name": "Dormer House",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 6.0,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "a house with a very steep tiled roof carrying three dormer windows and a tall chimney stack, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "plaster_blue",
+   "top": "roof_slate_blue",
+   "scale": 1.0,
+   "jitter": 0.12,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_stair_outside",
+  "name": "Stair House",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 6.2,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "a stone house with an external stone stair climbing to a first floor door, storage arches underneath, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_rubble",
+   "top": "roof_slate",
+   "scale": 1.0,
+   "jitter": 0.11,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_leaning",
+  "name": "Propped House",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 6.4,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "a badly leaning old house held up by heavy timber props braced against the ground, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "daub",
+   "top": "roof_thatch_old",
+   "scale": 1.0,
+   "jitter": 0.16,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_workshop",
+  "name": "Workshop House",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 5.0,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "a house with a wide open-fronted workshop attached to one side under a lean-to roof, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "plaster_grey",
+   "top": "roof_slate",
+   "scale": 1.0,
+   "jitter": 0.12,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_balcony",
+  "name": "Balcony House",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 6.0,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "a house with a long carved wooden balcony running the width of the first floor, plants and washing on it, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "plaster_cream",
+   "top": "roof_clay_dark",
+   "scale": 1.0,
+   "jitter": 0.14,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_half_ruin",
+  "name": "Gutted House",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 4.6,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "a half-collapsed house, one gable wall standing, the roof fallen in, rubble inside, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_rubble",
+   "top": "stone_rubble",
+   "scale": 1.0,
+   "jitter": 0.12,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_cellar",
+  "name": "Cellar House",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 5.4,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "a house with stone steps leading down to a cellar door below street level, a barred window at ankle height, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_rubble",
+   "top": "roof_slate",
+   "scale": 1.0,
+   "jitter": 0.11,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_narrow",
+  "name": "Slice House",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 6.8,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "an absurdly narrow single-bay house squeezed between its neighbours, one window per floor, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "plaster_pink",
+   "top": "roof_clay_pale",
+   "scale": 1.0,
+   "jitter": 0.14,
+   "tint": null
+  }
+ },
+ {
+  "id": "house_broad",
+  "name": "Long House",
+  "category": "house",
+  "tags": [
+   "blocks"
+  ],
+  "height": 4.6,
+  "faces": 5200,
+  "upright": "none",
+  "prompt": "a broad low house with a very long unbroken tiled roof and six evenly spaced windows, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "plaster_white",
+   "top": "roof_clay",
+   "scale": 1.0,
+   "jitter": 0.14,
+   "tint": null
+  }
+ },
+ {
+  "id": "civic_almshouse",
+  "name": "Almshouse",
+  "category": "civic",
+  "tags": [
+   "blocks"
+  ],
+  "height": 6.0,
+  "faces": 7000,
+  "upright": "none",
+  "prompt": "a low symmetrical almshouse range with a central arched gateway and rows of small chimneys, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_limestone",
+   "top": "roof_slate",
+   "scale": 1.05,
+   "jitter": 0.06,
+   "tint": null
+  }
+ },
+ {
+  "id": "civic_hospital",
+  "name": "Hospital",
+  "category": "civic",
+  "tags": [
+   "blocks"
+  ],
+  "height": 8.0,
+  "faces": 7000,
+  "upright": "none",
+  "prompt": "a long stone hospital hall with a chapel apse at one end and tall lancet windows, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_limestone",
+   "top": "roof_slate",
+   "scale": 1.05,
+   "jitter": 0.06,
+   "tint": null
+  }
+ },
+ {
+  "id": "civic_mint",
+  "name": "The Mint",
+  "category": "civic",
+  "tags": [
+   "blocks"
+  ],
+  "height": 7.5,
+  "faces": 7000,
+  "upright": "none",
+  "prompt": "a squat heavily built stone mint with barred windows, an iron door and a strongroom tower, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_ashlar_warm",
+   "top": "roof_lead",
+   "scale": 1.05,
+   "jitter": 0.06,
+   "tint": null
+  }
+ },
+ {
+  "id": "civic_university",
+  "name": "Scholars Hall",
+  "category": "civic",
+  "tags": [
+   "blocks"
+  ],
+  "height": 10.0,
+  "faces": 7000,
+  "upright": "none",
+  "prompt": "a collegiate hall with a crenellated gate tower, oriel windows and a cloistered range, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_limestone",
+   "top": "roof_slate",
+   "scale": 1.05,
+   "jitter": 0.06,
+   "tint": null
+  }
+ },
+ {
+  "id": "civic_customs",
+  "name": "Customs House",
+  "category": "civic",
+  "tags": [
+   "blocks"
+  ],
+  "height": 8.0,
+  "faces": 7000,
+  "upright": "none",
+  "prompt": "a customs house on the quay with a pillared porch, a weighing beam and a clock gable, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_ashlar_warm",
+   "top": "roof_lead",
+   "scale": 1.05,
+   "jitter": 0.06,
+   "tint": null
+  }
+ },
+ {
+  "id": "civic_tiltyard",
+  "name": "Tilt Yard",
+  "category": "civic",
+  "tags": [
+   "blocks"
+  ],
+  "height": 5.0,
+  "faces": 7000,
+  "upright": "none",
+  "prompt": "a jousting tilt yard, timber viewing stands hung with heraldic cloth beside a fenced list, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "wood_beam",
+   "top": "cloth_banner",
+   "scale": 0.95,
+   "jitter": 0.1,
+   "tint": null
+  }
+ },
+ {
+  "id": "civic_granary_tower",
+  "name": "Granary Tower",
+  "category": "civic",
+  "tags": [
+   "blocks"
+  ],
+  "height": 11.0,
+  "faces": 7000,
+  "upright": "none",
+  "prompt": "a tall stone granary tower with tiny ventilation slits and an external hoist at the top, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_ashlar_warm",
+   "top": "roof_lead",
+   "scale": 1.05,
+   "jitter": 0.06,
+   "tint": null
+  }
+ },
+ {
+  "id": "civic_baths",
+  "name": "Bath House",
+  "category": "civic",
+  "tags": [
+   "blocks"
+  ],
+  "height": 6.5,
+  "faces": 7000,
+  "upright": "none",
+  "prompt": "a domed brick bath house with steam vents, small round windows and a wide arched entrance, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "brick_red",
+   "top": "roof_clay_dark",
+   "scale": 1.0,
+   "jitter": 0.1,
+   "tint": null
+  }
+ },
+ {
+  "id": "fort_gate_flank",
+  "name": "Gate Tower",
+  "category": "fort",
+  "tags": [
+   "blocks"
+  ],
+  "height": 11.0,
+  "faces": 5000,
+  "upright": "none",
+  "prompt": "a single square gate flanking tower with an arched opening at its base and machicolations above, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_ashlar",
+   "top": "roof_slate",
+   "scale": 1.0,
+   "jitter": 0.05,
+   "tint": null
+  }
+ },
+ {
+  "id": "fort_wall_walk",
+  "name": "Wall Walk",
+  "category": "fort",
+  "tags": [
+   "blocks"
+  ],
+  "height": 5.0,
+  "faces": 5000,
+  "upright": "none",
+  "prompt": "a section of castle wall seen from inside, the parapet walk running along the top with a rail, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_ashlar",
+   "top": "stone_ashlar",
+   "scale": 1.0,
+   "jitter": 0.05,
+   "tint": null
+  },
+  "fit": [
+   4.0,
+   5.0,
+   2.6
+  ]
+ },
+ {
+  "id": "fort_tower_corner",
+  "name": "Corner Tower",
+  "category": "fort",
+  "tags": [
+   "blocks"
+  ],
+  "height": 10.0,
+  "faces": 5000,
+  "upright": "none",
+  "prompt": "a square castle corner tower with a pyramid roof, arrow loops on two faces, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_ashlar_cold",
+   "top": "roof_shingle",
+   "scale": 1.0,
+   "jitter": 0.05,
+   "tint": null
+  }
+ },
+ {
+  "id": "fort_beacon",
+  "name": "Signal Beacon",
+  "category": "fort",
+  "tags": [
+   "blocks"
+  ],
+  "height": 6.5,
+  "faces": 5000,
+  "upright": "none",
+  "prompt": "a timber signal beacon platform with an iron fire basket on top and a ladder, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "wood_beam",
+   "top": "iron_rust",
+   "scale": 0.9,
+   "jitter": 0.07,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_pump",
+  "name": "Water Pump",
+  "category": "street",
+  "tags": [],
+  "height": 2.0,
+  "faces": 1800,
+  "upright": "none",
+  "prompt": "a public water pump, an iron spout and handle over a stone trough, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "iron_wrought",
+   "top": "stone_limestone",
+   "scale": 0.7,
+   "jitter": 0.06,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_pillory",
+  "name": "Pillory",
+  "category": "street",
+  "tags": [],
+  "height": 2.2,
+  "faces": 1600,
+  "upright": "none",
+  "prompt": "a wooden pillory post with a hinged head and hand board on a small platform, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "wood_beam",
+   "top": "wood_beam",
+   "scale": 0.8,
+   "jitter": 0.08,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_dovecote",
+  "name": "Dovecote",
+  "category": "street",
+  "tags": [],
+  "height": 3.4,
+  "faces": 2400,
+  "upright": "none",
+  "prompt": "a round stone dovecote with tiers of nesting holes and a small conical roof, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_rubble",
+   "top": "roof_shingle",
+   "scale": 0.8,
+   "jitter": 0.08,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_shrine_corner",
+  "name": "Corner Shrine",
+  "category": "street",
+  "tags": [],
+  "height": 2.2,
+  "faces": 2000,
+  "upright": "none",
+  "prompt": "a small painted shrine niche set into a street corner with a little tiled canopy and candles, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_limestone",
+   "top": "roof_clay",
+   "scale": 0.8,
+   "jitter": 0.07,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_awning_row",
+  "name": "Shop Awnings",
+  "category": "street",
+  "tags": [],
+  "height": 2.8,
+  "faces": 2200,
+  "upright": "none",
+  "prompt": "a row of three striped cloth shop awnings on poles with goods on trestles under them, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "wood_plank",
+   "top": "canvas_stripe",
+   "scale": 0.85,
+   "jitter": 0.18,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_drain",
+  "name": "Street Drain",
+  "category": "street",
+  "tags": [],
+  "height": 0.5,
+  "faces": 1200,
+  "upright": "none",
+  "prompt": "a stone gutter channel with an iron grate over a drain mouth, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_dark",
+   "top": "iron_rust",
+   "scale": 0.7,
+   "jitter": 0.07,
+   "tint": null
+  }
+ }
+]

@@ -257,6 +257,57 @@ LIBRARY = [
         scale=1.2, roughness=0.96, normal_strength=0.7, group="character"),
 ]
 
+def variant(mid, base, name, tint, scale=None, roughness=None, group=None):
+    """
+    A recolour of a material that already exists.
+
+    Costs nothing to ship: it reads the same two files and differs only in the
+    multiplier the shader applies. A street of plaster houses needs five
+    plasters and one plaster texture, and generating five would give five
+    different brick patterns pretending to be paint.
+    """
+    src = BASE_BY_ID[base]
+    return {
+        "id": mid,
+        "name": name,
+        "group": group or src["group"],
+        "maps": base,
+        "prompt": None,
+        "scale": scale if scale is not None else src["scale"],
+        "roughness": roughness if roughness is not None else src["roughness"],
+        "metalness": src["metalness"],
+        "normalStrength": src["normalStrength"],
+        "tint": tint,
+    }
+
+
+BASE_BY_ID = {m["id"]: m for m in LIBRARY}
+
+VARIANTS = [
+    variant("plaster_cream", "plaster_white", "Cream Plaster", "#e6dbbf"),
+    variant("plaster_pink", "plaster_white", "Pink Wash", "#e3c0b1"),
+    variant("plaster_blue", "plaster_white", "Blue Wash", "#c2cddd"),
+    variant("plaster_sage", "plaster_white", "Sage Wash", "#c5cfb3"),
+    variant("plaster_grey", "plaster_white", "Grey Render", "#c3c3c1"),
+    variant("roof_clay_dark", "roof_clay", "Weathered Tile", "#9c6951"),
+    variant("roof_clay_pale", "roof_clay", "Sun-bleached Tile", "#d79f73"),
+    variant("roof_slate_blue", "roof_slate", "Blue Slate", "#96a4b7"),
+    variant("roof_thatch_old", "roof_thatch", "Old Thatch", "#9c8962"),
+    variant("stone_ashlar_warm", "stone_ashlar", "Warm Ashlar", "#d7c8a7"),
+    variant("stone_ashlar_cold", "stone_ashlar", "Cold Ashlar", "#a8afb5"),
+    variant("stone_rubble_dark", "stone_rubble", "Dark Rubble", "#99948b"),
+    variant("wood_beam_black", "wood_beam", "Blackened Beam", "#6a5947"),
+    variant("wood_plank_grey", "wood_plank", "Silvered Plank", "#b5b1a7"),
+    variant("cobble_worn", "cobblestone", "Worn Cobble", "#b8b3aa"),
+    # Ground variants. The generated dirt is dry orange earth, which is right
+    # for a road across a summer field and far too loud spread over every yard
+    # in a city; cooling it turns the same texture into trodden mud.
+    variant("dirt_grey", "dirt_path", "Trodden Earth", "#b7a893", group="ground"),
+    variant("grass_dry", "grass_meadow", "Dry Grass", "#cfc394", group="ground"),
+    variant("mud_dark", "mud", "Deep Mud", "#8e8377", group="ground"),
+]
+
+LIBRARY = LIBRARY + VARIANTS
 BY_ID = {m["id"]: m for m in LIBRARY}
 
 
@@ -515,7 +566,9 @@ def _seed(mid, salt=0):
 
 
 def generate(only=None, limit=None, force=False, log=print):
-    todo = [m for m in LIBRARY if (not only or m["id"].startswith(only))]
+    # Variants have nothing to generate: they are a tint over somebody else's
+    # maps, and they enter the manifest through `remap`.
+    todo = [m for m in LIBRARY if not m.get("maps") and (not only or m["id"].startswith(only))]
     man = load_manifest()
     if not force:
         todo = [m for m in todo if m["id"] not in man]
@@ -569,7 +622,7 @@ def generate(only=None, limit=None, force=False, log=print):
             raw_path = os.path.join(RAW_DIR, mid + ".png")
             Image.fromarray(final).save(raw_path)
             info = derive_maps(mid, spec, raw_path)
-            rec = {k: spec[k] for k in ("id", "name", "group", "scale", "roughness", "metalness", "normalStrength", "tint")}
+            rec = {k: spec[k] for k in FIELDS}
             rec.update(info)
             man[mid] = rec
             log("  %-18s seam %.2f  %5.0fkB + %4.0fkB" % (
@@ -580,16 +633,30 @@ def generate(only=None, limit=None, force=False, log=print):
     return man
 
 
+FIELDS = ("id", "name", "group", "scale", "roughness", "metalness", "normalStrength", "tint")
+
+
 def remap(only=None, log=print):
     man = load_manifest()
     for m in LIBRARY:
         if only and not m["id"].startswith(only):
             continue
+        if m.get("maps"):
+            # Nothing to derive; the variant just needs a row that points at
+            # the maps it borrows.
+            rec = {k: m[k] for k in FIELDS}
+            rec["maps"] = m["maps"]
+            base = man.get(m["maps"], {})
+            rec["albedoBytes"] = 0
+            rec["mapBytes"] = 0
+            rec["seam"] = base.get("seam", 1.0)
+            man[m["id"]] = rec
+            continue
         raw = os.path.join(RAW_DIR, m["id"] + ".png")
         if not os.path.exists(raw):
             continue
         info = derive_maps(m["id"], m, raw)
-        rec = {k: m[k] for k in ("id", "name", "group", "scale", "roughness", "metalness", "normalStrength", "tint")}
+        rec = {k: m[k] for k in FIELDS}
         rec.update(info)
         man[m["id"]] = rec
         log("  %-18s seam %.2f" % (m["id"], info["seam"]))

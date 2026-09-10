@@ -15,7 +15,7 @@
    "side": "stone_ashlar",
    "top": "stone_ashlar",
    "scale": 1.0,
-   "jitter": 0.05,
+   "jitter": 0.06,
    "tint": null
   },
   "fit": [
@@ -40,7 +40,7 @@
    "side": "stone_ashlar",
    "top": "stone_ashlar",
    "scale": 1.0,
-   "jitter": 0.05,
+   "jitter": 0.06,
    "tint": null
   },
   "fit": [
@@ -65,7 +65,7 @@
    "side": "stone_ashlar",
    "top": "stone_ashlar",
    "scale": 1.0,
-   "jitter": 0.05,
+   "jitter": 0.06,
    "tint": null
   },
   "fit": [
@@ -114,7 +114,7 @@
    "side": "stone_ashlar",
    "top": "stone_ashlar",
    "scale": 1.0,
-   "jitter": 0.05,
+   "jitter": 0.06,
    "tint": null
   },
   "fit": [
@@ -139,7 +139,7 @@
    "side": "stone_ashlar",
    "top": "stone_ashlar",
    "scale": 1.0,
-   "jitter": 0.05,
+   "jitter": 0.06,
    "tint": null
   },
   "fit": [
@@ -160,7 +160,7 @@
   "upright": "none",
   "prompt": "a round stone castle wall tower with a conical slate roof, arrow slits and a corbelled parapet, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
-   "side": "stone_ashlar",
+   "side": "stone_ashlar_cold",
    "top": "roof_slate",
    "scale": 1.0,
    "jitter": 0.05,
@@ -182,7 +182,7 @@
    "side": "stone_ashlar",
    "top": "stone_ashlar",
    "scale": 1.0,
-   "jitter": 0.05,
+   "jitter": 0.06,
    "tint": null
   }
  },
@@ -201,7 +201,7 @@
    "side": "stone_ashlar",
    "top": "stone_ashlar",
    "scale": 1.0,
-   "jitter": 0.05,
+   "jitter": 0.06,
    "tint": null
   }
  },
@@ -258,7 +258,7 @@
    "side": "stone_ashlar",
    "top": "stone_ashlar",
    "scale": 1.0,
-   "jitter": 0.05,
+   "jitter": 0.06,
    "tint": null
   }
  },
@@ -275,7 +275,7 @@
    "side": "stone_ashlar",
    "top": "stone_ashlar",
    "scale": 1.0,
-   "jitter": 0.05,
+   "jitter": 0.06,
    "tint": null
   }
  },
@@ -850,7 +850,7 @@
    "side": "plaster_white",
    "top": "roof_clay",
    "scale": 1.0,
-   "jitter": 0.16,
+   "jitter": 0.14,
    "tint": null
   }
  },
@@ -866,10 +866,10 @@
   "upright": "none",
   "prompt": "a leaning three-storey half-timbered house, each floor jettied further out, a crooked chimney, shuttered windows, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
-   "side": "plaster_white",
-   "top": "roof_clay",
+   "side": "plaster_cream",
+   "top": "roof_clay_dark",
    "scale": 1.0,
-   "jitter": 0.16,
+   "jitter": 0.14,
    "tint": null
   }
  },
@@ -885,10 +885,10 @@
   "upright": "none",
   "prompt": "a half-timbered corner townhouse with two street faces meeting at a rounded corner post, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
-   "side": "plaster_white",
-   "top": "roof_clay",
+   "side": "plaster_pink",
+   "top": "roof_clay_pale",
    "scale": 1.0,
-   "jitter": 0.16,
+   "jitter": 0.14,
    "tint": null
   }
  },
@@ -904,10 +904,10 @@
   "upright": "none",
   "prompt": "a tall narrow four-storey merchant house with a steep stepped gable facing the street, a hoist beam at the top and a wide shop door below, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
-   "side": "plaster_white",
-   "top": "roof_clay",
+   "side": "plaster_blue",
+   "top": "roof_slate_blue",
    "scale": 1.0,
-   "jitter": 0.16,
+   "jitter": 0.12,
    "tint": null
   }
  },
@@ -926,7 +926,7 @@
    "side": "stone_rubble",
    "top": "roof_slate",
    "scale": 1.0,
-   "jitter": 0.12,
+   "jitter": 0.11,
    "tint": null
   }
  },
@@ -942,10 +942,10 @@
   "upright": "none",
   "prompt": "a solid three-storey stone burgher house with dressed quoins, mullioned windows and a slate roof, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
-   "side": "stone_rubble",
-   "top": "roof_slate",
+   "side": "stone_ashlar_warm",
+   "top": "roof_clay_dark",
    "scale": 1.0,
-   "jitter": 0.12,
+   "jitter": 0.09,
    "tint": null
   }
  },
@@ -964,7 +964,7 @@
    "side": "daub",
    "top": "roof_thatch",
    "scale": 1.0,
-   "jitter": 0.18,
+   "jitter": 0.16,
    "tint": null
   }
  },
@@ -981,9 +981,9 @@
   "prompt": "a long low peasant longhouse under one thatched roof, half of it a byre, a stone base course, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
    "side": "daub",
-   "top": "roof_thatch",
+   "top": "roof_thatch_old",
    "scale": 1.0,
-   "jitter": 0.18,
+   "jitter": 0.16,
    "tint": null
   }
  },
@@ -1000,9 +1000,9 @@
   "prompt": "a poor lean-to hovel of scrap timber and turf with a sagging thatch roof and a sacking door, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
    "side": "daub",
-   "top": "roof_thatch",
+   "top": "roof_thatch_old",
    "scale": 1.0,
-   "jitter": 0.18,
+   "jitter": 0.16,
    "tint": null
   }
  },
@@ -1018,10 +1018,10 @@
   "upright": "none",
   "prompt": "a row of three joined narrow half-timbered houses sharing a continuous tiled roof, each front a different width, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
-   "side": "plaster_white",
-   "top": "roof_clay",
+   "side": "plaster_sage",
+   "top": "roof_shingle",
    "scale": 1.0,
-   "jitter": 0.16,
+   "jitter": 0.14,
    "tint": null
   }
  },
@@ -1037,10 +1037,10 @@
   "upright": "none",
   "prompt": "a terrace of four joined narrow stone houses with a shared slate roof and staggered chimneys, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
-   "side": "stone_rubble",
-   "top": "roof_slate",
+   "side": "stone_rubble_dark",
+   "top": "roof_slate_blue",
    "scale": 1.0,
-   "jitter": 0.12,
+   "jitter": 0.11,
    "tint": null
   }
  },
@@ -1094,10 +1094,10 @@
   "upright": "none",
   "prompt": "a half-timbered shop house with an open shuttered counter onto the street and a painted trade sign hanging on an iron bracket, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
-   "side": "plaster_white",
-   "top": "roof_clay",
+   "side": "plaster_grey",
+   "top": "roof_slate",
    "scale": 1.0,
-   "jitter": 0.16,
+   "jitter": 0.12,
    "tint": null
   }
  },
@@ -1132,10 +1132,10 @@
   "upright": "none",
   "prompt": "a butcher's shop with an open front counter, hanging hooks and a striped awning, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
-   "side": "plaster_white",
-   "top": "roof_clay",
+   "side": "plaster_pink",
+   "top": "roof_clay_pale",
    "scale": 1.0,
-   "jitter": 0.16,
+   "jitter": 0.14,
    "tint": null
   }
  },
@@ -1151,10 +1151,10 @@
   "upright": "none",
   "prompt": "an apothecary shop with a bow window of small round panes, drying herbs hung under the eaves, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
-   "side": "plaster_white",
-   "top": "roof_clay",
+   "side": "plaster_sage",
+   "top": "roof_shingle",
    "scale": 1.0,
-   "jitter": 0.16,
+   "jitter": 0.14,
    "tint": null
   }
  },
@@ -1189,10 +1189,10 @@
   "upright": "none",
   "prompt": "a big half-timbered tavern with a wide door, benches outside, a swinging painted sign and lamplit windows, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
-   "side": "plaster_white",
-   "top": "roof_clay",
+   "side": "plaster_cream",
+   "top": "roof_clay_dark",
    "scale": 1.0,
-   "jitter": 0.16,
+   "jitter": 0.14,
    "tint": null
   }
  },
@@ -1208,10 +1208,10 @@
   "upright": "none",
   "prompt": "a two-winged coaching inn around an arched carriage entrance, galleried upper floors, a stable yard behind, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
-   "side": "plaster_white",
-   "top": "roof_clay",
+   "side": "plaster_blue",
+   "top": "roof_slate_blue",
    "scale": 1.0,
-   "jitter": 0.16,
+   "jitter": 0.12,
    "tint": null
   }
  },
@@ -1265,10 +1265,10 @@
   "upright": "none",
   "prompt": "a weaver's house with a long band of windows on the upper floor to light the looms, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
   "material": {
-   "side": "plaster_white",
-   "top": "roof_clay",
+   "side": "plaster_grey",
+   "top": "roof_slate",
    "scale": 1.0,
-   "jitter": 0.16,
+   "jitter": 0.12,
    "tint": null
   }
  },

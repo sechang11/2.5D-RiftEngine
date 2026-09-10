@@ -120,6 +120,41 @@ GENUINELY_FLAT = (
     "obelisk",
 )
 
+"""
+A building standing on an invented apron of ground.
+
+The flat-face and profile cuts in meshproc remove most of these, and what
+survives shows up as a footprint far larger than the thing standing on it: a
+barracks came back seven units tall on a twenty-four unit slab. Comparing the
+footprint to the height catches it without needing to know what the building
+was meant to be, because architecture is not built four times wider than it is
+tall — but some things are, so they are named.
+"""
+MAX_FOOTPRINT_RATIO = 3.4
+ARCHITECTURE = {"fort", "house", "civic", "rural", "dock", "building"}
+GENUINELY_WIDE = (
+    "bridge",
+    "aqueduct",
+    "wall_field",
+    "fence",
+    "pier",
+    "harbour",
+    "palisade",
+    "crop",
+    "vineyard",
+    "barricade",
+    "hoarding",
+    "drawbridge",
+    "moat",
+    "rack",
+)
+
+
+def footprint_ratio(size):
+    """Widest ground dimension over height. High means a slab."""
+    return max(size[0], size[2]) / size[1] if size[1] > 1e-6 else 99.0
+
+
 # Above this, the mesh is effectively a ball.
 MAX_FLATNESS = 0.82
 
@@ -160,6 +195,13 @@ def inspect(entry):
         if aspect < SLENDER_ASPECT or aspect > (1.0 / SLENDER_ASPECT):
             return False, "blob (flatness %.2f, art aspect %.2f)" % (f, aspect)
 
+    if (
+        category in ARCHITECTURE
+        and not any(k in aid for k in GENUINELY_WIDE)
+        and footprint_ratio(size) > MAX_FOOTPRINT_RATIO
+    ):
+        return False, "on a slab (footprint %.1fx its height)" % footprint_ratio(size)
+
     if info.get("triangles", 0) < 200:
         return False, "almost no geometry (%d tris)" % info.get("triangles", 0)
 
@@ -186,6 +228,11 @@ def score(entry):
         s += max(0.0, (MAX_FLATNESS - f)) * 6.0
     else:
         s += 1.0
+
+    # Prefer the tighter footprint, so a retry that sheds an invented apron
+    # wins even when both attempts are otherwise equal.
+    if category in ARCHITECTURE and not any(k in entry.get("id", "") for k in GENUINELY_WIDE):
+        s += max(0.0, MAX_FOOTPRINT_RATIO - footprint_ratio(size)) * 0.8
 
     # Prefer a silhouette that matches the reference art's proportions. The
     # concept image is a front view, so its aspect should roughly match the

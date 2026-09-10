@@ -37,6 +37,7 @@
 
 import {
   Color,
+  DoubleSide,
   MeshStandardMaterial,
   NoColorSpace,
   RepeatWrapping,
@@ -52,6 +53,15 @@ export interface MaterialDef {
   id: string;
   name: string;
   group: string;
+  /**
+   * Which pair of map files this material reads, when that is not its own id.
+   *
+   * A tinted variant is a whole material as far as an asset is concerned — a
+   * pink plaster and a cream one are different choices — and it costs nothing
+   * to ship, because both read the same two files and differ only in the
+   * multiplier the shader applies. Half the library's colour variety is this.
+   */
+  maps?: string;
   /** World units covered by one tile of the texture. */
   scale: number;
   roughness: number;
@@ -163,6 +173,14 @@ vec3 triWhiteout( vec3 tx, vec3 ty, vec3 tz, vec3 n, vec3 w ) {
 const FRAG_SETUP = /* glsl */ `
 vec3 triFaceN = normalize( cross( dFdx( vTriPos ), dFdy( vTriPos ) ) );
 triFaceN *= sign( dot( triFaceN, vTriNrm ) + 1e-5 );
+#ifdef DOUBLE_SIDED
+  // Reconstructed shells come back with their winding inverted often enough
+  // that it cannot be treated as a defect: a tent rendered as a black hole
+  // because the only visible surface was its inside. Drawing both sides and
+  // flipping the normal on the far one is a cheaper fix than repairing the
+  // winding of a mesh that may not be a closed surface in the first place.
+  triFaceN *= gl_FrontFacing ? 1.0 : -1.0;
+#endif
 vec3 triW = triBlendWeights( triFaceN );
 float triUp = smoothstep( ${UP_LOW.toFixed(2)}, ${UP_HIGH.toFixed(2)}, triFaceN.y );
 
@@ -333,10 +351,10 @@ export class MaterialLibrary {
     const tint = spec.tint ? new Color(spec.tint) : null;
 
     const uniforms: Record<string, IUniform> = {
-      triSideMap: { value: this.texture(side.id, 'a') },
-      triTopMap: { value: this.texture(top.id, 'a') },
-      triSideNrm: { value: this.texture(side.id, 'nr') },
-      triTopNrm: { value: this.texture(top.id, 'nr') },
+      triSideMap: { value: this.texture(side.maps ?? side.id, 'a') },
+      triTopMap: { value: this.texture(top.maps ?? top.id, 'a') },
+      triSideNrm: { value: this.texture(side.maps ?? side.id, 'nr') },
+      triTopNrm: { value: this.texture(top.maps ?? top.id, 'nr') },
       // The shader multiplies position by this, so it is tiles per unit: the
       // reciprocal of the world size one tile covers.
       triScale: { value: [1 / (side.scale * assetScale), 1 / (top.scale * assetScale)] },
@@ -360,6 +378,7 @@ export class MaterialLibrary {
       color: 0xffffff,
       roughness: 1,
       metalness: 0,
+      side: DoubleSide,
     });
     material.onBeforeCompile = (shader) => patch(shader, uniforms);
     // Exposed so the uniforms can be read and nudged from the console, which is

@@ -89,6 +89,69 @@ def _remove_base_slab(mesh):
     return sliced
 
 
+def _remove_wide_base(mesh, bands=26, ratio=1.5, max_cut=0.18):
+    """
+    Cuts a base that is far wider than the model standing on it.
+
+    The flat-face detector above finds the thin disc a reconstructor invents
+    under a sword. It cannot find the one under a building, because a building
+    genuinely has a flat bottom and its own footprint is exactly what the test
+    measures. What separates the two is the profile: real architecture is about
+    as wide at the ankles as at the waist, and an invented plate is not. A
+    barracks came back 20.7 by 24.5 with the building itself occupying maybe
+    half of that.
+
+    The cut is capped at a sixth of the height, so a genuinely battered wall or
+    a stepped plinth loses a skirt at worst rather than its ground floor.
+    """
+    v = np.asarray(mesh.vertices)
+    if len(v) < 256:
+        return mesh
+    ymin, ymax = float(v[:, 1].min()), float(v[:, 1].max())
+    height = ymax - ymin
+    if height <= 1e-6:
+        return mesh
+
+    edges = np.linspace(ymin, ymax, bands + 1)
+    idx = np.clip(np.digitize(v[:, 1], edges) - 1, 0, bands - 1)
+    span = np.zeros(bands)
+    for b in range(bands):
+        pts = v[idx == b]
+        if len(pts) < 8:
+            span[b] = np.nan
+            continue
+        # Robust half-extent: percentiles rather than min and max, so one
+        # stray vertex does not define the band.
+        dx = np.percentile(pts[:, 0], 97) - np.percentile(pts[:, 0], 3)
+        dz = np.percentile(pts[:, 2], 97) - np.percentile(pts[:, 2], 3)
+        span[b] = max(dx, dz)
+
+    # The body is the middle of the model, which is what the base is compared to.
+    body = np.nanmedian(span[max(1, bands // 6) : bands // 2 + 1])
+    if not np.isfinite(body) or body <= 1e-6:
+        return mesh
+    if not np.isfinite(span[0]) or span[0] < body * ratio:
+        return mesh
+
+    limit = int(bands * max_cut) + 1
+    cut_band = 0
+    for b in range(1, limit + 1):
+        if np.isfinite(span[b]) and span[b] < body * 1.18:
+            cut_band = b
+            break
+    if cut_band == 0:
+        cut_band = limit
+
+    y_cut = float(edges[cut_band])
+    try:
+        sliced = mesh.slice_plane(plane_origin=[0, y_cut, 0], plane_normal=[0, 1, 0], cap=True)
+    except Exception:
+        return mesh
+    if sliced is None or len(sliced.faces) < 128:
+        return mesh
+    return sliced
+
+
 def _keep_significant_parts(mesh, min_fraction=0.12):
     """
     Drops floating speckle while keeping real detached detail.
@@ -204,6 +267,7 @@ def process(
     # Order matters: strip the invented ground plate before anything measures
     # the model, or every subsequent step is sized against the artifact.
     mesh = _remove_base_slab(mesh)
+    mesh = _remove_wide_base(mesh)
     mesh = _keep_significant_parts(mesh)
 
     mesh = _decimate(mesh, target_faces)

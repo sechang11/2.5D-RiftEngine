@@ -25,7 +25,18 @@ python3 tools/assetgen/pipeline.py audit        # report failures, change nothin
 python3 tools/assetgen/pipeline.py retry        # re-roll the failures
 ```
 
-`pipeline.py all` runs images, meshes and retry in order.
+`pipeline.py all` runs images, meshes and retry in order. `--catalog <file>`
+picks which catalogue to work through; there are three, and they share one
+manifest so a partial run of any of them resumes:
+
+| Catalogue | Makes |
+| --- | --- |
+| `make_catalog.py` | The original pack: weapons, props, nature, creatures |
+| `city_catalog.py` | The castle-city kit: walls, gates, houses, civic, street, farm, dock |
+| `folk_catalog.py` | People and monsters, at character scale and character detail |
+
+The material library is generated separately and needs no reconstruction at
+all; see [MATERIALS.md](MATERIALS.md).
 
 Progress lives in `out/manifest.json`. Both phases skip work already recorded
 there, so a run that dies partway can simply be restarted.
@@ -38,7 +49,9 @@ node tools/import-pack.mjs <staging-dir>
 
 where the staging directory holds `manifest.json` and `glb/`. The importer
 writes `public/assets/pack/`, drops any asset whose mesh failed, and prints a
-per-category summary.
+per-category summary. It carries each asset's material spec through, so an
+asset that named its own surfaces keeps them instead of falling back to its
+category's.
 
 ## Why the stages are shaped this way
 
@@ -152,6 +165,24 @@ Review the result on the contact sheet at `/sheet.html`, which lays every asset
 out at true scale beside a champion-height post. Scale errors are invisible one
 asset at a time and obvious against a reference.
 
+## A kit needs exact boxes, not target heights
+
+A catalogue entry may state a `fit` of `[w, h, d]`, and the mesh is then scaled
+non-uniformly into exactly that box. This is only for pieces that repeat: a
+curtain-wall section that comes back 3.87 units long leaves a gap every time it
+is placed, and forty placements is a hole you can walk through. The distortion
+is a few percent on a piece whose proportions the prompt asked for anyway, and
+it is the difference between a kit and a pile of props.
+
+## The decimator has to be told twice
+
+`fast_simplification` stops early rather than collapse edges it judges harmful.
+Asked for 3,000 faces from 1,042,218 it returned 4,967, and across the pack that
+was the difference between a 30 MB download and a 17 MB one. Running it again on
+its own output reaches the target, because each pass starts from a mesh whose
+remaining edges are cheaper to judge. Four passes, stopping when the count is
+within 15 per cent or a pass makes no progress.
+
 ## Sizes are authored, not discovered
 
 `make_catalog.py` states a target height in world units for every asset, where a
@@ -176,9 +207,13 @@ at: props, weapons, buildings, terrain, and creatures whose silhouette reads
 from one view.
 
 **Texture.** Hunyuan3D's texture-painting stage is a separate model that is not
-installed here, so meshes arrive untextured. The engine shades them by category
-from a palette, which suits its flat-shaded look, but a pack with real texture
-maps would want a material per asset instead.
+installed here, so meshes arrive with shape and nothing else. Rather than
+install it, the engine projects tiling materials onto the geometry and each
+catalogue entry names the surfaces it wears. That gives higher texel density
+than a per-asset unwrap of the same budget would, and it costs nothing per
+asset, but it cannot do what a painted texture does: there is no way to put a
+sign over a specific door or a face on a specific figure. See
+[MATERIALS.md](MATERIALS.md).
 
 **Interior detail.** Anything the single reference view cannot see is invented.
 Backs of buildings are plausible rather than correct, which is fine at a fixed

@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-10T15:09:14.380756Z",
+ "generated": "2026-09-10T16:19:13.668Z",
  "materials": [
   {
    "id": "bone",
@@ -7,7 +7,7 @@
    "group": "character",
    "scale": 1.2,
    "roughness": 0.85,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 0.7,
    "tint": null
   },
@@ -17,7 +17,7 @@
    "group": "surface",
    "scale": 2.2,
    "roughness": 0.9,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.3,
    "tint": null
   },
@@ -35,9 +35,9 @@
    "id": "canvas_stripe",
    "name": "Market Awning",
    "group": "cloth",
-   "scale": 2.0,
+   "scale": 2,
    "roughness": 0.95,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 0.8,
    "tint": null
   },
@@ -57,17 +57,28 @@
    "group": "cloth",
    "scale": 1.8,
    "roughness": 0.95,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 0.7,
    "tint": null
+  },
+  {
+   "id": "cobble_worn",
+   "name": "Worn Cobble",
+   "group": "surface",
+   "scale": 3,
+   "roughness": 0.9,
+   "metalness": 0,
+   "normalStrength": 1.6,
+   "tint": "#b8b3aa",
+   "maps": "cobblestone"
   },
   {
    "id": "cobblestone",
    "name": "Cobblestone Street",
    "group": "surface",
-   "scale": 3.0,
+   "scale": 3,
    "roughness": 0.9,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.6,
    "tint": null
   },
@@ -77,9 +88,20 @@
    "group": "surface",
    "scale": 2.6,
    "roughness": 0.97,
-   "metalness": 0.0,
-   "normalStrength": 1.0,
+   "metalness": 0,
+   "normalStrength": 1,
    "tint": null
+  },
+  {
+   "id": "dirt_grey",
+   "name": "Trodden Earth",
+   "group": "ground",
+   "scale": 3.2,
+   "roughness": 0.98,
+   "metalness": 0,
+   "normalStrength": 1.1,
+   "tint": "#b7a893",
+   "maps": "dirt_path"
   },
   {
    "id": "dirt_path",
@@ -87,7 +109,7 @@
    "group": "ground",
    "scale": 3.2,
    "roughness": 0.98,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.1,
    "tint": null
   },
@@ -97,7 +119,7 @@
    "group": "surface",
    "scale": 3.6,
    "roughness": 0.9,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.1,
    "tint": null
   },
@@ -105,9 +127,9 @@
    "id": "fur_brown",
    "name": "Brown Fur",
    "group": "character",
-   "scale": 1.0,
+   "scale": 1,
    "roughness": 0.95,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.2,
    "tint": null
   },
@@ -117,9 +139,20 @@
    "group": "metal",
    "scale": 1.2,
    "roughness": 0.25,
-   "metalness": 1.0,
+   "metalness": 1,
    "normalStrength": 0.6,
    "tint": null
+  },
+  {
+   "id": "grass_dry",
+   "name": "Dry Grass",
+   "group": "ground",
+   "scale": 2.6,
+   "roughness": 0.98,
+   "metalness": 0,
+   "normalStrength": 1,
+   "tint": "#cfc394",
+   "maps": "grass_meadow"
   },
   {
    "id": "grass_meadow",
@@ -127,17 +160,17 @@
    "group": "ground",
    "scale": 2.6,
    "roughness": 0.98,
-   "metalness": 0.0,
-   "normalStrength": 1.0,
+   "metalness": 0,
+   "normalStrength": 1,
    "tint": null
   },
   {
    "id": "gravel",
    "name": "Gravel",
    "group": "ground",
-   "scale": 2.0,
+   "scale": 2,
    "roughness": 0.98,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.4,
    "tint": null
   },
@@ -167,7 +200,7 @@
    "group": "cloth",
    "scale": 1.2,
    "roughness": 0.8,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 0.9,
    "tint": null
   },
@@ -177,27 +210,93 @@
    "group": "ground",
    "scale": 2.8,
    "roughness": 0.6,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.2,
    "tint": null
+  },
+  {
+   "id": "mud_dark",
+   "name": "Deep Mud",
+   "group": "ground",
+   "scale": 2.8,
+   "roughness": 0.6,
+   "metalness": 0,
+   "normalStrength": 1.2,
+   "tint": "#8e8377",
+   "maps": "mud"
+  },
+  {
+   "id": "plaster_blue",
+   "name": "Blue Wash",
+   "group": "surface",
+   "scale": 3,
+   "roughness": 0.95,
+   "metalness": 0,
+   "normalStrength": 0.7,
+   "tint": "#c2cddd",
+   "maps": "plaster_white"
+  },
+  {
+   "id": "plaster_cream",
+   "name": "Cream Plaster",
+   "group": "surface",
+   "scale": 3,
+   "roughness": 0.95,
+   "metalness": 0,
+   "normalStrength": 0.7,
+   "tint": "#e6dbbf",
+   "maps": "plaster_white"
+  },
+  {
+   "id": "plaster_grey",
+   "name": "Grey Render",
+   "group": "surface",
+   "scale": 3,
+   "roughness": 0.95,
+   "metalness": 0,
+   "normalStrength": 0.7,
+   "tint": "#c3c3c1",
+   "maps": "plaster_white"
   },
   {
    "id": "plaster_ochre",
    "name": "Ochre Render",
    "group": "surface",
-   "scale": 3.0,
+   "scale": 3,
    "roughness": 0.95,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 0.7,
    "tint": null
+  },
+  {
+   "id": "plaster_pink",
+   "name": "Pink Wash",
+   "group": "surface",
+   "scale": 3,
+   "roughness": 0.95,
+   "metalness": 0,
+   "normalStrength": 0.7,
+   "tint": "#e3c0b1",
+   "maps": "plaster_white"
+  },
+  {
+   "id": "plaster_sage",
+   "name": "Sage Wash",
+   "group": "surface",
+   "scale": 3,
+   "roughness": 0.95,
+   "metalness": 0,
+   "normalStrength": 0.7,
+   "tint": "#c5cfb3",
+   "maps": "plaster_white"
   },
   {
    "id": "plaster_white",
    "name": "Lime Plaster",
    "group": "surface",
-   "scale": 3.0,
+   "scale": 3,
    "roughness": 0.95,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 0.7,
    "tint": null
   },
@@ -207,7 +306,7 @@
    "group": "character",
    "scale": 1.2,
    "roughness": 0.96,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 0.7,
    "tint": null
   },
@@ -217,9 +316,31 @@
    "group": "roof",
    "scale": 1.8,
    "roughness": 0.8,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.6,
    "tint": null
+  },
+  {
+   "id": "roof_clay_dark",
+   "name": "Weathered Tile",
+   "group": "roof",
+   "scale": 1.8,
+   "roughness": 0.8,
+   "metalness": 0,
+   "normalStrength": 1.6,
+   "tint": "#9c6951",
+   "maps": "roof_clay"
+  },
+  {
+   "id": "roof_clay_pale",
+   "name": "Sun-bleached Tile",
+   "group": "roof",
+   "scale": 1.8,
+   "roughness": 0.8,
+   "metalness": 0,
+   "normalStrength": 1.6,
+   "tint": "#d79f73",
+   "maps": "roof_clay"
   },
   {
    "id": "roof_copper",
@@ -247,7 +368,7 @@
    "group": "roof",
    "scale": 1.7,
    "roughness": 0.92,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.4,
    "tint": null
   },
@@ -257,27 +378,49 @@
    "group": "roof",
    "scale": 1.8,
    "roughness": 0.7,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.5,
    "tint": null
+  },
+  {
+   "id": "roof_slate_blue",
+   "name": "Blue Slate",
+   "group": "roof",
+   "scale": 1.8,
+   "roughness": 0.7,
+   "metalness": 0,
+   "normalStrength": 1.5,
+   "tint": "#96a4b7",
+   "maps": "roof_slate"
   },
   {
    "id": "roof_thatch",
    "name": "Thatch",
    "group": "roof",
-   "scale": 2.0,
+   "scale": 2,
    "roughness": 0.98,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.7,
    "tint": null
+  },
+  {
+   "id": "roof_thatch_old",
+   "name": "Old Thatch",
+   "group": "roof",
+   "scale": 2,
+   "roughness": 0.98,
+   "metalness": 0,
+   "normalStrength": 1.7,
+   "tint": "#9c8962",
+   "maps": "roof_thatch"
   },
   {
    "id": "rope",
    "name": "Rope Coil",
    "group": "cloth",
-   "scale": 1.0,
+   "scale": 1,
    "roughness": 0.95,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.3,
    "tint": null
   },
@@ -285,9 +428,9 @@
    "id": "sand",
    "name": "Sand",
    "group": "ground",
-   "scale": 3.0,
+   "scale": 3,
    "roughness": 0.97,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 0.8,
    "tint": null
   },
@@ -297,7 +440,7 @@
    "group": "character",
    "scale": 0.9,
    "roughness": 0.45,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.4,
    "tint": null
   },
@@ -305,9 +448,9 @@
    "id": "skin_green",
    "name": "Orc Hide",
    "group": "character",
-   "scale": 1.0,
+   "scale": 1,
    "roughness": 0.85,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 0.8,
    "tint": null
   },
@@ -315,9 +458,9 @@
    "id": "skin_human",
    "name": "Human Skin",
    "group": "character",
-   "scale": 1.0,
+   "scale": 1,
    "roughness": 0.7,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 0.35,
    "tint": null
   },
@@ -327,7 +470,7 @@
    "group": "ground",
    "scale": 3.2,
    "roughness": 0.75,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 0.7,
    "tint": null
   },
@@ -337,7 +480,7 @@
    "group": "metal",
    "scale": 1.4,
    "roughness": 0.25,
-   "metalness": 1.0,
+   "metalness": 1,
    "normalStrength": 0.5,
    "tint": null
   },
@@ -345,11 +488,33 @@
    "id": "stone_ashlar",
    "name": "Castle Ashlar",
    "group": "surface",
-   "scale": 3.0,
+   "scale": 3,
    "roughness": 0.92,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.35,
    "tint": null
+  },
+  {
+   "id": "stone_ashlar_cold",
+   "name": "Cold Ashlar",
+   "group": "surface",
+   "scale": 3,
+   "roughness": 0.92,
+   "metalness": 0,
+   "normalStrength": 1.35,
+   "tint": "#a8afb5",
+   "maps": "stone_ashlar"
+  },
+  {
+   "id": "stone_ashlar_warm",
+   "name": "Warm Ashlar",
+   "group": "surface",
+   "scale": 3,
+   "roughness": 0.92,
+   "metalness": 0,
+   "normalStrength": 1.35,
+   "tint": "#d7c8a7",
+   "maps": "stone_ashlar"
   },
   {
    "id": "stone_dark",
@@ -357,7 +522,7 @@
    "group": "surface",
    "scale": 3.2,
    "roughness": 0.88,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.4,
    "tint": null
   },
@@ -365,9 +530,9 @@
    "id": "stone_limestone",
    "name": "Limestone Block",
    "group": "surface",
-   "scale": 3.0,
+   "scale": 3,
    "roughness": 0.9,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.1,
    "tint": null
   },
@@ -375,9 +540,9 @@
    "id": "stone_marble",
    "name": "White Marble",
    "group": "surface",
-   "scale": 3.0,
+   "scale": 3,
    "roughness": 0.35,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 0.4,
    "tint": null
   },
@@ -387,7 +552,7 @@
    "group": "surface",
    "scale": 2.8,
    "roughness": 0.96,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.4,
    "tint": null
   },
@@ -397,17 +562,28 @@
    "group": "surface",
    "scale": 2.6,
    "roughness": 0.95,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.5,
    "tint": null
+  },
+  {
+   "id": "stone_rubble_dark",
+   "name": "Dark Rubble",
+   "group": "surface",
+   "scale": 2.6,
+   "roughness": 0.95,
+   "metalness": 0,
+   "normalStrength": 1.5,
+   "tint": "#99948b",
+   "maps": "stone_rubble"
   },
   {
    "id": "stone_sandstone",
    "name": "Sandstone Block",
    "group": "surface",
-   "scale": 3.0,
+   "scale": 3,
    "roughness": 0.93,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.2,
    "tint": null
   },
@@ -417,7 +593,7 @@
    "group": "cloth",
    "scale": 1.6,
    "roughness": 0.98,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.4,
    "tint": null
   },
@@ -427,7 +603,7 @@
    "group": "surface",
    "scale": 1.6,
    "roughness": 0.97,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.6,
    "tint": null
   },
@@ -437,17 +613,28 @@
    "group": "surface",
    "scale": 2.4,
    "roughness": 0.9,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.2,
    "tint": null
+  },
+  {
+   "id": "wood_beam_black",
+   "name": "Blackened Beam",
+   "group": "surface",
+   "scale": 2.4,
+   "roughness": 0.9,
+   "metalness": 0,
+   "normalStrength": 1.2,
+   "tint": "#6a5947",
+   "maps": "wood_beam"
   },
   {
    "id": "wood_door",
    "name": "Studded Door",
    "group": "surface",
-   "scale": 2.0,
+   "scale": 2,
    "roughness": 0.85,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.3,
    "tint": null
   },
@@ -457,8 +644,8 @@
    "group": "surface",
    "scale": 2.2,
    "roughness": 0.85,
-   "metalness": 0.0,
-   "normalStrength": 1.0,
+   "metalness": 0,
+   "normalStrength": 1,
    "tint": null
   },
   {
@@ -467,9 +654,20 @@
    "group": "surface",
    "scale": 2.2,
    "roughness": 0.88,
-   "metalness": 0.0,
+   "metalness": 0,
    "normalStrength": 1.1,
    "tint": null
+  },
+  {
+   "id": "wood_plank_grey",
+   "name": "Silvered Plank",
+   "group": "surface",
+   "scale": 2.2,
+   "roughness": 0.88,
+   "metalness": 0,
+   "normalStrength": 1.1,
+   "tint": "#b5b1a7",
+   "maps": "wood_plank"
   }
  ]
 }

@@ -123,7 +123,7 @@ async function boot(): Promise<void> {
     wallVariation: museumMode ? 0.12 : undefined,
     // The city paves its streets with the lane mask, so that is what the
     // cobbles follow; outside the walls the same mask is the road.
-    ground: cityMode ? { base: 'grass_meadow', lane: 'cobblestone', dirt: 'dirt_path' } : undefined,
+    ground: cityMode ? { base: 'grass_meadow', lane: 'cobblestone', dirt: 'dirt_grey' } : undefined,
     assets,
     props,
   });
@@ -208,13 +208,20 @@ async function boot(): Promise<void> {
       });
     }
     for (const exhibit of layout.exhibits) {
+      const surface = assets.surfaceOf(exhibit.assetId);
       labels.push({
         x: exhibit.x,
         y: exhibit.y,
         // Just above the mesh, so a tower's label is not buried in its roof.
         height: exhibit.height + 0.55,
         text: exhibit.name,
-        sub: `${exhibit.size.map((v) => v.toFixed(1)).join(' × ')}  ·  ${exhibit.triangles} tris`,
+        // The surfaces are named in the caption because the museum is where a
+        // wrong material gets caught, and "that roof is thatch" is not a
+        // conclusion you can reach by looking at a thatched roof you expected
+        // to be slate.
+        sub:
+          `${exhibit.size.map((v) => v.toFixed(1)).join(' × ')}  ·  ${exhibit.triangles} tris` +
+          (surface ? `  ·  ${surface.side}${surface.top !== surface.side ? ' / ' + surface.top : ''}` : ''),
       });
     }
     renderer.overlay.labels = labels;

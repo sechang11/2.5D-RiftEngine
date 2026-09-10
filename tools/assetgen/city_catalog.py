@@ -89,7 +89,7 @@ def spec(aid, category, name, prompt, height=None, faces=None, upright=None,
 # parapet line runs unbroken across the whole city.
 # ---------------------------------------------------------------------------
 
-WALL_MAT = M("stone_ashlar", "stone_ashlar", scale=1.0, jitter=0.05)
+WALL_MAT = M("stone_ashlar", "stone_ashlar", scale=1.0, jitter=0.06)
 KEEP_MAT = M("stone_ashlar", "roof_slate", scale=1.15, jitter=0.04)
 
 spec("wall_straight", "fort", "Curtain Wall",
@@ -117,7 +117,7 @@ spec("wall_gate", "fort", "Wall Gate",
      height=5.6, faces=4500, fit=[4.0, 5.6, 2.2], material=WALL_MAT, tags=["kit", "gate"])
 spec("tower_round", "fort", "Round Wall Tower",
      "a round stone castle wall tower with a conical slate roof, arrow slits and a corbelled parapet",
-     height=9.5, faces=5000, material=M("stone_ashlar", "roof_slate", 1.0, 0.05), tags=["blocks"])
+     height=9.5, faces=5000, material=M("stone_ashlar_cold", "roof_slate", 1.0, 0.05), tags=["blocks"])
 spec("tower_square", "fort", "Square Tower",
      "a square stone watchtower with crenellations, a timber hoarding gallery near the top",
      height=9.0, faces=4800, material=WALL_MAT, tags=["blocks"])
@@ -253,60 +253,72 @@ spec("prison", "civic", "Gaol",
 # made of the same six shells and the eye must not notice.
 # ---------------------------------------------------------------------------
 
-TIMBER = M("plaster_white", "roof_clay", 1.0, 0.16)
-TIMBER_DARK = M("daub", "roof_thatch", 1.0, 0.18)
-STONE_HOUSE = M("stone_rubble", "roof_slate", 1.0, 0.12)
+# One combination per shell rather than three shared between thirty. The city
+# places the same six houses forty times each, and the thing that stops a street
+# reading as a photocopy is that its neighbours are a different colour, not that
+# they are a different shape.
+TIMBER = M("plaster_white", "roof_clay", 1.0, 0.14)
+TIMBER_CREAM = M("plaster_cream", "roof_clay_dark", 1.0, 0.14)
+TIMBER_PINK = M("plaster_pink", "roof_clay_pale", 1.0, 0.14)
+TIMBER_BLUE = M("plaster_blue", "roof_slate_blue", 1.0, 0.12)
+TIMBER_SAGE = M("plaster_sage", "roof_shingle", 1.0, 0.14)
+TIMBER_GREY = M("plaster_grey", "roof_slate", 1.0, 0.12)
+TIMBER_DARK = M("daub", "roof_thatch", 1.0, 0.16)
+TIMBER_OLD = M("daub", "roof_thatch_old", 1.0, 0.16)
+STONE_HOUSE = M("stone_rubble", "roof_slate", 1.0, 0.11)
+STONE_WARM = M("stone_ashlar_warm", "roof_clay_dark", 1.0, 0.09)
+STONE_DARK_HOUSE = M("stone_rubble_dark", "roof_slate_blue", 1.0, 0.11)
 
 HOUSES = [
     ("timber_a", "Timber House", 5.6, TIMBER,
      "a two-storey half-timbered medieval townhouse, dark oak framing over white plaster, "
      "a jettied upper floor overhanging the street, small leaded windows, a red tile roof"),
-    ("timber_b", "Crooked House", 6.4, TIMBER,
+    ("timber_b", "Crooked House", 6.4, TIMBER_CREAM,
      "a leaning three-storey half-timbered house, each floor jettied further out, "
      "a crooked chimney, shuttered windows"),
-    ("timber_c", "Corner House", 5.8, TIMBER,
+    ("timber_c", "Corner House", 5.8, TIMBER_PINK,
      "a half-timbered corner townhouse with two street faces meeting at a rounded corner post"),
-    ("timber_tall", "Merchant House", 8.0, TIMBER,
+    ("timber_tall", "Merchant House", 8.0, TIMBER_BLUE,
      "a tall narrow four-storey merchant house with a steep stepped gable facing the street, "
      "a hoist beam at the top and a wide shop door below"),
     ("stone_a", "Stone House", 5.4, STONE_HOUSE,
      "a squat two-storey house of rough grey fieldstone with a slate roof and a stone chimney"),
-    ("stone_b", "Burgher House", 6.6, STONE_HOUSE,
+    ("stone_b", "Burgher House", 6.6, STONE_WARM,
      "a solid three-storey stone burgher house with dressed quoins, mullioned windows and a slate roof"),
     ("cottage_a", "Thatched Cottage", 3.6, TIMBER_DARK,
      "a small single-storey cottage with wattle and daub walls and a deep golden thatched roof, "
      "a crooked chimney and a low door"),
-    ("cottage_b", "Longhouse", 3.8, TIMBER_DARK,
+    ("cottage_b", "Longhouse", 3.8, TIMBER_OLD,
      "a long low peasant longhouse under one thatched roof, half of it a byre, a stone base course"),
-    ("hovel", "Hovel", 2.8, TIMBER_DARK,
+    ("hovel", "Hovel", 2.8, TIMBER_OLD,
      "a poor lean-to hovel of scrap timber and turf with a sagging thatch roof and a sacking door"),
-    ("row_a", "Terrace Row", 5.6, TIMBER,
+    ("row_a", "Terrace Row", 5.6, TIMBER_SAGE,
      "a row of three joined narrow half-timbered houses sharing a continuous tiled roof, "
      "each front a different width"),
-    ("row_b", "Stone Terrace", 6.0, STONE_HOUSE,
+    ("row_b", "Stone Terrace", 6.0, STONE_DARK_HOUSE,
      "a terrace of four joined narrow stone houses with a shared slate roof and staggered chimneys"),
     ("manor", "Town Manor", 8.5, M("stone_limestone", "roof_slate", 1.0, 0.08),
      "a fine town manor house with a symmetrical front, tall chimneys, a porch and a walled forecourt"),
     ("tenement", "Tenement Block", 9.0, M("plaster_ochre", "roof_clay", 1.0, 0.14),
      "a tall crowded medieval tenement block, five floors of small shuttered windows, "
      "washing lines strung between them, an outside stair"),
-    ("shop_front", "Shop House", 5.2, TIMBER,
+    ("shop_front", "Shop House", 5.2, TIMBER_GREY,
      "a half-timbered shop house with an open shuttered counter onto the street and a "
      "painted trade sign hanging on an iron bracket"),
     ("bakery", "Bakery", 5.0, M("plaster_white", "roof_clay", 1.0, 0.1),
      "a baker's house with a domed brick oven bulging from the side wall, a smoking flue, "
      "and a bread sign over the door"),
-    ("butcher", "Butcher", 5.0, TIMBER,
+    ("butcher", "Butcher", 5.0, TIMBER_PINK,
      "a butcher's shop with an open front counter, hanging hooks and a striped awning"),
-    ("apothecary", "Apothecary", 5.4, TIMBER,
+    ("apothecary", "Apothecary", 5.4, TIMBER_SAGE,
      "an apothecary shop with a bow window of small round panes, drying herbs hung under the eaves"),
     ("alchemist", "Alchemist", 6.2, M("stone_dark", "roof_shingle", 1.0, 0.1),
      "a cluttered alchemist's shop leaning over the street, copper pipes and a fuming chimney, "
      "green glass bottles in the window"),
-    ("tavern", "Tavern", 7.0, TIMBER,
+    ("tavern", "Tavern", 7.0, TIMBER_CREAM,
      "a big half-timbered tavern with a wide door, benches outside, a swinging painted sign "
      "and lamplit windows"),
-    ("inn", "Coaching Inn", 8.0, TIMBER,
+    ("inn", "Coaching Inn", 8.0, TIMBER_BLUE,
      "a two-winged coaching inn around an arched carriage entrance, galleried upper floors, "
      "a stable yard behind"),
     ("smithy", "Blacksmith", 4.6, M("stone_rubble", "roof_shingle", 1.0, 0.1),
@@ -314,7 +326,7 @@ HOUSES = [
      "water trough under the eaves"),
     ("tannery", "Tannery", 5.0, M("wood_plank", "roof_shingle", 1.0, 0.12),
      "a tannery with open drying frames of stretched hides and sunken vats beside it"),
-    ("weaver", "Weaver's House", 5.6, TIMBER,
+    ("weaver", "Weaver's House", 5.6, TIMBER_GREY,
      "a weaver's house with a long band of windows on the upper floor to light the looms"),
     ("potter", "Pottery", 4.4, M("brick_red", "roof_clay", 1.0, 0.1),
      "a potter's workshop with a beehive brick kiln beside it and stacked drying pots"),
