@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-10T17:29:13.443Z",
+ "generated": "2026-09-10T17:56:47.882Z",
  "assets": [
   {
    "id": "building_siege_ballista",
@@ -565,6 +565,30 @@
    }
   },
   {
+   "id": "civic_arsenal",
+   "name": "Arsenal",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_arsenal.glb",
+   "size": [
+    7.6863,
+    9,
+    7.0901
+   ],
+   "radius": 5.2285,
+   "triangles": 7498,
+   "bytes": 136216,
+   "material": {
+    "side": "stone_ashlar_cold",
+    "top": "roof_lead",
+    "scale": 1.05,
+    "jitter": 0.05,
+    "tint": null
+   }
+  },
+  {
    "id": "civic_barracks",
    "name": "Barracks",
    "category": "civic",
@@ -582,6 +606,30 @@
     "side": "stone_rubble",
     "top": "roof_clay",
     "scale": 1,
+    "jitter": 0.06,
+    "tint": null
+   }
+  },
+  {
+   "id": "civic_basilica",
+   "name": "Basilica",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_basilica.glb",
+   "size": [
+    36.1767,
+    13,
+    38.1661
+   ],
+   "radius": 26.2936,
+   "triangles": 7499,
+   "bytes": 137168,
+   "material": {
+    "side": "stone_limestone",
+    "top": "roof_tile_green",
+    "scale": 1.05,
     "jitter": 0.06,
     "tint": null
    }
@@ -653,6 +701,54 @@
     "top": "roof_lead",
     "scale": 1.2,
     "jitter": 0.02,
+    "tint": null
+   }
+  },
+  {
+   "id": "civic_chapter_house",
+   "name": "Chapter House",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_chapter_house.glb",
+   "size": [
+    9.1779,
+    8,
+    9.4743
+   ],
+   "radius": 6.5954,
+   "triangles": 7498,
+   "bytes": 136288,
+   "material": {
+    "side": "stone_limestone",
+    "top": "roof_tile_green",
+    "scale": 1.05,
+    "jitter": 0.06,
+    "tint": null
+   }
+  },
+  {
+   "id": "civic_clock_tower",
+   "name": "Clock Tower",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_clock_tower.glb",
+   "size": [
+    7.2366,
+    14,
+    7.2538
+   ],
+   "radius": 5.1231,
+   "triangles": 7500,
+   "bytes": 137680,
+   "material": {
+    "side": "stone_limestone",
+    "top": "roof_copper",
+    "scale": 1,
+    "jitter": 0.04,
     "tint": null
    }
   },
@@ -841,6 +937,30 @@
    }
   },
   {
+   "id": "civic_guild_tower",
+   "name": "Guild Tower",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_guild_tower.glb",
+   "size": [
+    13.9944,
+    12,
+    10.1859
+   ],
+   "radius": 8.6544,
+   "triangles": 7498,
+   "bytes": 136580,
+   "material": {
+    "side": "brick_pale",
+    "top": "roof_pantile",
+    "scale": 1,
+    "jitter": 0.11,
+    "tint": null
+   }
+  },
+  {
    "id": "civic_guildhall",
    "name": "Guildhall",
    "category": "civic",
@@ -859,6 +979,30 @@
     "top": "roof_clay",
     "scale": 1,
     "jitter": 0.05,
+    "tint": null
+   }
+  },
+  {
+   "id": "civic_hospice",
+   "name": "Hospice",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_hospice.glb",
+   "size": [
+    6.002,
+    6.5,
+    9.1148
+   ],
+   "radius": 5.4567,
+   "triangles": 7499,
+   "bytes": 136152,
+   "material": {
+    "side": "stone_flint_pale",
+    "top": "roof_pantile_grey",
+    "scale": 1,
+    "jitter": 0.09,
     "tint": null
    }
   },
@@ -883,6 +1027,30 @@
     "top": "roof_slate",
     "scale": 1.05,
     "jitter": 0.06,
+    "tint": null
+   }
+  },
+  {
+   "id": "civic_moot_hall",
+   "name": "Moot Hall",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_moot_hall.glb",
+   "size": [
+    8.6628,
+    8.5,
+    6.5559
+   ],
+   "radius": 5.4319,
+   "triangles": 7498,
+   "bytes": 136444,
+   "material": {
+    "side": "plaster_pargeting",
+    "top": "roof_clay",
+    "scale": 1,
+    "jitter": 0.12,
     "tint": null
    }
   },
@@ -929,6 +1097,30 @@
     "top": "roof_lead",
     "scale": 1.1,
     "jitter": 0.04,
+    "tint": null
+   }
+  },
+  {
+   "id": "civic_theatre",
+   "name": "Playhouse",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_theatre.glb",
+   "size": [
+    13.4424,
+    9,
+    13.6774
+   ],
+   "radius": 9.5886,
+   "triangles": 7499,
+   "bytes": 135900,
+   "material": {
+    "side": "wood_beam",
+    "top": "roof_thatch",
+    "scale": 1,
+    "jitter": 0.08,
     "tint": null
    }
   },
@@ -4804,6 +4996,30 @@
    }
   },
   {
+   "id": "fort_wall_ruined_tower",
+   "name": "Broken Tower",
+   "category": "fort",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "fort_wall_ruined_tower.glb",
+   "size": [
+    8.3734,
+    6.5,
+    8.3499
+   ],
+   "radius": 5.9126,
+   "triangles": 5199,
+   "bytes": 94872,
+   "material": {
+    "side": "stone_rubble",
+    "top": "stone_rubble",
+    "scale": 1,
+    "jitter": 0.1,
+    "tint": null
+   }
+  },
+  {
    "id": "fort_tower_corner",
    "name": "Corner Tower",
    "category": "fort",
@@ -4853,6 +5069,30 @@
    }
   },
   {
+   "id": "fort_wall_curved",
+   "name": "Curved Wall",
+   "category": "fort",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "fort_wall_curved.glb",
+   "size": [
+    4,
+    5,
+    2
+   ],
+   "radius": 2.2361,
+   "triangles": 5957,
+   "bytes": 108908,
+   "material": {
+    "side": "stone_ashlar",
+    "top": "stone_ashlar",
+    "scale": 1,
+    "jitter": 0.05,
+    "tint": null
+   }
+  },
+  {
    "id": "fort_drawbridge",
    "name": "Drawbridge",
    "category": "fort",
@@ -4871,6 +5111,30 @@
     "top": "wood_beam",
     "scale": 1,
     "jitter": 0.08,
+    "tint": null
+   }
+  },
+  {
+   "id": "fort_tower_drum",
+   "name": "Drum Tower",
+   "category": "fort",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "fort_tower_drum.glb",
+   "size": [
+    5.1504,
+    8,
+    5.0633
+   ],
+   "radius": 3.6112,
+   "triangles": 5200,
+   "bytes": 94712,
+   "material": {
+    "side": "stone_ashlar_warm",
+    "top": "roof_lead",
+    "scale": 1,
+    "jitter": 0.05,
     "tint": null
    }
   },
@@ -5040,6 +5304,30 @@
    }
   },
   {
+   "id": "fort_chain_boom",
+   "name": "River Chain",
+   "category": "fort",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "fort_chain_boom.glb",
+   "size": [
+    2.8681,
+    3,
+    2.4449
+   ],
+   "radius": 1.8844,
+   "triangles": 5198,
+   "bytes": 94424,
+   "material": {
+    "side": "iron_rust",
+    "top": "wood_beam",
+    "scale": 0.8,
+    "jitter": 0.07,
+    "tint": null
+   }
+  },
+  {
    "id": "fort_tower_round",
    "name": "Round Wall Tower",
    "category": "fort",
@@ -5058,6 +5346,30 @@
    "material": {
     "side": "stone_ashlar_cold",
     "top": "roof_slate",
+    "scale": 1,
+    "jitter": 0.05,
+    "tint": null
+   }
+  },
+  {
+   "id": "fort_sally_port",
+   "name": "Sally Port",
+   "category": "fort",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "fort_sally_port.glb",
+   "size": [
+    4,
+    5,
+    2.2
+   ],
+   "radius": 2.2825,
+   "triangles": 5199,
+   "bytes": 94488,
+   "material": {
+    "side": "stone_ashlar",
+    "top": "stone_ashlar",
     "scale": 1,
     "jitter": 0.05,
     "tint": null
@@ -5223,6 +5535,30 @@
     "top": "wood_beam",
     "scale": 0.9,
     "jitter": 0.08,
+    "tint": null
+   }
+  },
+  {
+   "id": "fort_gate_double",
+   "name": "Twin Gate",
+   "category": "fort",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "fort_gate_double.glb",
+   "size": [
+    17.9162,
+    12,
+    5.2389
+   ],
+   "radius": 9.3332,
+   "triangles": 5528,
+   "bytes": 99124,
+   "material": {
+    "side": "stone_ashlar",
+    "top": "roof_slate",
+    "scale": 1.05,
+    "jitter": 0.04,
     "tint": null
    }
   },
@@ -5419,6 +5755,54 @@
    }
   },
   {
+   "id": "house_dormer_row",
+   "name": "Attic House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_dormer_row.glb",
+   "size": [
+    6.18,
+    6.2,
+    1.2775
+   ],
+   "radius": 3.1553,
+   "triangles": 5198,
+   "bytes": 94328,
+   "material": {
+    "side": "stone_flint_pale",
+    "top": "roof_pantile_grey",
+    "scale": 1,
+    "jitter": 0.09,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_bakehouse",
+   "name": "Bake House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_bakehouse.glb",
+   "size": [
+    5.054,
+    4.4,
+    5.5823
+   ],
+   "radius": 3.7651,
+   "triangles": 5200,
+   "bytes": 94816,
+   "material": {
+    "side": "brick_pale",
+    "top": "roof_pantile",
+    "scale": 1,
+    "jitter": 0.11,
+    "tint": null
+   }
+  },
+  {
    "id": "house_bakery",
    "name": "Bakery",
    "category": "house",
@@ -5539,6 +5923,30 @@
    }
   },
   {
+   "id": "house_boat_builder",
+   "name": "Boat Yard",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_boat_builder.glb",
+   "size": [
+    6.2958,
+    4.6,
+    6.7052
+   ],
+   "radius": 4.5988,
+   "triangles": 5199,
+   "bytes": 94364,
+   "material": {
+    "side": "wood_pale",
+    "top": "roof_shingle",
+    "scale": 1,
+    "jitter": 0.12,
+    "tint": null
+   }
+  },
+  {
    "id": "house_brewery",
    "name": "Brewery",
    "category": "house",
@@ -5559,6 +5967,30 @@
     "top": "roof_clay",
     "scale": 1,
     "jitter": 0.1,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_bridge_house",
+   "name": "Bridge House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_bridge_house.glb",
+   "size": [
+    8.0082,
+    6,
+    4.985
+   ],
+   "radius": 4.7165,
+   "triangles": 5199,
+   "bytes": 94048,
+   "material": {
+    "side": "plaster_cream",
+    "top": "roof_clay_dark",
+    "scale": 1,
+    "jitter": 0.13,
     "tint": null
    }
   },
@@ -5631,6 +6063,30 @@
     "top": "roof_clay_pale",
     "scale": 1,
     "jitter": 0.14,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_catslide",
+   "name": "Catslide House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_catslide.glb",
+   "size": [
+    6.4262,
+    5,
+    5.5241
+   ],
+   "radius": 4.2371,
+   "triangles": 5200,
+   "bytes": 95204,
+   "material": {
+    "side": "stone_mossy",
+    "top": "roof_moss",
+    "scale": 1,
+    "jitter": 0.12,
     "tint": null
    }
   },
@@ -5779,6 +6235,126 @@
    }
   },
   {
+   "id": "house_shopfront_double",
+   "name": "Double Shop",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_shopfront_double.glb",
+   "size": [
+    5.9551,
+    5.6,
+    3.754
+   ],
+   "radius": 3.5198,
+   "triangles": 5199,
+   "bytes": 94940,
+   "material": {
+    "side": "plaster_pargeting",
+    "top": "roof_clay",
+    "scale": 1,
+    "jitter": 0.12,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_gable_dutch",
+   "name": "Dutch Gable",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_gable_dutch.glb",
+   "size": [
+    4.2851,
+    7,
+    4.4878
+   ],
+   "radius": 3.1025,
+   "triangles": 5199,
+   "bytes": 94712,
+   "material": {
+    "side": "brick_pale",
+    "top": "roof_pantile",
+    "scale": 1,
+    "jitter": 0.11,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_dyeworks",
+   "name": "Dye Works",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_dyeworks.glb",
+   "size": [
+    24.9007,
+    5.2,
+    28.694
+   ],
+   "radius": 18.996,
+   "triangles": 5199,
+   "bytes": 95612,
+   "material": {
+    "side": "stone_mossy",
+    "top": "roof_moss",
+    "scale": 1,
+    "jitter": 0.12,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_gallery_house",
+   "name": "Gallery House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_gallery_house.glb",
+   "size": [
+    5.681,
+    6.4,
+    5.7912
+   ],
+   "radius": 4.0562,
+   "triangles": 5199,
+   "bytes": 94244,
+   "material": {
+    "side": "plaster_cream",
+    "top": "roof_clay_dark",
+    "scale": 1,
+    "jitter": 0.13,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_gatehouse_house",
+   "name": "Gate House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_gatehouse_house.glb",
+   "size": [
+    6.1295,
+    6.5,
+    4.314
+   ],
+   "radius": 3.7477,
+   "triangles": 5200,
+   "bytes": 94504,
+   "material": {
+    "side": "plaster_pargeting",
+    "top": "roof_clay",
+    "scale": 1,
+    "jitter": 0.12,
+    "tint": null
+   }
+  },
+  {
    "id": "house_granary_town",
    "name": "Granary",
    "category": "house",
@@ -5799,6 +6375,30 @@
     "top": "roof_thatch",
     "scale": 1,
     "jitter": 0.1,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_half_timber_tall",
+   "name": "Guild House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_half_timber_tall.glb",
+   "size": [
+    5.5236,
+    8.5,
+    4.2015
+   ],
+   "radius": 3.47,
+   "triangles": 5199,
+   "bytes": 94540,
+   "material": {
+    "side": "plaster_cream",
+    "top": "roof_clay_dark",
+    "scale": 1,
+    "jitter": 0.13,
     "tint": null
    }
   },
@@ -5827,6 +6427,54 @@
    }
   },
   {
+   "id": "house_chimney_stack",
+   "name": "Hearth House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_chimney_stack.glb",
+   "size": [
+    4.353,
+    6,
+    5.8995
+   ],
+   "radius": 3.6658,
+   "triangles": 5199,
+   "bytes": 94540,
+   "material": {
+    "side": "stone_flint",
+    "top": "roof_pantile",
+    "scale": 1,
+    "jitter": 0.09,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_hipped_roof",
+   "name": "Hipped House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_hipped_roof.glb",
+   "size": [
+    5.9737,
+    5.4,
+    7.3295
+   ],
+   "radius": 4.7277,
+   "triangles": 5199,
+   "bytes": 94792,
+   "material": {
+    "side": "plaster_white",
+    "top": "roof_slate_blue",
+    "scale": 1,
+    "jitter": 0.12,
+    "tint": null
+   }
+  },
+  {
    "id": "house_hovel",
    "name": "Hovel",
    "category": "house",
@@ -5847,6 +6495,54 @@
     "top": "roof_thatch_old",
     "scale": 1,
     "jitter": 0.16,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_wing_house",
+   "name": "L-Plan House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_wing_house.glb",
+   "size": [
+    9.9409,
+    5.8,
+    11.3338
+   ],
+   "radius": 7.5378,
+   "triangles": 5198,
+   "bytes": 95992,
+   "material": {
+    "side": "brick_pale",
+    "top": "roof_pantile",
+    "scale": 1,
+    "jitter": 0.11,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_penthouse",
+   "name": "Lean-To Row",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_penthouse.glb",
+   "size": [
+    5.2851,
+    4.4,
+    5.2547
+   ],
+   "radius": 3.7264,
+   "triangles": 5199,
+   "bytes": 95480,
+   "material": {
+    "side": "stone_mossy",
+    "top": "roof_moss",
+    "scale": 1,
+    "jitter": 0.12,
     "tint": null
    }
   },
@@ -5943,6 +6639,30 @@
     "top": "roof_shingle",
     "scale": 1,
     "jitter": 0.14,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_stone_tower_home",
+   "name": "Peel Tower",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_stone_tower_home.glb",
+   "size": [
+    4.106,
+    8.5,
+    4.2121
+   ],
+   "radius": 2.9411,
+   "triangles": 5199,
+   "bytes": 96592,
+   "material": {
+    "side": "stone_slate_wall",
+    "top": "roof_moss",
+    "scale": 1,
+    "jitter": 0.1,
     "tint": null
    }
   },
@@ -6355,6 +7075,54 @@
    }
   },
   {
+   "id": "house_turret_house",
+   "name": "Turret House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_turret_house.glb",
+   "size": [
+    5.7171,
+    7.5,
+    5.8273
+   ],
+   "radius": 4.0818,
+   "triangles": 5199,
+   "bytes": 94348,
+   "material": {
+    "side": "stone_flint",
+    "top": "roof_pantile",
+    "scale": 1,
+    "jitter": 0.09,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_undercroft",
+   "name": "Undercroft House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_undercroft.glb",
+   "size": [
+    7.7705,
+    6.4,
+    2.1944
+   ],
+   "radius": 4.0372,
+   "triangles": 5977,
+   "bytes": 108260,
+   "material": {
+    "side": "stone_slate_wall",
+    "top": "roof_moss",
+    "scale": 1,
+    "jitter": 0.1,
+    "tint": null
+   }
+  },
+  {
    "id": "house_warehouse",
    "name": "Warehouse",
    "category": "house",
@@ -6375,6 +7143,30 @@
     "top": "roof_shingle",
     "scale": 1,
     "jitter": 0.1,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_watchhouse",
+   "name": "Watch House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_watchhouse.glb",
+   "size": [
+    5.1562,
+    5,
+    4.4517
+   ],
+   "radius": 3.406,
+   "triangles": 5200,
+   "bytes": 93952,
+   "material": {
+    "side": "stone_flint",
+    "top": "roof_pantile",
+    "scale": 1,
+    "jitter": 0.09,
     "tint": null
    }
   },
@@ -6421,6 +7213,30 @@
    "material": {
     "side": "plaster_grey",
     "top": "roof_slate",
+    "scale": 1,
+    "jitter": 0.12,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_courtyard_gate",
+   "name": "Yard Gate",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_courtyard_gate.glb",
+   "size": [
+    6.8875,
+    4,
+    6.0314
+   ],
+   "radius": 4.5776,
+   "triangles": 5199,
+   "bytes": 94664,
+   "material": {
+    "side": "plaster_pargeting",
+    "top": "roof_clay",
     "scale": 1,
     "jitter": 0.12,
     "tint": null
@@ -9003,6 +9819,28 @@
    }
   },
   {
+   "id": "street_fountain_wall_large",
+   "name": "Conduit",
+   "category": "street",
+   "tags": [],
+   "mesh": "street_fountain_wall_large.glb",
+   "size": [
+    3.6102,
+    3.2,
+    3.6041
+   ],
+   "radius": 2.5506,
+   "triangles": 3073,
+   "bytes": 56092,
+   "material": {
+    "side": "stone_limestone",
+    "top": "stone_limestone",
+    "scale": 0.9,
+    "jitter": 0.05,
+    "tint": null
+   }
+  },
+  {
    "id": "street_shrine_corner",
    "name": "Corner Shrine",
    "category": "street",
@@ -9021,6 +9859,50 @@
     "top": "roof_clay",
     "scale": 0.8,
     "jitter": 0.07,
+    "tint": null
+   }
+  },
+  {
+   "id": "street_stall_covered",
+   "name": "Covered Stall",
+   "category": "street",
+   "tags": [],
+   "mesh": "street_stall_covered.glb",
+   "size": [
+    4.3432,
+    3,
+    4.0946
+   ],
+   "radius": 2.9845,
+   "triangles": 2600,
+   "bytes": 47344,
+   "material": {
+    "side": "wood_plank",
+    "top": "roof_shingle",
+    "scale": 0.9,
+    "jitter": 0.14,
+    "tint": null
+   }
+  },
+  {
+   "id": "street_well_covered",
+   "name": "Covered Well",
+   "category": "street",
+   "tags": [],
+   "mesh": "street_well_covered.glb",
+   "size": [
+    3.0058,
+    3,
+    0.5082
+   ],
+   "radius": 1.5242,
+   "triangles": 2599,
+   "bytes": 47600,
+   "material": {
+    "side": "stone_limestone",
+    "top": "roof_tile_green",
+    "scale": 0.85,
+    "jitter": 0.06,
     "tint": null
    }
   },
@@ -9179,6 +10061,28 @@
    }
   },
   {
+   "id": "street_cage_hanging",
+   "name": "Gibbet Cage",
+   "category": "street",
+   "tags": [],
+   "mesh": "street_cage_hanging.glb",
+   "size": [
+    3.6387,
+    3.6,
+    0.745
+   ],
+   "radius": 1.8571,
+   "triangles": 2152,
+   "bytes": 39216,
+   "material": {
+    "side": "iron_rust",
+    "top": "wood_beam",
+    "scale": 0.7,
+    "jitter": 0.06,
+    "tint": null
+   }
+  },
+  {
    "id": "street_sack_pile",
    "name": "Grain Sacks",
    "category": "street",
@@ -9197,6 +10101,28 @@
     "top": "canvas_stripe",
     "scale": 0.7,
     "jitter": 0.14,
+    "tint": null
+   }
+  },
+  {
+   "id": "street_steps_grand",
+   "name": "Grand Steps",
+   "category": "street",
+   "tags": [],
+   "mesh": "street_steps_grand.glb",
+   "size": [
+    6.9721,
+    2,
+    7.0709
+   ],
+   "radius": 4.9651,
+   "triangles": 2399,
+   "bytes": 44292,
+   "material": {
+    "side": "stone_limestone",
+    "top": "flagstone",
+    "scale": 0.95,
+    "jitter": 0.06,
     "tint": null
    }
   },
@@ -9421,6 +10347,28 @@
    }
   },
   {
+   "id": "street_tree_planter",
+   "name": "Market Tree",
+   "category": "street",
+   "tags": [],
+   "mesh": "street_tree_planter.glb",
+   "size": [
+    4.5327,
+    4.5,
+    4.3768
+   ],
+   "radius": 3.1505,
+   "triangles": 2599,
+   "bytes": 46252,
+   "material": {
+    "side": "wood_bark",
+    "top": "grass_meadow",
+    "scale": 0.9,
+    "jitter": 0.13,
+    "tint": null
+   }
+  },
+  {
    "id": "street_dung_heap",
    "name": "Midden",
    "category": "street",
@@ -9527,6 +10475,28 @@
     "top": "wood_beam",
     "scale": 0.8,
     "jitter": 0.08,
+    "tint": null
+   }
+  },
+  {
+   "id": "street_shrine_pillar",
+   "name": "Plague Column",
+   "category": "street",
+   "tags": [],
+   "mesh": "street_shrine_pillar.glb",
+   "size": [
+    4.1219,
+    5.5,
+    4.1499
+   ],
+   "radius": 2.9245,
+   "triangles": 3200,
+   "bytes": 58432,
+   "material": {
+    "side": "stone_marble",
+    "top": "stone_marble",
+    "scale": 0.9,
+    "jitter": 0.04,
     "tint": null
    }
   },
@@ -10076,6 +11046,28 @@
     "side": "stone_limestone",
     "top": "stone_limestone",
     "scale": 0.8,
+    "jitter": 0.05,
+    "tint": null
+   }
+  },
+  {
+   "id": "street_lamp_wall",
+   "name": "Wall Lantern",
+   "category": "street",
+   "tags": [],
+   "mesh": "street_lamp_wall.glb",
+   "size": [
+    0.8666,
+    1.4,
+    1.2125
+   ],
+   "radius": 0.7452,
+   "triangles": 1399,
+   "bytes": 25864,
+   "material": {
+    "side": "iron_wrought",
+    "top": "iron_wrought",
+    "scale": 0.7,
     "jitter": 0.05,
     "tint": null
    }

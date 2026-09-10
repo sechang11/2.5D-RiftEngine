@@ -233,6 +233,38 @@ LIBRARY = [
         "tightly laid hemp rope strands running parallel, twisted fibre",
         scale=1.0, roughness=0.95, normal_strength=1.3, group="cloth"),
 
+    # --- second pass: what walking the city showed it wanted ---------------
+    mat("roof_tile_green", "Glazed Green Tile",
+        "glazed emerald green ceramic roof tiles overlapping in neat rows, wet sheen",
+        scale=1.8, roughness=0.45, normal_strength=1.5, group="roof"),
+    mat("roof_moss", "Mossy Shingle",
+        "old wooden roof shingles thick with green moss and lichen between the courses",
+        scale=1.7, roughness=0.96, normal_strength=1.6, group="roof"),
+    mat("roof_pantile", "Pantile",
+        "S-profile clay pantiles in bold curved rows, terracotta with darker weathering",
+        scale=1.9, roughness=0.8, normal_strength=1.7, group="roof"),
+    mat("stone_flint", "Flint and Brick",
+        "a wall of knapped black flint nodules set in pale mortar with red brick banding",
+        scale=2.4, roughness=0.75, normal_strength=1.4),
+    mat("stone_slate_wall", "Stacked Slate",
+        "a wall of thin stacked grey slate courses laid dry, very fine horizontal lines",
+        scale=2.6, roughness=0.9, normal_strength=1.5),
+    mat("plaster_pargeting", "Pargeting",
+        "cream lime plaster moulded with a repeating raised scroll and vine pattern, "
+        "shallow relief", scale=2.6, roughness=0.94, normal_strength=1.2),
+    mat("brick_pale", "Yellow Brick",
+        "a wall of pale yellow-grey stock brick in flemish bond with fine lime mortar",
+        scale=2.2, roughness=0.9, normal_strength=1.2),
+    mat("cobble_herringbone", "Herringbone Brick",
+        "a street paved with red bricks laid in a herringbone pattern, worn and uneven",
+        scale=2.6, roughness=0.88, normal_strength=1.3),
+    mat("sailcloth", "Sailcloth",
+        "heavy cream canvas sailcloth with hand-stitched seams and reinforcing panels",
+        scale=2.4, roughness=0.95, normal_strength=0.7, group="cloth"),
+    mat("tapestry", "Woven Tapestry",
+        "a woven wool tapestry with a repeating red and gold heraldic lion pattern",
+        scale=1.8, roughness=0.96, normal_strength=0.8, group="cloth"),
+
     # --- character surfaces ------------------------------------------------
     mat("chainmail", "Chainmail",
         "riveted steel chainmail rings in dense rows, dark oiled metal",
@@ -305,6 +337,15 @@ VARIANTS = [
     variant("dirt_grey", "dirt_path", "Trodden Earth", "#b7a893", group="ground"),
     variant("grass_dry", "grass_meadow", "Dry Grass", "#cfc394", group="ground"),
     variant("mud_dark", "mud", "Deep Mud", "#8e8377", group="ground"),
+    # Painted timber. One oak texture, four town ordinances about what colour
+    # you may paint your frontage.
+    variant("timber_red", "wood_beam", "Red Timber", "#a05a4a"),
+    variant("timber_blue", "wood_beam", "Blue Timber", "#5d6f8c"),
+    variant("timber_green", "wood_beam", "Green Timber", "#5f7057"),
+    variant("banner_blue", "cloth_banner", "Blue Cloth", "#5a6f9c", group="cloth"),
+    variant("banner_green", "cloth_banner", "Green Cloth", "#5c8362", group="cloth"),
+    variant("stone_flint_pale", "stone_flint", "Pale Flint", "#c9c2b2"),
+    variant("roof_pantile_grey", "roof_pantile", "Grey Pantile", "#9aa0a4", group="roof"),
 ]
 
 LIBRARY = LIBRARY + VARIANTS

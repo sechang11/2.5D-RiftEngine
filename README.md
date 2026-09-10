@@ -101,7 +101,7 @@ repeated round a two-hundred-unit circuit with a tower every twenty-four units,
 a citadel walled off again inside it, a market square where the two avenues
 cross, a river with three bridges and two water gates, a wharf, a temple
 precinct, ten districts of housing, and farms, a graveyard and a camp outside
-the walls. Roughly six hundred and fifty pieces, and a few hundred townsfolk
+the walls. Roughly six hundred and sixty pieces, and a few hundred townsfolk
 standing in them.
 
 Nothing in it is a model of a city. Each district is subdivided into plots by
@@ -158,8 +158,9 @@ instanced draw call each while two hundred simulated ones cost a pathfinder.
 creatures and people, drawn with one instanced draw call per asset type. See
 [docs/ASSET-PIPELINE.md](docs/ASSET-PIPELINE.md).
 
-**Materials.** Generated meshes have no UVs, so the texture is projected rather
-than mapped: each fragment samples a tiling surface down all three object-space
+**Materials.** Eighty-two tiling surfaces, a third of them tinted recolours that
+ship no bytes at all. Generated meshes have no UVs, so the texture is projected
+rather than mapped: each fragment samples a tiling surface down all three object-space
 axes and blends by facing. Walls get one material and up-facing surfaces get
 another, which is what puts slate on a roof and ashlar on the wall beneath it
 without the mesh knowing what a roof is. Tiling makes resolution nearly free —

@@ -164,23 +164,28 @@ const PALETTES: Record<string, string[]> = {
   citadel: [
     'civic_keep_great', 'civic_keep_round', 'civic_palace_wing', 'civic_great_hall',
     'civic_barracks', 'civic_treasury', 'civic_prison', 'civic_bell_tower',
-    'civic_mint', 'civic_granary_tower', 'fort_tower_corner',
+    'civic_mint', 'civic_granary_tower', 'fort_tower_corner', 'civic_arsenal',
+    'civic_chapter_house', 'house_stone_tower_home', 'house_undercroft',
   ],
   temple: [
     'civic_cathedral', 'civic_abbey', 'civic_chapel', 'civic_temple_round',
     'civic_library', 'civic_observatory', 'civic_hospital', 'civic_almshouse',
-    'civic_university',
+    'civic_university', 'civic_basilica', 'civic_chapter_house', 'civic_hospice',
+    'civic_clock_tower',
   ],
   noble: [
     'house_manor', 'house_stone_b', 'house_timber_tall', 'civic_guildhall',
     'civic_courthouse', 'house_row_b', 'civic_wizard_tower', 'house_tower_house',
     'house_courtyard', 'house_oriel', 'house_balcony', 'civic_university',
+    'house_half_timber_tall', 'house_gallery_house', 'house_turret_house',
+    'house_wing_house', 'civic_moot_hall', 'civic_guild_tower', 'house_gatehouse_house',
   ],
   craft: [
     'house_smithy', 'house_tannery', 'house_potter', 'house_weaver', 'house_brewery',
     'house_bakery', 'house_butcher', 'house_apothecary', 'house_alchemist',
     'house_bathhouse', 'house_stable_town', 'house_workshop', 'house_cellar',
-    'house_stair_outside', 'civic_baths',
+    'house_stair_outside', 'civic_baths', 'house_bakehouse', 'house_dyeworks',
+    'house_shopfront_double', 'house_chimney_stack', 'house_undercroft',
   ],
   residential: [
     'house_timber_a', 'house_timber_b', 'house_timber_c', 'house_stone_a',
@@ -188,16 +193,21 @@ const PALETTES: Record<string, string[]> = {
     'house_timber_tall', 'house_tenement', 'house_stone_b', 'house_gable_step',
     'house_gable_curved', 'house_arcade', 'house_oriel', 'house_dormer',
     'house_overhang', 'house_leaning', 'house_narrow', 'house_broad',
-    'house_balcony', 'house_stair_outside', 'house_cellar',
+    'house_balcony', 'house_stair_outside', 'house_cellar', 'house_gable_dutch',
+    'house_hipped_roof', 'house_catslide', 'house_wing_house', 'house_dormer_row',
+    'house_chimney_stack', 'house_gallery_house', 'house_shopfront_double',
+    'house_turret_house', 'house_gatehouse_house', 'house_courtyard_gate',
   ],
   dockside: [
     'house_warehouse', 'house_granary_town', 'house_tenement', 'dock_boathouse',
     'house_hovel', 'house_cottage_b', 'house_ruin_house', 'house_half_ruin',
     'house_leaning', 'house_narrow', 'civic_customs', 'civic_granary_tower',
+    'house_penthouse', 'house_boat_builder', 'house_catslide', 'house_dyeworks',
   ],
   suburb: [
     'house_cottage_a', 'house_cottage_b', 'house_hovel', 'house_broad',
     'rural_farmhouse', 'house_stone_a', 'house_broad', 'house_half_ruin',
+    'house_catslide', 'house_penthouse', 'house_bakehouse',
   ],
 };
 
@@ -596,6 +606,11 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
   // Landmarks that deserve to be placed by hand rather than fall out of a
   // subdivision: the things a visitor navigates by.
   const setPieces: Array<[string, number, number, number, string]> = [
+    ['civic_clock_tower', -20, -40, 0, 'Clock Tower'],
+    ['civic_basilica', 54, 10, 0, 'The Basilica'],
+    ['civic_theatre', -60, 8, 0, 'The Playhouse'],
+    ['street_shrine_pillar', 12, -6, 0, 'Plague Column'],
+    ['civic_moot_hall', -14, 6, 0, 'Moot Hall'],
     ['civic_cathedral', 62, -14, 0, 'Cathedral'],
     ['civic_keep_great', 0, -88, 0, 'The Keep'],
     ['civic_wizard_tower', -72, -46, 0, "Wizard's Tower"],
@@ -693,7 +708,8 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
 
   const furniture = [
     'street_pump', 'street_pillory', 'street_dovecote', 'street_shrine_corner',
-    'street_awning_row', 'street_drain',
+    'street_awning_row', 'street_drain', 'street_lamp_wall', 'street_stall_covered',
+    'street_cage_hanging', 'street_tree_planter', 'street_well_covered',
     'street_lamp_post', 'street_cart_wagon', 'street_cart_hand', 'street_barrel_stack',
     'street_crate_stack', 'street_sack_pile', 'street_firewood', 'street_rain_barrel',
     'street_bench_wood', 'street_signpost', 'street_notice_board', 'street_planter',
