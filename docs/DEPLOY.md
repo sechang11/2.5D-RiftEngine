@@ -35,13 +35,16 @@ the host sets, instead of depending on a default that may change.
 | Path | What it is |
 | --- | --- |
 | `/` | The game |
+| `/?mode=city` | Highhold, the castle city |
 | `/?mode=museum` | Every asset laid out as a walkable gallery |
+| `/?mode=museum&category=house` | One gallery, for when the whole pack is more than you want |
 | `/viewer.html?src=/assets/pack/nature_oak.glb` | Single-mesh inspector |
 | `/sheet.html?category=building` | Asset contact sheet, everything at true scale |
 
-The asset pack ships as 184 separate GLB files totalling 12.3 MB, and meshes
-load on demand. A first visit fetches only what the map actually places, which
-is roughly 70 files and about 4 MB, not the whole pack.
+Two packs ship: separate GLB files for the meshes, and two JPEGs per tiling
+material. Both load on demand, and only what a map actually places is fetched —
+the city pulls roughly half the mesh pack and a third of the materials, not all
+of either.
 
 ## Caching
 
@@ -52,14 +55,21 @@ different lifetimes:
 | --- | --- | --- |
 | `/assets/*-<hash>.js`, `.css` | one year, immutable | Vite puts a content hash in the name, so the content can never change |
 | `/assets/pack/*.glb` | one day, revalidate | Stable names, so it must be able to change when the pack is regenerated |
+| `/assets/materials/*.jpg` | one day, revalidate | Same: stable names, regenerated in place |
 | HTML | no-cache | Points at the hashed bundles, so it has to be fresh |
 
 ## Regenerating the pack
 
-The pack is committed, so a deploy never needs a GPU. To rebuild it, follow
-[ASSET-PIPELINE.md](ASSET-PIPELINE.md) on a machine with ComfyUI, run
-`node tools/import-pack.mjs <staging-dir>` to refresh `public/assets/pack/`, then
-commit and push. Railway redeploys on push.
+Both packs are committed, so a deploy never needs a GPU. To rebuild them, follow
+[ASSET-PIPELINE.md](ASSET-PIPELINE.md) and [MATERIALS.md](MATERIALS.md) on a
+machine with ComfyUI, then
+
+```bash
+node tools/import-pack.mjs <staging-dir>
+node tools/import-materials.mjs <materials-staging-dir>
+```
+
+to refresh `public/assets/`, and commit. Railway redeploys on push.
 
 ## Checking a deploy
 

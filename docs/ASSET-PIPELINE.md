@@ -33,7 +33,9 @@ manifest so a partial run of any of them resumes:
 | --- | --- |
 | `make_catalog.py` | The original pack: weapons, props, nature, creatures |
 | `city_catalog.py` | The castle-city kit: walls, gates, houses, civic, street, farm, dock |
-| `folk_catalog.py` | People and monsters, at character scale and character detail |
+| `city2_catalog.py` | More house shells, because walking the first city showed it repeating |
+| `folk_catalog.py` | Named people and monsters, at character scale and character detail |
+| `folk2_catalog.py` | The crowd: townsfolk in varied postures, and the animals |
 
 The material library is generated separately and needs no reconstruction at
 all; see [MATERIALS.md](MATERIALS.md).
@@ -218,3 +220,13 @@ sign over a specific door or a face on a specific figure. See
 **Interior detail.** Anything the single reference view cannot see is invented.
 Backs of buildings are plausible rather than correct, which is fine at a fixed
 camera angle and would not be in a game with a free camera.
+
+**Surface winding.** A reconstructed shell comes back with its winding inverted
+often enough that neither the face order nor the exported vertex normals can be
+relied on. The renderer stopped trying to read them and orients by what the
+camera can see instead; see [MATERIALS.md](MATERIALS.md).
+
+**Editing one thing.** There is no way to ask for a change: every knob is a
+prompt, a seed and a budget, and the only correction available is to roll again
+and keep whichever result scores better. That is enough for a pack and would not
+be enough for a specific building somebody has an opinion about.

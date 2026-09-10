@@ -134,6 +134,9 @@ MAX_FOOTPRINT_RATIO = 3.4
 ARCHITECTURE = {"fort", "house", "civic", "rural", "dock", "building"}
 GENUINELY_WIDE = (
     "bridge",
+    "boat",
+    "raft",
+    "barge",
     "aqueduct",
     "wall_field",
     "fence",

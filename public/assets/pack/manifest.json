@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-10T16:33:14.069Z",
+ "generated": "2026-09-10T17:29:13.443Z",
  "assets": [
   {
    "id": "building_siege_ballista",
@@ -517,6 +517,30 @@
    }
   },
   {
+   "id": "civic_almshouse",
+   "name": "Almshouse",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_almshouse.glb",
+   "size": [
+    8.4452,
+    6,
+    10.9395
+   ],
+   "radius": 6.91,
+   "triangles": 6999,
+   "bytes": 127516,
+   "material": {
+    "side": "stone_limestone",
+    "top": "roof_slate",
+    "scale": 1.05,
+    "jitter": 0.06,
+    "tint": null
+   }
+  },
+  {
    "id": "civic_mage_spire",
    "name": "Arcane Spire",
    "category": "civic",
@@ -547,18 +571,42 @@
    "tags": [],
    "mesh": "civic_barracks.glb",
    "size": [
-    20.7453,
+    23.7982,
     7,
-    24.4526
+    27.0573
    ],
-   "radius": 16.0335,
-   "triangles": 5998,
-   "bytes": 110656,
+   "radius": 18.017,
+   "triangles": 5999,
+   "bytes": 109084,
    "material": {
     "side": "stone_rubble",
     "top": "roof_clay",
     "scale": 1,
     "jitter": 0.06,
+    "tint": null
+   }
+  },
+  {
+   "id": "civic_baths",
+   "name": "Bath House",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_baths.glb",
+   "size": [
+    11.5959,
+    6.5,
+    11.0894
+   ],
+   "radius": 8.0225,
+   "triangles": 6998,
+   "bytes": 129264,
+   "material": {
+    "side": "brick_red",
+    "top": "roof_clay_dark",
+    "scale": 1,
+    "jitter": 0.1,
     "tint": null
    }
   },
@@ -653,6 +701,30 @@
    }
   },
   {
+   "id": "civic_customs",
+   "name": "Customs House",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_customs.glb",
+   "size": [
+    8.5735,
+    8,
+    7.1458
+   ],
+   "radius": 5.5805,
+   "triangles": 6998,
+   "bytes": 127540,
+   "material": {
+    "side": "stone_ashlar_warm",
+    "top": "roof_lead",
+    "scale": 1.05,
+    "jitter": 0.06,
+    "tint": null
+   }
+  },
+  {
    "id": "civic_prison",
    "name": "Gaol",
    "category": "civic",
@@ -671,6 +743,30 @@
     "top": "roof_slate",
     "scale": 1,
     "jitter": 0.05,
+    "tint": null
+   }
+  },
+  {
+   "id": "civic_granary_tower",
+   "name": "Granary Tower",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_granary_tower.glb",
+   "size": [
+    6.4243,
+    11,
+    6.8073
+   ],
+   "radius": 4.68,
+   "triangles": 6997,
+   "bytes": 126344,
+   "material": {
+    "side": "stone_ashlar_warm",
+    "top": "roof_lead",
+    "scale": 1.05,
+    "jitter": 0.06,
     "tint": null
    }
   },
@@ -767,6 +863,30 @@
    }
   },
   {
+   "id": "civic_hospital",
+   "name": "Hospital",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_hospital.glb",
+   "size": [
+    10.5065,
+    8,
+    6.3589
+   ],
+   "radius": 6.1405,
+   "triangles": 6956,
+   "bytes": 127516,
+   "material": {
+    "side": "stone_limestone",
+    "top": "roof_slate",
+    "scale": 1.05,
+    "jitter": 0.06,
+    "tint": null
+   }
+  },
+  {
    "id": "civic_observatory",
    "name": "Observatory",
    "category": "civic",
@@ -859,6 +979,30 @@
    }
   },
   {
+   "id": "civic_university",
+   "name": "Scholars Hall",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_university.glb",
+   "size": [
+    17.7877,
+    10,
+    9.2242
+   ],
+   "radius": 10.0186,
+   "triangles": 6998,
+   "bytes": 127380,
+   "material": {
+    "side": "stone_limestone",
+    "top": "roof_slate",
+    "scale": 1.05,
+    "jitter": 0.06,
+    "tint": null
+   }
+  },
+  {
    "id": "civic_chapel",
    "name": "Stone Chapel",
    "category": "civic",
@@ -877,6 +1021,54 @@
     "top": "roof_slate",
     "scale": 1,
     "jitter": 0.05,
+    "tint": null
+   }
+  },
+  {
+   "id": "civic_mint",
+   "name": "The Mint",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_mint.glb",
+   "size": [
+    7.4548,
+    7.5,
+    5.8199
+   ],
+   "radius": 4.7288,
+   "triangles": 6999,
+   "bytes": 125164,
+   "material": {
+    "side": "stone_ashlar_warm",
+    "top": "roof_lead",
+    "scale": 1.05,
+    "jitter": 0.06,
+    "tint": null
+   }
+  },
+  {
+   "id": "civic_tiltyard",
+   "name": "Tilt Yard",
+   "category": "civic",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "civic_tiltyard.glb",
+   "size": [
+    5.8269,
+    5,
+    6.1384
+   ],
+   "radius": 4.2318,
+   "triangles": 6999,
+   "bytes": 127184,
+   "material": {
+    "side": "wood_beam",
+    "top": "cloth_banner",
+    "scale": 0.95,
+    "jitter": 0.1,
     "tint": null
    }
   },
@@ -953,13 +1145,19 @@
    ],
    "mesh": "creature_basilisk.glb",
    "size": [
-    2.0653,
-    1.6,
-    1.2442
+    2.9382,
+    1.8,
+    0.8945
    ],
-   "radius": 1.2056,
-   "triangles": 3998,
-   "bytes": 73316
+   "radius": 1.5357,
+   "triangles": 7500,
+   "bytes": 137592,
+   "material": {
+    "side": "scale_green",
+    "top": "bone",
+    "scale": 0.7,
+    "jitter": 0.1
+   }
   },
   {
    "id": "creature_dragon_bone",
@@ -1001,6 +1199,27 @@
    "bytes": 180104
   },
   {
+   "id": "creature_cat",
+   "name": "Cat",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_cat.glb",
+   "size": [
+    0.4489,
+    0.5,
+    0.5174
+   ],
+   "radius": 0.3425,
+   "triangles": 5000,
+   "bytes": 91652,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
    "id": "creature_bear_cave",
    "name": "Cave Bear",
    "category": "creature",
@@ -1010,13 +1229,19 @@
    ],
    "mesh": "creature_bear_cave.glb",
    "size": [
-    2.0193,
-    2,
-    1.7402
+    2.3988,
+    2.4,
+    1.8816
    ],
-   "radius": 1.3328,
-   "triangles": 11023,
-   "bytes": 200228
+   "radius": 1.5244,
+   "triangles": 7499,
+   "bytes": 137400,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
   },
   {
    "id": "creature_troll_cave",
@@ -1178,6 +1403,48 @@
    }
   },
   {
+   "id": "creature_donkey",
+   "name": "Donkey",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_donkey.glb",
+   "size": [
+    1.8771,
+    1.6,
+    0.6884
+   ],
+   "radius": 0.9997,
+   "triangles": 5000,
+   "bytes": 91796,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "creature_horse_cart",
+   "name": "Draft Horse",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_horse_cart.glb",
+   "size": [
+    2.7152,
+    2.3,
+    0.7334
+   ],
+   "radius": 1.4062,
+   "triangles": 5000,
+   "bytes": 91820,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
    "id": "creature_drake",
    "name": "Drake",
    "category": "creature",
@@ -1187,13 +1454,19 @@
    ],
    "mesh": "creature_drake.glb",
    "size": [
-    3.2303,
-    2.2,
-    1.3925
+    3.8772,
+    2.8,
+    1.5245
    ],
-   "radius": 1.7588,
-   "triangles": 3999,
-   "bytes": 73592
+   "radius": 2.0831,
+   "triangles": 7500,
+   "bytes": 138920,
+   "material": {
+    "side": "scale_green",
+    "top": "bone",
+    "scale": 0.7,
+    "jitter": 0.1
+   }
   },
   {
    "id": "creature_elemental_earth",
@@ -1205,13 +1478,40 @@
    ],
    "mesh": "creature_elemental_earth.glb",
    "size": [
-    2.9607,
-    2.8,
-    2.7984
+    2.072,
+    3.4,
+    1.1509
    ],
-   "radius": 2.0369,
-   "triangles": 3999,
-   "bytes": 72752
+   "radius": 1.1851,
+   "triangles": 7500,
+   "bytes": 136320,
+   "material": {
+    "side": "stone_dark",
+    "top": "stone_mossy",
+    "scale": 0.8,
+    "jitter": 0.08
+   }
+  },
+  {
+   "id": "creature_falcon",
+   "name": "Falcon",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_falcon.glb",
+   "size": [
+    0.7659,
+    0.7,
+    0.4148
+   ],
+   "radius": 0.4355,
+   "triangles": 5000,
+   "bytes": 90948,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
   },
   {
    "id": "creature_elemental_fire",
@@ -1223,13 +1523,19 @@
    ],
    "mesh": "creature_elemental_fire.glb",
    "size": [
-    2.669,
-    2.6,
-    2.1238
+    1.9315,
+    3.2,
+    1.2192
    ],
-   "radius": 1.7055,
-   "triangles": 3999,
-   "bytes": 73040
+   "radius": 1.142,
+   "triangles": 7500,
+   "bytes": 137072,
+   "material": {
+    "side": "iron_rust",
+    "top": "iron_rust",
+    "scale": 0.6,
+    "jitter": 0.14
+   }
   },
   {
    "id": "creature_gargoyle",
@@ -1241,13 +1547,19 @@
    ],
    "mesh": "creature_gargoyle.glb",
    "size": [
-    2.6881,
-    2,
-    1.6291
+    4.0917,
+    2.6,
+    2.5284
    ],
-   "radius": 1.5716,
-   "triangles": 3999,
-   "bytes": 72572
+   "radius": 2.4049,
+   "triangles": 7499,
+   "bytes": 136268,
+   "material": {
+    "side": "stone_dark",
+    "top": "stone_mossy",
+    "scale": 0.8,
+    "jitter": 0.08
+   }
   },
   {
    "id": "creature_ghoul",
@@ -1305,6 +1617,27 @@
    "radius": 0.977,
    "triangles": 3999,
    "bytes": 72788
+  },
+  {
+   "id": "creature_rat_giant",
+   "name": "Giant Rat",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_rat_giant.glb",
+   "size": [
+    0.4785,
+    0.7,
+    0.8041
+   ],
+   "radius": 0.4679,
+   "triangles": 5000,
+   "bytes": 96420,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
   },
   {
    "id": "creature_scorpion",
@@ -1376,13 +1709,13 @@
    ],
    "mesh": "creature_giant_spider.glb",
    "size": [
-    6.8954,
+    3.0942,
     1.5,
-    6.8958
+    3.9809
    ],
-   "radius": 4.8759,
+   "radius": 2.521,
    "triangles": 3999,
-   "bytes": 72820
+   "bytes": 74032
   },
   {
    "id": "creature_spider_giant",
@@ -1419,6 +1752,27 @@
    "radius": 0.8409,
    "triangles": 7500,
    "bytes": 139304,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "creature_goose",
+   "name": "Goose",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_goose.glb",
+   "size": [
+    0.4336,
+    0.9,
+    0.7937
+   ],
+   "radius": 0.4522,
+   "triangles": 5000,
+   "bytes": 92592,
    "material": {
     "side": "fur_brown",
     "top": "leather",
@@ -1517,13 +1871,19 @@
    ],
    "mesh": "creature_harpy.glb",
    "size": [
-    2.7229,
-    2,
-    2.0182
+    3.3244,
+    2.4,
+    1.3455
    ],
-   "radius": 1.6947,
-   "triangles": 3998,
-   "bytes": 75496
+   "radius": 1.7932,
+   "triangles": 7499,
+   "bytes": 139988,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
   },
   {
    "id": "creature_giant",
@@ -1574,13 +1934,19 @@
    ],
    "mesh": "creature_imp.glb",
    "size": [
-    0.9984,
-    1,
-    0.3657
+    1.3395,
+    1.4,
+    0.5697
    ],
-   "radius": 0.5316,
-   "triangles": 3998,
-   "bytes": 73328
+   "radius": 0.7278,
+   "triangles": 7498,
+   "bytes": 137984,
+   "material": {
+    "side": "skin_green",
+    "top": "leather",
+    "scale": 0.6,
+    "jitter": 0.12
+   }
   },
   {
    "id": "creature_golem_iron",
@@ -1592,13 +1958,19 @@
    ],
    "mesh": "creature_golem_iron.glb",
    "size": [
-    4.4466,
-    3.2,
-    4.4483
+    3.5055,
+    4.2,
+    1.8761
    ],
-   "radius": 3.1448,
-   "triangles": 7893,
-   "bytes": 140264
+   "radius": 1.988,
+   "triangles": 7499,
+   "bytes": 136940,
+   "material": {
+    "side": "iron_rust",
+    "top": "iron_wrought",
+    "scale": 0.7,
+    "jitter": 0.06
+   }
   },
   {
    "id": "creature_lich",
@@ -1610,13 +1982,19 @@
    ],
    "mesh": "creature_lich.glb",
    "size": [
-    1.6212,
-    2.4,
-    1.2752
+    2.0623,
+    2.8,
+    0.897
    ],
-   "radius": 1.0313,
-   "triangles": 4197,
-   "bytes": 76328
+   "radius": 1.1245,
+   "triangles": 7500,
+   "bytes": 136908,
+   "material": {
+    "side": "bone",
+    "top": "cloth_banner",
+    "scale": 0.7,
+    "jitter": 0.08
+   }
   },
   {
    "id": "creature_mimic",
@@ -1646,13 +2024,19 @@
    ],
    "mesh": "creature_minotaur.glb",
    "size": [
-    2.6081,
-    3,
-    1.9927
+    2.8742,
+    3.4,
+    2.4504
    ],
-   "radius": 1.6411,
-   "triangles": 3999,
-   "bytes": 73100
+   "radius": 1.8885,
+   "triangles": 7500,
+   "bytes": 136352,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
   },
   {
    "id": "creature_mummy",
@@ -1703,13 +2087,40 @@
    ],
    "mesh": "creature_ogre.glb",
    "size": [
-    2.2703,
-    2.8,
-    2.1972
+    2.9408,
+    3.8,
+    2.8856
    ],
-   "radius": 1.5797,
-   "triangles": 3999,
-   "bytes": 74008
+   "radius": 2.0601,
+   "triangles": 7500,
+   "bytes": 136532,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "creature_ox",
+   "name": "Ox",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_ox.glb",
+   "size": [
+    1.1042,
+    1.9,
+    1.0526
+   ],
+   "radius": 0.7628,
+   "triangles": 5000,
+   "bytes": 91004,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
   },
   {
    "id": "creature_mule",
@@ -1772,6 +2183,27 @@
    "bytes": 72644
   },
   {
+   "id": "creature_raven",
+   "name": "Raven",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_raven.glb",
+   "size": [
+    0.6598,
+    0.6,
+    0.351
+   ],
+   "radius": 0.3737,
+   "triangles": 4999,
+   "bytes": 91116,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
    "id": "creature_dragon_red",
    "name": "Red Dragon",
    "category": "creature",
@@ -1832,6 +2264,27 @@
    "bytes": 72792
   },
   {
+   "id": "creature_sheep",
+   "name": "Sheep",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_sheep.glb",
+   "size": [
+    1.5293,
+    1.1,
+    0.8374
+   ],
+   "radius": 0.8718,
+   "triangles": 4999,
+   "bytes": 91784,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
    "id": "creature_skeleton_warrior",
    "name": "Skeleton",
    "category": "creature",
@@ -1841,13 +2294,19 @@
    ],
    "mesh": "creature_skeleton_warrior.glb",
    "size": [
-    1.1501,
-    2,
-    0.8692
+    1.1814,
+    2.4,
+    0.9998
    ],
-   "radius": 0.7208,
-   "triangles": 4165,
-   "bytes": 76124
+   "radius": 0.7739,
+   "triangles": 7500,
+   "bytes": 137484,
+   "material": {
+    "side": "bone",
+    "top": "cloth_banner",
+    "scale": 0.7,
+    "jitter": 0.08
+   }
   },
   {
    "id": "creature_skeleton_archer",
@@ -1880,13 +2339,19 @@
    ],
    "mesh": "creature_slime.glb",
    "size": [
-    1.0043,
-    1,
-    0.934
+    1.293,
+    1.3,
+    0.7577
    ],
-   "radius": 0.6857,
-   "triangles": 4000,
-   "bytes": 72992
+   "radius": 0.7493,
+   "triangles": 7498,
+   "bytes": 135984,
+   "material": {
+    "side": "scale_green",
+    "top": "scale_green",
+    "scale": 0.6,
+    "jitter": 0.16
+   }
   },
   {
    "id": "creature_golem_stone",
@@ -1898,13 +2363,40 @@
    ],
    "mesh": "creature_golem_stone.glb",
    "size": [
-    4.6023,
-    3,
-    4.6013
+    3.9776,
+    4,
+    1.8344
    ],
-   "radius": 3.254,
-   "triangles": 4000,
-   "bytes": 72784
+   "radius": 2.1901,
+   "triangles": 9999,
+   "bytes": 181220,
+   "material": {
+    "side": "stone_dark",
+    "top": "stone_mossy",
+    "scale": 0.8,
+    "jitter": 0.08
+   }
+  },
+  {
+   "id": "creature_dog_street",
+   "name": "Street Dog",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_dog_street.glb",
+   "size": [
+    1.1566,
+    0.9,
+    0.4807
+   ],
+   "radius": 0.6263,
+   "triangles": 4998,
+   "bytes": 92624,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
   },
   {
    "id": "creature_treant",
@@ -1916,13 +2408,19 @@
    ],
    "mesh": "creature_treant.glb",
    "size": [
-    6.2563,
-    6,
-    6.2471
+    4.3345,
+    5.5,
+    2.6911
    ],
-   "radius": 4.4206,
-   "triangles": 4131,
-   "bytes": 75808
+   "radius": 2.551,
+   "triangles": 7499,
+   "bytes": 139196,
+   "material": {
+    "side": "wood_bark",
+    "top": "grass_meadow",
+    "scale": 0.8,
+    "jitter": 0.12
+   }
   },
   {
    "id": "creature_boar_tusked",
@@ -2054,13 +2552,19 @@
    ],
    "mesh": "creature_wraith.glb",
    "size": [
-    1.9297,
-    2.4,
-    2.3267
+    2.4693,
+    2.9,
+    1.0548
    ],
-   "radius": 1.5114,
-   "triangles": 4834,
-   "bytes": 87632
+   "radius": 1.3426,
+   "triangles": 7500,
+   "bytes": 136260,
+   "material": {
+    "side": "cloth_banner",
+    "top": "bone",
+    "scale": 0.8,
+    "jitter": 0.1
+   }
   },
   {
    "id": "creature_dragon_wyrmling",
@@ -2090,13 +2594,19 @@
    ],
    "mesh": "creature_wyvern.glb",
    "size": [
-    4.2936,
-    3.4,
-    2.4036
+    3.1326,
+    3.6,
+    5.4053
    ],
-   "radius": 2.4603,
-   "triangles": 3999,
-   "bytes": 72980
+   "radius": 3.1237,
+   "triangles": 7499,
+   "bytes": 136548,
+   "material": {
+    "side": "scale_green",
+    "top": "bone",
+    "scale": 0.7,
+    "jitter": 0.1
+   }
   },
   {
    "id": "creature_zombie",
@@ -2108,13 +2618,19 @@
    ],
    "mesh": "creature_zombie.glb",
    "size": [
-    0.8468,
+    0.8607,
     2,
-    0.7802
+    0.6859
    ],
-   "radius": 0.5757,
+   "radius": 0.5503,
    "triangles": 3999,
-   "bytes": 73116
+   "bytes": 72884,
+   "material": {
+    "side": "leather",
+    "top": "bone",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
   },
   {
    "id": "dock_lighthouse",
@@ -2425,6 +2941,27 @@
    }
   },
   {
+   "id": "folk_smith_apprentice",
+   "name": "Apprentice",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_smith_apprentice.glb",
+   "size": [
+    1.6559,
+    2.1,
+    0.8378
+   ],
+   "radius": 0.9279,
+   "triangles": 6499,
+   "bytes": 118860,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
+   }
+  },
+  {
    "id": "folk_archer",
    "name": "Archer",
    "category": "folk",
@@ -2551,6 +3088,48 @@
    }
   },
   {
+   "id": "folk_basket_woman",
+   "name": "Basket Seller",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_basket_woman.glb",
+   "size": [
+    0.8011,
+    2.3,
+    0.671
+   ],
+   "radius": 0.5225,
+   "triangles": 6499,
+   "bytes": 118500,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
+   }
+  },
+  {
+   "id": "folk_bathhouse_woman",
+   "name": "Bather",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_bathhouse_woman.glb",
+   "size": [
+    1.5771,
+    2.2,
+    0.6809
+   ],
+   "radius": 0.8589,
+   "triangles": 6499,
+   "bytes": 118700,
+   "material": {
+    "side": "skin_human",
+    "top": "canvas_stripe",
+    "scale": 0.8,
+    "jitter": 0.12
+   }
+  },
+  {
    "id": "folk_beggar",
    "name": "Beggar",
    "category": "folk",
@@ -2611,6 +3190,27 @@
     "top": "leather",
     "scale": 0.7,
     "jitter": 0.16
+   }
+  },
+  {
+   "id": "folk_carpenter",
+   "name": "Carpenter",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_carpenter.glb",
+   "size": [
+    1.1611,
+    2.4,
+    0.7583
+   ],
+   "radius": 0.6934,
+   "triangles": 6499,
+   "bytes": 118668,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
    }
   },
   {
@@ -2677,6 +3277,48 @@
    }
   },
   {
+   "id": "folk_cook",
+   "name": "Cook",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_cook.glb",
+   "size": [
+    1.5094,
+    2.3,
+    0.7858
+   ],
+   "radius": 0.8508,
+   "triangles": 6500,
+   "bytes": 118020,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
+   }
+  },
+  {
+   "id": "folk_cooper",
+   "name": "Cooper",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_cooper.glb",
+   "size": [
+    2.0785,
+    2.4,
+    1.1675
+   ],
+   "radius": 1.192,
+   "triangles": 6500,
+   "bytes": 119052,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
+   }
+  },
+  {
    "id": "folk_crossbowman",
    "name": "Crossbowman",
    "category": "folk",
@@ -2719,6 +3361,27 @@
    }
   },
   {
+   "id": "folk_dancer",
+   "name": "Dancer",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_dancer.glb",
+   "size": [
+    2.0592,
+    2.3,
+    0.9988
+   ],
+   "radius": 1.1443,
+   "triangles": 6500,
+   "bytes": 118124,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.14
+   }
+  },
+  {
    "id": "folk_druid",
    "name": "Druid",
    "category": "folk",
@@ -2737,6 +3400,27 @@
     "top": "leather",
     "scale": 0.7,
     "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_drunk",
+   "name": "Drunkard",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_drunk.glb",
+   "size": [
+    1.1688,
+    2.2,
+    0.7857
+   ],
+   "radius": 0.7042,
+   "triangles": 6499,
+   "bytes": 119372,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
    }
   },
   {
@@ -2779,6 +3463,27 @@
     "top": "cloth_banner",
     "scale": 0.5,
     "jitter": 0.05
+   }
+  },
+  {
+   "id": "folk_old_man",
+   "name": "Elder",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_old_man.glb",
+   "size": [
+    1.0951,
+    2.2,
+    0.8255
+   ],
+   "radius": 0.6857,
+   "triangles": 6500,
+   "bytes": 118112,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.14
    }
   },
   {
@@ -2887,6 +3592,27 @@
    }
   },
   {
+   "id": "folk_fishwife",
+   "name": "Fishwife",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_fishwife.glb",
+   "size": [
+    1.5594,
+    2.3,
+    0.9624
+   ],
+   "radius": 0.9162,
+   "triangles": 6500,
+   "bytes": 119400,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
+   }
+  },
+  {
    "id": "folk_goblin",
    "name": "Goblin",
    "category": "folk",
@@ -2926,6 +3652,27 @@
     "top": "leather",
     "scale": 0.7,
     "jitter": 0.16
+   }
+  },
+  {
+   "id": "folk_gravedigger",
+   "name": "Gravedigger",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_gravedigger.glb",
+   "size": [
+    0.9669,
+    2.4,
+    1.2637
+   ],
+   "radius": 0.7956,
+   "triangles": 6499,
+   "bytes": 118668,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
    }
   },
   {
@@ -2992,6 +3739,27 @@
    }
   },
   {
+   "id": "folk_hunter",
+   "name": "Hunter",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_hunter.glb",
+   "size": [
+    2.3242,
+    2.5,
+    0.9911
+   ],
+   "radius": 1.2633,
+   "triangles": 6499,
+   "bytes": 119036,
+   "material": {
+    "side": "leather",
+    "top": "wood_plank",
+    "scale": 0.6,
+    "jitter": 0.14
+   }
+  },
+  {
    "id": "folk_innkeeper",
    "name": "Innkeeper",
    "category": "folk",
@@ -3010,6 +3778,27 @@
     "top": "leather",
     "scale": 0.7,
     "jitter": 0.16
+   }
+  },
+  {
+   "id": "folk_jester",
+   "name": "Jester",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_jester.glb",
+   "size": [
+    1.6014,
+    2.2,
+    0.9297
+   ],
+   "radius": 0.9259,
+   "triangles": 6499,
+   "bytes": 119324,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.14
    }
   },
   {
@@ -3055,6 +3844,27 @@
    }
   },
   {
+   "id": "folk_mason",
+   "name": "Mason",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_mason.glb",
+   "size": [
+    1.3123,
+    2.4,
+    1.0038
+   ],
+   "radius": 0.8261,
+   "triangles": 6499,
+   "bytes": 118320,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
+   }
+  },
+  {
    "id": "folk_merchant",
    "name": "Merchant",
    "category": "folk",
@@ -3073,6 +3883,27 @@
     "top": "leather",
     "scale": 0.7,
     "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_miller",
+   "name": "Miller",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_miller.glb",
+   "size": [
+    1.1385,
+    2.4,
+    0.8506
+   ],
+   "radius": 0.7106,
+   "triangles": 6498,
+   "bytes": 118416,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
    }
   },
   {
@@ -3118,6 +3949,27 @@
    }
   },
   {
+   "id": "folk_watchman_lantern",
+   "name": "Night Watchman",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_watchman_lantern.glb",
+   "size": [
+    1.2688,
+    2.5,
+    0.9986
+   ],
+   "radius": 0.8073,
+   "triangles": 6499,
+   "bytes": 118892,
+   "material": {
+    "side": "chainmail",
+    "top": "steel",
+    "scale": 0.55,
+    "jitter": 0.07
+   }
+  },
+  {
    "id": "folk_noblewoman",
    "name": "Noblewoman",
    "category": "folk",
@@ -3136,6 +3988,48 @@
     "top": "leather",
     "scale": 0.7,
     "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_guard_leaning",
+   "name": "Off-Duty Guard",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_guard_leaning.glb",
+   "size": [
+    1.0724,
+    2.5,
+    0.9305
+   ],
+   "radius": 0.7099,
+   "triangles": 6498,
+   "bytes": 118172,
+   "material": {
+    "side": "chainmail",
+    "top": "steel",
+    "scale": 0.55,
+    "jitter": 0.07
+   }
+  },
+  {
+   "id": "folk_old_woman",
+   "name": "Old Woman",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_old_woman.glb",
+   "size": [
+    1.343,
+    2.1,
+    0.6136
+   ],
+   "radius": 0.7383,
+   "triangles": 6500,
+   "bytes": 118584,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.14
    }
   },
   {
@@ -3244,6 +4138,90 @@
    }
   },
   {
+   "id": "folk_kneeling_pilgrim",
+   "name": "Pilgrim",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_kneeling_pilgrim.glb",
+   "size": [
+    0.9858,
+    1.6,
+    0.9583
+   ],
+   "radius": 0.6874,
+   "triangles": 6500,
+   "bytes": 118620,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.14
+   }
+  },
+  {
+   "id": "folk_musician",
+   "name": "Piper",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_musician.glb",
+   "size": [
+    1.2952,
+    2.3,
+    0.7628
+   ],
+   "radius": 0.7516,
+   "triangles": 6499,
+   "bytes": 119808,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.14
+   }
+  },
+  {
+   "id": "folk_plague_doctor",
+   "name": "Plague Doctor",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_plague_doctor.glb",
+   "size": [
+    1.8176,
+    2.5,
+    0.6375
+   ],
+   "radius": 0.9631,
+   "triangles": 6500,
+   "bytes": 118724,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.14
+   }
+  },
+  {
+   "id": "folk_porter",
+   "name": "Porter",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_porter.glb",
+   "size": [
+    1.1828,
+    2.4,
+    0.8335
+   ],
+   "radius": 0.7235,
+   "triangles": 6498,
+   "bytes": 118188,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
+   }
+  },
+  {
    "id": "folk_ranger",
    "name": "Ranger",
    "category": "folk",
@@ -3262,6 +4240,69 @@
     "top": "wood_plank",
     "scale": 0.6,
     "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_scribe",
+   "name": "Scribe",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_scribe.glb",
+   "size": [
+    1.2339,
+    2.3,
+    0.8671
+   ],
+   "radius": 0.754,
+   "triangles": 6500,
+   "bytes": 119228,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.14
+   }
+  },
+  {
+   "id": "folk_beggar_seated",
+   "name": "Seated Beggar",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_beggar_seated.glb",
+   "size": [
+    1.1967,
+    1.3,
+    0.8253
+   ],
+   "radius": 0.7269,
+   "triangles": 6499,
+   "bytes": 118116,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
+   }
+  },
+  {
+   "id": "folk_noble_seated",
+   "name": "Seated Lady",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_noble_seated.glb",
+   "size": [
+    0.623,
+    1.7,
+    0.7904
+   ],
+   "radius": 0.5032,
+   "triangles": 6500,
+   "bytes": 117816,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.14
    }
   },
   {
@@ -3307,6 +4348,69 @@
    }
   },
   {
+   "id": "folk_maid",
+   "name": "Serving Maid",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_maid.glb",
+   "size": [
+    1.5818,
+    2.3,
+    0.873
+   ],
+   "radius": 0.9034,
+   "triangles": 6498,
+   "bytes": 118352,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
+   }
+  },
+  {
+   "id": "folk_shepherd",
+   "name": "Shepherd",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_shepherd.glb",
+   "size": [
+    1.3758,
+    2.4,
+    0.8211
+   ],
+   "radius": 0.8011,
+   "triangles": 6499,
+   "bytes": 118284,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_nun",
+   "name": "Sister",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_nun.glb",
+   "size": [
+    0.7743,
+    2.3,
+    0.6496
+   ],
+   "radius": 0.5053,
+   "triangles": 6500,
+   "bytes": 118724,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.14
+   }
+  },
+  {
    "id": "folk_sorceress",
    "name": "Sorceress",
    "category": "folk",
@@ -3328,6 +4432,27 @@
    }
   },
   {
+   "id": "folk_squire",
+   "name": "Squire",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_squire.glb",
+   "size": [
+    1.4943,
+    2.2,
+    0.9951
+   ],
+   "radius": 0.8977,
+   "triangles": 6500,
+   "bytes": 119004,
+   "material": {
+    "side": "leather",
+    "top": "wood_plank",
+    "scale": 0.6,
+    "jitter": 0.14
+   }
+  },
+  {
    "id": "folk_stablehand",
    "name": "Stablehand",
    "category": "folk",
@@ -3346,6 +4471,48 @@
     "top": "leather",
     "scale": 0.7,
     "jitter": 0.16
+   }
+  },
+  {
+   "id": "folk_standard_bearer",
+   "name": "Standard Bearer",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_standard_bearer.glb",
+   "size": [
+    0.695,
+    2.6,
+    0.8493
+   ],
+   "radius": 0.5487,
+   "triangles": 6500,
+   "bytes": 118356,
+   "material": {
+    "side": "chainmail",
+    "top": "steel",
+    "scale": 0.55,
+    "jitter": 0.07
+   }
+  },
+  {
+   "id": "folk_child_running",
+   "name": "Street Child",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_child_running.glb",
+   "size": [
+    0.9052,
+    1.4,
+    0.8093
+   ],
+   "radius": 0.6071,
+   "triangles": 6499,
+   "bytes": 118596,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
    }
   },
   {
@@ -3388,6 +4555,69 @@
     "top": "leather",
     "scale": 0.7,
     "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_crier",
+   "name": "Town Crier",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_crier.glb",
+   "size": [
+    1.1556,
+    2.4,
+    0.7691
+   ],
+   "radius": 0.6941,
+   "triangles": 6499,
+   "bytes": 118188,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.14
+   }
+  },
+  {
+   "id": "folk_child_standing",
+   "name": "Urchin",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_child_standing.glb",
+   "size": [
+    0.4573,
+    1.5,
+    0.3973
+   ],
+   "radius": 0.3029,
+   "triangles": 6499,
+   "bytes": 119360,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
+   }
+  },
+  {
+   "id": "folk_watercarrier",
+   "name": "Water Carrier",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_watercarrier.glb",
+   "size": [
+    1.6419,
+    2.3,
+    0.707
+   ],
+   "radius": 0.8938,
+   "triangles": 6499,
+   "bytes": 118532,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.18
    }
   },
   {
@@ -3451,7 +4681,7 @@
     "side": "stone_ashlar",
     "top": "stone_ashlar",
     "scale": 1,
-    "jitter": 0.05,
+    "jitter": 0.06,
     "tint": null
    }
   },
@@ -3462,12 +4692,12 @@
    "tags": [],
    "mesh": "fort_caltrop_barricade.glb",
    "size": [
-    9.1172,
+    8.3494,
     2.2,
-    10.4388
+    8.2826
    ],
-   "radius": 6.9299,
-   "triangles": 2599,
+   "radius": 5.8803,
+   "triangles": 2600,
    "bytes": 48052,
    "material": {
     "side": "wood_plank",
@@ -3486,18 +4716,18 @@
    ],
    "mesh": "fort_tower_bastion.glb",
    "size": [
-    15.2097,
+    14.8008,
     6,
-    12.9275
+    12.8645
    ],
-   "radius": 9.9807,
-   "triangles": 4199,
-   "bytes": 78712,
+   "radius": 9.8051,
+   "triangles": 4200,
+   "bytes": 77076,
    "material": {
     "side": "stone_ashlar",
     "top": "stone_ashlar",
     "scale": 1,
-    "jitter": 0.05,
+    "jitter": 0.06,
     "tint": null
    }
   },
@@ -3522,7 +4752,7 @@
     "side": "stone_ashlar",
     "top": "stone_ashlar",
     "scale": 1,
-    "jitter": 0.05,
+    "jitter": 0.06,
     "tint": null
    }
   },
@@ -3574,6 +4804,30 @@
    }
   },
   {
+   "id": "fort_tower_corner",
+   "name": "Corner Tower",
+   "category": "fort",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "fort_tower_corner.glb",
+   "size": [
+    13.0892,
+    10,
+    12.4178
+   ],
+   "radius": 9.0212,
+   "triangles": 4999,
+   "bytes": 90484,
+   "material": {
+    "side": "stone_ashlar_cold",
+    "top": "roof_shingle",
+    "scale": 1,
+    "jitter": 0.05,
+    "tint": null
+   }
+  },
+  {
    "id": "fort_wall_straight",
    "name": "Curtain Wall",
    "category": "fort",
@@ -3594,7 +4848,7 @@
     "side": "stone_ashlar",
     "top": "stone_ashlar",
     "scale": 1,
-    "jitter": 0.05,
+    "jitter": 0.06,
     "tint": null
    }
   },
@@ -3617,6 +4871,30 @@
     "top": "wood_beam",
     "scale": 1,
     "jitter": 0.08,
+    "tint": null
+   }
+  },
+  {
+   "id": "fort_gate_flank",
+   "name": "Gate Tower",
+   "category": "fort",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "fort_gate_flank.glb",
+   "size": [
+    13.0077,
+    11,
+    4.1554
+   ],
+   "radius": 6.8277,
+   "triangles": 4999,
+   "bytes": 90952,
+   "material": {
+    "side": "stone_ashlar",
+    "top": "roof_slate",
+    "scale": 1,
+    "jitter": 0.05,
     "tint": null
    }
   },
@@ -3733,7 +5011,7 @@
     "side": "stone_ashlar",
     "top": "stone_ashlar",
     "scale": 1,
-    "jitter": 0.05,
+    "jitter": 0.06,
     "tint": null
    }
   },
@@ -3757,7 +5035,7 @@
     "side": "stone_ashlar",
     "top": "stone_ashlar",
     "scale": 1,
-    "jitter": 0.05,
+    "jitter": 0.06,
     "tint": null
    }
   },
@@ -3778,7 +5056,7 @@
    "triangles": 5000,
    "bytes": 90872,
    "material": {
-    "side": "stone_ashlar",
+    "side": "stone_ashlar_cold",
     "top": "roof_slate",
     "scale": 1,
     "jitter": 0.05,
@@ -3830,6 +5108,30 @@
    }
   },
   {
+   "id": "fort_beacon",
+   "name": "Signal Beacon",
+   "category": "fort",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "fort_beacon.glb",
+   "size": [
+    2.2207,
+    6.5,
+    2.6759
+   ],
+   "radius": 1.7387,
+   "triangles": 4999,
+   "bytes": 89648,
+   "material": {
+    "side": "wood_beam",
+    "top": "iron_rust",
+    "scale": 0.9,
+    "jitter": 0.07,
+    "tint": null
+   }
+  },
+  {
    "id": "fort_tower_square",
    "name": "Square Tower",
    "category": "fort",
@@ -3849,7 +5151,7 @@
     "side": "stone_ashlar",
     "top": "stone_ashlar",
     "scale": 1,
-    "jitter": 0.05,
+    "jitter": 0.06,
     "tint": null
    }
   },
@@ -3945,7 +5247,7 @@
     "side": "stone_ashlar",
     "top": "stone_ashlar",
     "scale": 1,
-    "jitter": 0.05,
+    "jitter": 0.06,
     "tint": null
    }
   },
@@ -3966,6 +5268,30 @@
    "radius": 2.2825,
    "triangles": 4499,
    "bytes": 81720,
+   "material": {
+    "side": "stone_ashlar",
+    "top": "stone_ashlar",
+    "scale": 1,
+    "jitter": 0.06,
+    "tint": null
+   }
+  },
+  {
+   "id": "fort_wall_walk",
+   "name": "Wall Walk",
+   "category": "fort",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "fort_wall_walk.glb",
+   "size": [
+    4,
+    5,
+    2.6
+   ],
+   "radius": 2.3854,
+   "triangles": 4998,
+   "bytes": 90540,
    "material": {
     "side": "stone_ashlar",
     "top": "stone_ashlar",
@@ -4021,6 +5347,30 @@
    }
   },
   {
+   "id": "house_overhang",
+   "name": "Alley Bridge",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_overhang.glb",
+   "size": [
+    13.1419,
+    6.6,
+    13.2652
+   ],
+   "radius": 9.3364,
+   "triangles": 5198,
+   "bytes": 94672,
+   "material": {
+    "side": "plaster_pink",
+    "top": "roof_clay_pale",
+    "scale": 1,
+    "jitter": 0.14,
+    "tint": null
+   }
+  },
+  {
    "id": "house_apothecary",
    "name": "Apothecary",
    "category": "house",
@@ -4037,10 +5387,34 @@
    "triangles": 5000,
    "bytes": 90944,
    "material": {
-    "side": "plaster_white",
-    "top": "roof_clay",
+    "side": "plaster_sage",
+    "top": "roof_shingle",
     "scale": 1,
-    "jitter": 0.16,
+    "jitter": 0.14,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_arcade",
+   "name": "Arcade House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_arcade.glb",
+   "size": [
+    8.0404,
+    6.4,
+    4.0371
+   ],
+   "radius": 4.4985,
+   "triangles": 5199,
+   "bytes": 94532,
+   "material": {
+    "side": "stone_limestone",
+    "top": "roof_slate",
+    "scale": 1.05,
+    "jitter": 0.06,
     "tint": null
    }
   },
@@ -4069,6 +5443,30 @@
    }
   },
   {
+   "id": "house_balcony",
+   "name": "Balcony House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_balcony.glb",
+   "size": [
+    8.4298,
+    6,
+    3.8503
+   ],
+   "radius": 4.6337,
+   "triangles": 5200,
+   "bytes": 93328,
+   "material": {
+    "side": "plaster_cream",
+    "top": "roof_clay_dark",
+    "scale": 1,
+    "jitter": 0.14,
+    "tint": null
+   }
+  },
+  {
    "id": "house_bathhouse",
    "name": "Bath House",
    "category": "house",
@@ -4089,6 +5487,30 @@
     "top": "roof_clay",
     "scale": 1,
     "jitter": 0.08,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_gable_curved",
+   "name": "Bell Gable",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_gable_curved.glb",
+   "size": [
+    6.4378,
+    6.8,
+    6.2699
+   ],
+   "radius": 4.4932,
+   "triangles": 5199,
+   "bytes": 92684,
+   "material": {
+    "side": "plaster_cream",
+    "top": "roof_clay_dark",
+    "scale": 1,
+    "jitter": 0.14,
     "tint": null
    }
   },
@@ -4157,10 +5579,10 @@
    "triangles": 5000,
    "bytes": 91664,
    "material": {
-    "side": "stone_rubble",
-    "top": "roof_slate",
+    "side": "stone_ashlar_warm",
+    "top": "roof_clay_dark",
     "scale": 1,
-    "jitter": 0.12,
+    "jitter": 0.09,
     "tint": null
    }
   },
@@ -4205,10 +5627,34 @@
    "triangles": 4998,
    "bytes": 91624,
    "material": {
-    "side": "plaster_white",
-    "top": "roof_clay",
+    "side": "plaster_pink",
+    "top": "roof_clay_pale",
     "scale": 1,
-    "jitter": 0.16,
+    "jitter": 0.14,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_cellar",
+   "name": "Cellar House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_cellar.glb",
+   "size": [
+    7.7891,
+    5.4,
+    5.733
+   ],
+   "radius": 4.8358,
+   "triangles": 5199,
+   "bytes": 95768,
+   "material": {
+    "side": "stone_rubble",
+    "top": "roof_slate",
+    "scale": 1,
+    "jitter": 0.11,
     "tint": null
    }
   },
@@ -4229,10 +5675,10 @@
    "triangles": 4999,
    "bytes": 92048,
    "material": {
-    "side": "plaster_white",
-    "top": "roof_clay",
+    "side": "plaster_blue",
+    "top": "roof_slate_blue",
     "scale": 1,
-    "jitter": 0.16,
+    "jitter": 0.12,
     "tint": null
    }
   },
@@ -4253,10 +5699,34 @@
    "triangles": 5000,
    "bytes": 90772,
    "material": {
+    "side": "plaster_pink",
+    "top": "roof_clay_pale",
+    "scale": 1,
+    "jitter": 0.14,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_courtyard",
+   "name": "Courtyard House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_courtyard.glb",
+   "size": [
+    18.8425,
+    6,
+    18.8739
+   ],
+   "radius": 13.3348,
+   "triangles": 5199,
+   "bytes": 94804,
+   "material": {
     "side": "plaster_white",
     "top": "roof_clay",
     "scale": 1,
-    "jitter": 0.16,
+    "jitter": 0.14,
     "tint": null
    }
   },
@@ -4277,10 +5747,34 @@
    "triangles": 4999,
    "bytes": 90680,
    "material": {
-    "side": "plaster_white",
-    "top": "roof_clay",
+    "side": "plaster_cream",
+    "top": "roof_clay_dark",
     "scale": 1,
-    "jitter": 0.16,
+    "jitter": 0.14,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_dormer",
+   "name": "Dormer House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_dormer.glb",
+   "size": [
+    4.4371,
+    6,
+    6.6097
+   ],
+   "radius": 3.9804,
+   "triangles": 5199,
+   "bytes": 94792,
+   "material": {
+    "side": "plaster_blue",
+    "top": "roof_slate_blue",
+    "scale": 1,
+    "jitter": 0.12,
     "tint": null
    }
   },
@@ -4309,6 +5803,30 @@
    }
   },
   {
+   "id": "house_half_ruin",
+   "name": "Gutted House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_half_ruin.glb",
+   "size": [
+    4.7146,
+    4.6,
+    4.9033
+   ],
+   "radius": 3.4011,
+   "triangles": 5199,
+   "bytes": 94556,
+   "material": {
+    "side": "stone_rubble",
+    "top": "stone_rubble",
+    "scale": 1,
+    "jitter": 0.12,
+    "tint": null
+   }
+  },
+  {
    "id": "house_hovel",
    "name": "Hovel",
    "category": "house",
@@ -4326,9 +5844,33 @@
    "bytes": 91088,
    "material": {
     "side": "daub",
-    "top": "roof_thatch",
+    "top": "roof_thatch_old",
     "scale": 1,
-    "jitter": 0.18,
+    "jitter": 0.16,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_broad",
+   "name": "Long House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_broad.glb",
+   "size": [
+    5.6234,
+    4.6,
+    6.2475
+   ],
+   "radius": 4.2028,
+   "triangles": 5200,
+   "bytes": 94448,
+   "material": {
+    "side": "plaster_white",
+    "top": "roof_clay",
+    "scale": 1,
+    "jitter": 0.14,
     "tint": null
    }
   },
@@ -4341,18 +5883,18 @@
    ],
    "mesh": "house_cottage_b.glb",
    "size": [
-    11.0694,
+    9.6937,
     3.8,
-    14.7907
+    11.2086
    ],
-   "radius": 9.2371,
-   "triangles": 5000,
-   "bytes": 92776,
+   "radius": 7.4095,
+   "triangles": 4999,
+   "bytes": 91648,
    "material": {
     "side": "daub",
-    "top": "roof_thatch",
+    "top": "roof_thatch_old",
     "scale": 1,
-    "jitter": 0.18,
+    "jitter": 0.16,
     "tint": null
    }
   },
@@ -4373,10 +5915,34 @@
    "triangles": 5000,
    "bytes": 90832,
    "material": {
-    "side": "plaster_white",
-    "top": "roof_clay",
+    "side": "plaster_blue",
+    "top": "roof_slate_blue",
     "scale": 1,
-    "jitter": 0.16,
+    "jitter": 0.12,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_oriel",
+   "name": "Oriel House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_oriel.glb",
+   "size": [
+    4.5672,
+    6.2,
+    4.5401
+   ],
+   "radius": 3.2199,
+   "triangles": 5443,
+   "bytes": 98624,
+   "material": {
+    "side": "plaster_sage",
+    "top": "roof_shingle",
+    "scale": 1,
+    "jitter": 0.14,
     "tint": null
    }
   },
@@ -4405,6 +5971,30 @@
    }
   },
   {
+   "id": "house_leaning",
+   "name": "Propped House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_leaning.glb",
+   "size": [
+    7.2969,
+    6.4,
+    7.5357
+   ],
+   "radius": 5.2448,
+   "triangles": 5198,
+   "bytes": 95288,
+   "material": {
+    "side": "daub",
+    "top": "roof_thatch_old",
+    "scale": 1,
+    "jitter": 0.16,
+    "tint": null
+   }
+  },
+  {
    "id": "house_shop_front",
    "name": "Shop House",
    "category": "house",
@@ -4421,10 +6011,82 @@
    "triangles": 4998,
    "bytes": 90416,
    "material": {
-    "side": "plaster_white",
-    "top": "roof_clay",
+    "side": "plaster_grey",
+    "top": "roof_slate",
     "scale": 1,
-    "jitter": 0.16,
+    "jitter": 0.12,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_narrow",
+   "name": "Slice House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_narrow.glb",
+   "size": [
+    3.4524,
+    6.8,
+    3.4038
+   ],
+   "radius": 2.4241,
+   "triangles": 5198,
+   "bytes": 93944,
+   "material": {
+    "side": "plaster_pink",
+    "top": "roof_clay_pale",
+    "scale": 1,
+    "jitter": 0.14,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_stair_outside",
+   "name": "Stair House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_stair_outside.glb",
+   "size": [
+    7.1596,
+    6.2,
+    6.8286
+   ],
+   "radius": 4.947,
+   "triangles": 5199,
+   "bytes": 95096,
+   "material": {
+    "side": "stone_rubble",
+    "top": "roof_slate",
+    "scale": 1,
+    "jitter": 0.11,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_gable_step",
+   "name": "Stepped Gable",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_gable_step.glb",
+   "size": [
+    10.0616,
+    7.2,
+    8.3457
+   ],
+   "radius": 6.5362,
+   "triangles": 5200,
+   "bytes": 94900,
+   "material": {
+    "side": "brick_red",
+    "top": "roof_clay_dark",
+    "scale": 1,
+    "jitter": 0.1,
     "tint": null
    }
   },
@@ -4448,7 +6110,7 @@
     "side": "stone_rubble",
     "top": "roof_slate",
     "scale": 1,
-    "jitter": 0.12,
+    "jitter": 0.11,
     "tint": null
    }
   },
@@ -4461,18 +6123,18 @@
    ],
    "mesh": "house_row_b.glb",
    "size": [
-    21.9048,
+    18.5925,
     6,
-    23.0352
+    19.9027
    ],
-   "radius": 15.8937,
+   "radius": 13.618,
    "triangles": 4999,
-   "bytes": 92480,
+   "bytes": 91728,
    "material": {
-    "side": "stone_rubble",
-    "top": "roof_slate",
+    "side": "stone_rubble_dark",
+    "top": "roof_slate_blue",
     "scale": 1,
-    "jitter": 0.12,
+    "jitter": 0.11,
     "tint": null
    }
   },
@@ -4517,10 +6179,10 @@
    "triangles": 4999,
    "bytes": 90784,
    "material": {
-    "side": "plaster_white",
-    "top": "roof_clay",
+    "side": "plaster_cream",
+    "top": "roof_clay_dark",
     "scale": 1,
-    "jitter": 0.16,
+    "jitter": 0.14,
     "tint": null
    }
   },
@@ -4557,18 +6219,18 @@
    ],
    "mesh": "house_row_a.glb",
    "size": [
-    4.5054,
+    5.6646,
     5.6,
-    0.0474
+    3.4318
    ],
-   "radius": 2.2528,
-   "triangles": 4999,
-   "bytes": 92328,
+   "radius": 3.3115,
+   "triangles": 5142,
+   "bytes": 93320,
    "material": {
-    "side": "plaster_white",
-    "top": "roof_clay",
+    "side": "plaster_sage",
+    "top": "roof_shingle",
     "scale": 1,
-    "jitter": 0.16,
+    "jitter": 0.14,
     "tint": null
    }
   },
@@ -4592,7 +6254,7 @@
     "side": "daub",
     "top": "roof_thatch",
     "scale": 1,
-    "jitter": 0.18,
+    "jitter": 0.16,
     "tint": null
    }
   },
@@ -4616,7 +6278,31 @@
     "side": "plaster_white",
     "top": "roof_clay",
     "scale": 1,
-    "jitter": 0.16,
+    "jitter": 0.14,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_tower_house",
+   "name": "Tower House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_tower_house.glb",
+   "size": [
+    6.2706,
+    9.5,
+    7.7261
+   ],
+   "radius": 4.9753,
+   "triangles": 5199,
+   "bytes": 94000,
+   "material": {
+    "side": "stone_rubble_dark",
+    "top": "roof_slate_blue",
+    "scale": 1,
+    "jitter": 0.11,
     "tint": null
    }
   },
@@ -4629,13 +6315,13 @@
    ],
    "mesh": "house_manor.glb",
    "size": [
-    20.0381,
+    14.3098,
     8.5,
-    16.3932
+    14.2514
    ],
-   "radius": 12.9447,
-   "triangles": 5000,
-   "bytes": 91024,
+   "radius": 10.0979,
+   "triangles": 5537,
+   "bytes": 100492,
    "material": {
     "side": "stone_limestone",
     "top": "roof_slate",
@@ -4709,10 +6395,34 @@
    "triangles": 5000,
    "bytes": 91028,
    "material": {
-    "side": "plaster_white",
-    "top": "roof_clay",
+    "side": "plaster_grey",
+    "top": "roof_slate",
     "scale": 1,
-    "jitter": 0.16,
+    "jitter": 0.12,
+    "tint": null
+   }
+  },
+  {
+   "id": "house_workshop",
+   "name": "Workshop House",
+   "category": "house",
+   "tags": [
+    "blocks"
+   ],
+   "mesh": "house_workshop.glb",
+   "size": [
+    5.3231,
+    5,
+    4.3814
+   ],
+   "radius": 3.4471,
+   "triangles": 5198,
+   "bytes": 95392,
+   "material": {
+    "side": "plaster_grey",
+    "top": "roof_slate",
+    "scale": 1,
+    "jitter": 0.12,
     "tint": null
    }
   },
@@ -4881,13 +6591,13 @@
    "tags": [],
    "mesh": "nature_tree_cypress.glb",
    "size": [
-    1.0378,
+    5.455,
     6,
-    1.1899
+    4.5362
    ],
-   "radius": 0.7894,
+   "radius": 3.5473,
    "triangles": 2199,
-   "bytes": 40564,
+   "bytes": 39400,
    "material": {
     "side": "wood_bark",
     "top": "grass_meadow",
@@ -4920,13 +6630,13 @@
    "tags": [],
    "mesh": "nature_tree_dead.glb",
    "size": [
-    5.9186,
+    5.1148,
     4.4,
-    1.3051
+    1.9254
    ],
-   "radius": 3.0304,
-   "triangles": 1998,
-   "bytes": 37216,
+   "radius": 2.7326,
+   "triangles": 1999,
+   "bytes": 37040,
    "material": {
     "side": "wood_bark",
     "top": "wood_bark",
@@ -4961,13 +6671,13 @@
    ],
    "mesh": "nature_fern.glb",
    "size": [
-    0.8966,
+    0.8018,
     0.8,
-    0.1072
+    0.1199
    ],
-   "radius": 0.4515,
+   "radius": 0.4054,
    "triangles": 2199,
-   "bytes": 41732
+   "bytes": 40476
   },
   {
    "id": "nature_flowerbed",
@@ -5443,13 +7153,13 @@
    "tags": [],
    "mesh": "nature_tree_willow.glb",
    "size": [
-    4.6039,
+    4.4255,
     4.6,
-    0.0383
+    0.7162
    ],
-   "radius": 2.302,
-   "triangles": 2798,
-   "bytes": 51128,
+   "radius": 2.2416,
+   "triangles": 2800,
+   "bytes": 53620,
    "material": {
     "side": "wood_bark",
     "top": "grass_meadow",
@@ -6078,13 +7788,13 @@
    ],
    "mesh": "prop_barrel_open.glb",
    "size": [
-    3.1262,
+    2.3144,
     1.1,
-    3.1264
+    2.5322
    ],
-   "radius": 2.2106,
-   "triangles": 3071,
-   "bytes": 56072
+   "radius": 1.7153,
+   "triangles": 1798,
+   "bytes": 32812
   },
   {
    "id": "prop_chest_open",
@@ -6263,13 +7973,13 @@
    "tags": [],
    "mesh": "rural_orchard_tree.glb",
    "size": [
-    4.0041,
+    4.0029,
     4,
-    0.032
+    0.3124
    ],
-   "radius": 2.0021,
-   "triangles": 2399,
-   "bytes": 44408,
+   "radius": 2.0075,
+   "triangles": 2400,
+   "bytes": 43964,
    "material": {
     "side": "wood_bark",
     "top": "grass_meadow",
@@ -6351,13 +8061,13 @@
    "tags": [],
    "mesh": "rural_campfire_ring.glb",
    "size": [
-    2.1858,
+    2.5101,
     0.8,
-    2.2536
+    2.4644
    ],
-   "radius": 1.5697,
-   "triangles": 1400,
-   "bytes": 26464,
+   "radius": 1.7588,
+   "triangles": 1399,
+   "bytes": 26140,
    "material": {
     "side": "stone_rubble",
     "top": "stone_rubble",
@@ -6725,13 +8435,13 @@
    "tags": [],
    "mesh": "rural_scarecrow.glb",
    "size": [
-    2.2009,
+    2.1853,
     2.2,
-    0.0182
+    0.4169
    ],
-   "radius": 1.1005,
-   "triangles": 1598,
-   "bytes": 29528,
+   "radius": 1.1123,
+   "triangles": 1599,
+   "bytes": 30080,
    "material": {
     "side": "straw",
     "top": "canvas_stripe",
@@ -7079,13 +8789,13 @@
    "tags": [],
    "mesh": "street_anvil_block.glb",
    "size": [
-    2.504,
+    2.0747,
     0.9,
-    2.4092
+    2.0671
    ],
-   "radius": 1.7374,
-   "triangles": 1398,
-   "bytes": 26256,
+   "radius": 1.4644,
+   "triangles": 1399,
+   "bytes": 26332,
    "material": {
     "side": "iron_wrought",
     "top": "iron_wrought",
@@ -7211,13 +8921,13 @@
    "tags": [],
    "mesh": "street_bookstack.glb",
    "size": [
-    2.8655,
+    1.3652,
     0.9,
-    3.5504
+    1.8871
    ],
-   "radius": 2.2813,
-   "triangles": 1398,
-   "bytes": 26128,
+   "radius": 1.1646,
+   "triangles": 1399,
+   "bytes": 26020,
    "material": {
     "side": "leather",
     "top": "leather",
@@ -7293,6 +9003,28 @@
    }
   },
   {
+   "id": "street_shrine_corner",
+   "name": "Corner Shrine",
+   "category": "street",
+   "tags": [],
+   "mesh": "street_shrine_corner.glb",
+   "size": [
+    1.8603,
+    2.2,
+    1.5715
+   ],
+   "radius": 1.2176,
+   "triangles": 1999,
+   "bytes": 36076,
+   "material": {
+    "side": "stone_limestone",
+    "top": "roof_clay",
+    "scale": 0.8,
+    "jitter": 0.07,
+    "tint": null
+   }
+  },
+  {
    "id": "street_crate_stack",
    "name": "Crate Stack",
    "category": "street",
@@ -7311,6 +9043,28 @@
     "top": "wood_pale",
     "scale": 0.7,
     "jitter": 0.14,
+    "tint": null
+   }
+  },
+  {
+   "id": "street_dovecote",
+   "name": "Dovecote",
+   "category": "street",
+   "tags": [],
+   "mesh": "street_dovecote.glb",
+   "size": [
+    2.5304,
+    3.4,
+    2.5213
+   ],
+   "radius": 1.786,
+   "triangles": 2400,
+   "bytes": 43796,
+   "material": {
+    "side": "stone_rubble",
+    "top": "roof_shingle",
+    "scale": 0.8,
+    "jitter": 0.08,
     "tint": null
    }
   },
@@ -7343,13 +9097,13 @@
    "tags": [],
    "mesh": "street_bunting.glb",
    "size": [
-    3.2023,
+    3.201,
     3.2,
     0.0263
    ],
-   "radius": 1.6012,
-   "triangles": 1398,
-   "bytes": 25928,
+   "radius": 1.6005,
+   "triangles": 1400,
+   "bytes": 25964,
    "material": {
     "side": "wood_beam",
     "top": "cloth_banner",
@@ -7453,13 +9207,13 @@
    "tags": [],
    "mesh": "street_cauldron_big.glb",
    "size": [
-    1.446,
+    1.2903,
     1.3,
-    1.1685
+    1.2323
    ],
-   "radius": 0.9296,
-   "triangles": 1800,
-   "bytes": 32996,
+   "radius": 0.8921,
+   "triangles": 1798,
+   "bytes": 33172,
    "material": {
     "side": "iron_rust",
     "top": "iron_rust",
@@ -7475,13 +9229,13 @@
    "tags": [],
    "mesh": "street_grindstone.glb",
    "size": [
-    1.1994,
+    1.198,
     1.2,
-    0.2552
+    0.2013
    ],
-   "radius": 0.6131,
+   "radius": 0.6074,
    "triangles": 1600,
-   "bytes": 30344,
+   "bytes": 29852,
    "material": {
     "side": "stone_rubble",
     "top": "stone_rubble",
@@ -7629,13 +9383,13 @@
    "tags": [],
    "mesh": "street_market_cross.glb",
    "size": [
-    4.6851,
+    4.6673,
     4.5,
-    4.6668
+    4.5562
    ],
-   "radius": 3.3064,
+   "radius": 3.2612,
    "triangles": 3199,
-   "bytes": 57856,
+   "bytes": 57628,
    "material": {
     "side": "stone_limestone",
     "top": "stone_limestone",
@@ -7673,13 +9427,13 @@
    "tags": [],
    "mesh": "street_dung_heap.glb",
    "size": [
-    1.9884,
+    2.0854,
     1,
-    2.8009
+    2.8146
    ],
-   "radius": 1.7175,
-   "triangles": 1400,
-   "bytes": 27364,
+   "radius": 1.7515,
+   "triangles": 1399,
+   "bytes": 27048,
    "material": {
     "side": "mud",
     "top": "mud",
@@ -7751,6 +9505,28 @@
     "top": "straw",
     "scale": 0.7,
     "jitter": 0.1,
+    "tint": null
+   }
+  },
+  {
+   "id": "street_pillory",
+   "name": "Pillory",
+   "category": "street",
+   "tags": [],
+   "mesh": "street_pillory.glb",
+   "size": [
+    1.929,
+    2.2,
+    1.7036
+   ],
+   "radius": 1.2868,
+   "triangles": 1600,
+   "bytes": 29104,
+   "material": {
+    "side": "wood_beam",
+    "top": "wood_beam",
+    "scale": 0.8,
+    "jitter": 0.08,
     "tint": null
    }
   },
@@ -7839,6 +9615,28 @@
     "top": "iron_rust",
     "scale": 0.7,
     "jitter": 0.06,
+    "tint": null
+   }
+  },
+  {
+   "id": "street_awning_row",
+   "name": "Shop Awnings",
+   "category": "street",
+   "tags": [],
+   "mesh": "street_awning_row.glb",
+   "size": [
+    8.3615,
+    2.8,
+    9.0665
+   ],
+   "radius": 6.1668,
+   "triangles": 2200,
+   "bytes": 40428,
+   "material": {
+    "side": "wood_plank",
+    "top": "canvas_stripe",
+    "scale": 0.85,
+    "jitter": 0.18,
     "tint": null
    }
   },
@@ -7993,6 +9791,28 @@
     "top": "iron_rust",
     "scale": 0.7,
     "jitter": 0.08,
+    "tint": null
+   }
+  },
+  {
+   "id": "street_drain",
+   "name": "Street Drain",
+   "category": "street",
+   "tags": [],
+   "mesh": "street_drain.glb",
+   "size": [
+    0.4659,
+    0.5,
+    0.4493
+   ],
+   "radius": 0.3236,
+   "triangles": 1200,
+   "bytes": 22352,
+   "material": {
+    "side": "stone_dark",
+    "top": "iron_rust",
+    "scale": 0.7,
+    "jitter": 0.07,
     "tint": null
    }
   },
@@ -8157,13 +9977,13 @@
    "tags": [],
    "mesh": "street_well_stone.glb",
    "size": [
-    5.0751,
+    4.014,
     2.4,
-    4.2666
+    4.1914
    ],
-   "radius": 3.3151,
+   "radius": 2.9017,
    "triangles": 2599,
-   "bytes": 47708,
+   "bytes": 47956,
    "material": {
     "side": "stone_rubble",
     "top": "roof_shingle",
@@ -8179,13 +9999,13 @@
    "tags": [],
    "mesh": "street_table_long.glb",
    "size": [
-    4.3018,
+    5.4446,
     1,
-    4.5739
+    5.7439
    ],
-   "radius": 3.1395,
-   "triangles": 1400,
-   "bytes": 26028,
+   "radius": 3.9572,
+   "triangles": 1399,
+   "bytes": 25848,
    "material": {
     "side": "wood_plank",
     "top": "wood_plank",
@@ -8283,19 +10103,41 @@
    }
   },
   {
+   "id": "street_pump",
+   "name": "Water Pump",
+   "category": "street",
+   "tags": [],
+   "mesh": "street_pump.glb",
+   "size": [
+    2.6536,
+    2,
+    2.7405
+   ],
+   "radius": 1.9074,
+   "triangles": 1799,
+   "bytes": 33220,
+   "material": {
+    "side": "iron_wrought",
+    "top": "stone_limestone",
+    "scale": 0.7,
+    "jitter": 0.06,
+    "tint": null
+   }
+  },
+  {
    "id": "street_weapon_rack",
    "name": "Weapon Rack",
    "category": "street",
    "tags": [],
    "mesh": "street_weapon_rack.glb",
    "size": [
-    2.6676,
+    2.0028,
     2,
-    0.0218
+    0.0165
    ],
-   "radius": 1.3339,
-   "triangles": 1798,
-   "bytes": 35924,
+   "radius": 1.0014,
+   "triangles": 1799,
+   "bytes": 35132,
    "material": {
     "side": "wood_beam",
     "top": "iron_wrought",
@@ -8377,13 +10219,13 @@
    "tags": [],
    "mesh": "street_bench_wood.glb",
    "size": [
-    0.7111,
+    0.6129,
     0.8,
-    2.6981
+    2.2011
    ],
-   "radius": 1.3951,
-   "triangles": 837,
-   "bytes": 16072,
+   "radius": 1.1424,
+   "triangles": 799,
+   "bytes": 15028,
    "material": {
     "side": "wood_plank",
     "top": "wood_plank",
@@ -8605,13 +10447,13 @@
    ],
    "mesh": "weapon_maul.glb",
    "size": [
-    1.5497,
+    1.1882,
     1.8,
-    1.7988
+    1.7488
    ],
-   "radius": 1.1871,
-   "triangles": 2498,
-   "bytes": 45776
+   "radius": 1.0571,
+   "triangles": 2500,
+   "bytes": 45800
   },
   {
    "id": "weapon_greatsword",
@@ -8962,13 +10804,13 @@
    ],
    "mesh": "weapon_warhammer.glb",
    "size": [
-    1.2775,
+    0.9846,
     1.3,
-    1.2956
+    0.8837
    ],
-   "radius": 0.9098,
-   "triangles": 2881,
-   "bytes": 52784
+   "radius": 0.6615,
+   "triangles": 2728,
+   "bytes": 49988
   },
   {
    "id": "weapon_staff_wizard",

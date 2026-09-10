@@ -196,7 +196,7 @@ const PALETTES: Record<string, string[]> = {
     'house_leaning', 'house_narrow', 'civic_customs', 'civic_granary_tower',
   ],
   suburb: [
-    'house_cottage_a', 'house_cottage_b', 'house_hovel', 'house_longhouse',
+    'house_cottage_a', 'house_cottage_b', 'house_hovel', 'house_broad',
     'rural_farmhouse', 'house_stone_a', 'house_broad', 'house_half_ruin',
   ],
 };
@@ -220,12 +220,18 @@ const FALLBACK = [
 function subdivide(rect: Rect, minPlot: number, rng: Rng, streets: Rect[], out: Rect[]): void {
   const w = width(rect);
   const d = depth(rect);
-  if (w <= minPlot * 2 && d <= minPlot * 2) {
+  // Only an axis with room for two plots plus a road between them may be cut.
+  // Choosing the longer axis unconditionally turned a district six units deep
+  // into nothing but road: every split took three and a half of the six, and
+  // both halves were then too shallow to keep.
+  const canX = w > minPlot * 2;
+  const canY = d > minPlot * 2;
+  if (!canX && !canY) {
     if (w >= minPlot * 0.7 && d >= minPlot * 0.7) out.push(rect);
     return;
   }
 
-  const alongX = w > d;
+  const alongX = canX && (!canY || w > d);
   const span = alongX ? w : d;
   const road = span > minPlot * 5 ? 5 : 3.5;
   const t = 0.5 + (rng.next() - 0.5) * 0.34;
@@ -348,14 +354,14 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
   // --- districts ----------------------------------------------------------
 
   const districts: District[] = [
-    { name: 'Citadel', rect: CITADEL, palette: usable(PALETTES.citadel), minPlot: 21, fill: 0.78 },
+    { name: 'Citadel', rect: CITADEL, palette: usable(PALETTES.citadel), minPlot: 16, fill: 0.82 },
     { name: 'Noble Quarter', rect: { x0: -78, y0: -62, x1: 78, y1: -34 }, palette: usable(PALETTES.noble), minPlot: 13.5, fill: 0.78 },
     { name: 'Temple Precinct', rect: { x0: 36, y0: -30, x1: 88, y1: 4 }, palette: usable(PALETTES.temple), minPlot: 20, fill: 0.76 },
     { name: 'Craft Quarter', rect: { x0: -88, y0: -30, x1: -34, y1: 6 }, palette: usable(PALETTES.craft), minPlot: 10.5, fill: 0.8 },
-    { name: 'Old Town', rect: { x0: -88, y0: 6, x1: -8, y1: 20 }, palette: usable(PALETTES.residential), minPlot: 9.5, fill: 0.82 },
-    { name: 'East Ward', rect: { x0: 34, y0: 6, x1: 88, y1: 20 }, palette: usable(PALETTES.residential), minPlot: 9.5, fill: 0.82 },
-    { name: 'Dockside', rect: { x0: -86, y0: 20, x1: 86, y1: 26 }, palette: usable(PALETTES.dockside), minPlot: 10, fill: 0.84 },
-    { name: 'Southbank', rect: { x0: -84, y0: 47, x1: 84, y1: 58 }, palette: usable(PALETTES.suburb), minPlot: 9.5, fill: 0.8 },
+    { name: 'Old Town', rect: { x0: -88, y0: -1, x1: -8, y1: 10 }, palette: usable(PALETTES.residential), minPlot: 9.5, fill: 0.82 },
+    { name: 'East Ward', rect: { x0: 34, y0: 6, x1: 88, y1: 22 }, palette: usable(PALETTES.residential), minPlot: 9.5, fill: 0.82 },
+    { name: 'Dockside', rect: { x0: -86, y0: 12, x1: 86, y1: 26 }, palette: usable(PALETTES.dockside), minPlot: 10, fill: 0.84 },
+    { name: 'Southbank', rect: { x0: -84, y0: 45, x1: 84, y1: 59 }, palette: usable(PALETTES.suburb), minPlot: 9.5, fill: 0.8 },
     { name: 'Upper Ward', rect: { x0: -88, y0: -104, x1: -42, y1: -66 }, palette: usable(PALETTES.residential), minPlot: 10.5, fill: 0.8 },
     { name: 'North Ward', rect: { x0: 42, y0: -104, x1: 88, y1: -66 }, palette: usable(PALETTES.residential), minPlot: 10.5, fill: 0.8 },
   ];
@@ -624,7 +630,7 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
   for (const [x, kind] of [[-46, 'dock_boat_fishing'], [12, 'dock_boat_barge'], [64, 'dock_boat_cog'], [-16, 'dock_boat_row']] as Array<[number, string]>) {
     place(kind, x, riverY(x), rng.next() * 0.3, 1, false);
   }
-  place('dock_crane', 40, riverY(40) - RIVER_HALF - 3, 0, 1, false);
+  place('dock_dock_crane', 40, riverY(40) - RIVER_HALF - 3, 0, 1, false);
   landmarks.push({ name: 'The Wharf', x: 40, y: riverY(40) - RIVER_HALF - 6 });
 
   for (const bx of bridges) {
@@ -671,6 +677,7 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
     place('rural_tombstone', -134 + (i % 5) * 5, -26 + Math.floor(i / 5) * 6, rng.next(), 1, false);
   }
   place('rural_mausoleum', -136, -6, 0);
+  place('folk_gravedigger', -126, -20, 0.7, 1, false);
   landmarks.push({ name: 'Boneyard', x: -128, y: -16 });
 
   for (let i = 0; i < 7; i++) {
@@ -722,38 +729,50 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
   const crowds: Array<{ ids: string[]; rect: Rect; count: number }> = [
     {
       ids: ['folk_merchant', 'folk_peasant_woman', 'folk_farmer', 'folk_beggar', 'folk_baker',
-        'folk_monk', 'folk_bard', 'folk_thief', 'folk_innkeeper', 'folk_stablehand'],
+        'folk_monk', 'folk_bard', 'folk_thief', 'folk_innkeeper', 'folk_stablehand',
+        'folk_porter', 'folk_watercarrier', 'folk_basket_woman', 'folk_crier',
+        'folk_fishwife', 'folk_child_running', 'folk_child_standing', 'folk_old_woman',
+        'folk_old_man', 'folk_maid', 'folk_jester', 'folk_musician', 'folk_dancer',
+        'folk_beggar_seated', 'folk_scribe', 'folk_cook', 'creature_dog_street',
+        'creature_goose', 'creature_cat'],
       rect: MARKET,
-      count: 26,
+      count: 34,
     },
     {
-      ids: ['folk_guard_city', 'folk_manatarms', 'folk_sergeant', 'folk_crossbowman'],
+      ids: ['folk_guard_city', 'folk_manatarms', 'folk_sergeant', 'folk_crossbowman',
+        'folk_guard_leaning', 'folk_watchman_lantern', 'folk_standard_bearer'],
       rect: { x0: -12, y0: WALL.y1 - 16, x1: 12, y1: WALL.y1 - 2 },
       count: 6,
     },
     {
-      ids: ['folk_knight_plate', 'folk_paladin', 'folk_herald', 'folk_pikeman', 'folk_archer'],
+      ids: ['folk_knight_plate', 'folk_paladin', 'folk_herald', 'folk_pikeman', 'folk_archer',
+        'folk_squire', 'folk_standard_bearer', 'folk_noble_seated', 'creature_falcon'],
       rect: { x0: CITADEL.x0 + 6, y0: CITADEL.y1 - 16, x1: CITADEL.x1 - 6, y1: CITADEL.y1 - 3 },
       count: 8,
     },
     {
-      ids: ['folk_fisherman', 'folk_stablehand', 'folk_beggar', 'folk_mercenary', 'folk_merchant'],
+      ids: ['folk_fisherman', 'folk_stablehand', 'folk_beggar', 'folk_mercenary', 'folk_merchant',
+        'folk_porter', 'folk_cooper', 'folk_carpenter', 'folk_drunk', 'creature_rat_giant',
+        'creature_dog_street'],
       rect: { x0: -80, y0: 18, x1: 80, y1: 26 },
       count: 14,
     },
     {
-      ids: ['folk_blacksmith', 'folk_peasant_woman', 'folk_stablehand'],
+      ids: ['folk_blacksmith', 'folk_peasant_woman', 'folk_stablehand', 'folk_mason',
+        'folk_carpenter', 'folk_smith_apprentice', 'folk_miller', 'folk_cooper'],
       rect: { x0: -86, y0: -28, x1: -36, y1: 4 },
       count: 10,
     },
     {
       ids: ['folk_farmer', 'folk_peasant_woman', 'creature_cow', 'creature_pig', 'creature_goat',
-        'creature_chicken', 'creature_mule'],
+        'creature_chicken', 'creature_mule', 'folk_shepherd', 'folk_hunter', 'creature_sheep',
+        'creature_ox', 'creature_donkey', 'creature_goose', 'creature_horse_cart'],
       rect: { x0: -150, y0: 74, x1: 150, y1: 136 },
       count: 22,
     },
     {
-      ids: ['folk_wizard', 'folk_cleric', 'folk_bishop', 'folk_monk', 'folk_elf_mage'],
+      ids: ['folk_wizard', 'folk_cleric', 'folk_bishop', 'folk_monk', 'folk_elf_mage',
+        'folk_nun', 'folk_kneeling_pilgrim', 'folk_scribe', 'folk_plague_doctor'],
       rect: { x0: 38, y0: -28, x1: 86, y1: 2 },
       count: 7,
     },

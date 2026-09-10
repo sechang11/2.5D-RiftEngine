@@ -9,9 +9,9 @@ Built to be the foundation for games rather than to be one game. `src/core`
 knows nothing about rendering, `src/render` never writes simulation state, and
 `src/game` is content that plugs into both.
 
-![The blue base dressed with generated carts, crates, barrels, braziers and a
-training dummy, with a minion wave forming up beside the
-champion](docs/screenshot-world.jpg)
+![Highhold from above: cobbled streets between blocks of tile-roofed houses,
+the market square full of stalls, the citadel gate and its towers behind, and
+the cathedral to the right](docs/screenshot-city.jpg)
 
 ![Mid lane at the river crossing: two minion squads, the ultimate's target
 circle over the enemy group, and fog falling away at the edge of
@@ -97,10 +97,22 @@ you which. Each exhibit is captioned with its name, its size in world units and
 its triangle count, and your champion stands among them for scale.
 
 Highhold is the other direction: the same pieces, assembled. A curtain wall
-repeated round a two-hundred-unit circuit, six house shells at four rotations, a
-citadel, a market square where the avenues cross, a river with three bridges and
-two water gates, docks, a temple precinct, and farms outside the walls. Nothing
-in it is a model of a city. It is a kit and a street plan.
+repeated round a two-hundred-unit circuit with a tower every twenty-four units,
+a citadel walled off again inside it, a market square where the two avenues
+cross, a river with three bridges and two water gates, a wharf, a temple
+precinct, ten districts of housing, and farms, a graveyard and a camp outside
+the walls. Roughly six hundred and fifty pieces, and a few hundred townsfolk
+standing in them.
+
+Nothing in it is a model of a city. Each district is subdivided into plots by
+binary partition, cutting a street at every split, and each plot takes whichever
+piece fills it best in either orientation. Plots nothing fits become yards.
+Buildings are stamped into the nav grid as rectangles when the city is planned
+rather than left to blocking props, because a circle around a terrace either
+leaves its corners walkable or eats two metres of street on each side.
+
+![The market square at street level: striped awnings over trestle stalls, the
+stone market cross, townsfolk and a dog on the cobbles](docs/screenshot-crowd.jpg)
 
 ![The buildings gallery: a portal arch, a stone keep, a tavern, a granary and a
 dragon statue on open ground, each captioned with its name, world size and
@@ -134,10 +146,13 @@ themselves in. Weapons and trinkets lying on the map are picked up by walking
 over them, and an equipped weapon's mesh is attached to the character's hand,
 where it inherits the whole attack animation.
 
-**Characters.** Procedural, built from primitives and posed by rotating named
-joints, with three body plans: bipeds, quadrupeds and floating. Two dozen
-fantasy archetypes from knights and wizards to dire wolves, drakes and liches,
-each a few hundred triangles and a line of data.
+**Characters.** Two kinds. The ones that move are procedural, built from
+primitives and posed by rotating named joints, with three body plans: bipeds,
+quadrupeds and floating. The ones that stand still are generated meshes — a
+hundred and fifty townsfolk, soldiers, monsters and animals at seven thousand
+triangles each — because a crowd reads as a crowd from the number of people in
+it long before any of them move, and two hundred static figures cost an
+instanced draw call each while two hundred simulated ones cost a pathfinder.
 
 **Assets.** A generated mesh pack of castle, town and country pieces, weapons,
 creatures and people, drawn with one instanced draw call per asset type. See
@@ -150,6 +165,10 @@ another, which is what puts slate on a roof and ashlar on the wall beneath it
 without the mesh knowing what a roof is. Tiling makes resolution nearly free —
 512 pixels per world unit — so the camera zooms from a whole district down to a
 mortar joint. See [docs/MATERIALS.md](docs/MATERIALS.md).
+
+![The curtain wall at full zoom: individual ashlar blocks with mortar joints, an
+arched recess, the round tower's curve, and gravel
+underfoot](docs/screenshot-stone.jpg)
 
 **Editor.** Press `F2`. A searchable palette of every asset and unit archetype,
 click to place, drag to move, undo and redo, per-object flags for movement and
