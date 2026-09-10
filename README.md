@@ -32,6 +32,7 @@ Then open the URL Vite prints.
 | `npm run build` | Typecheck, then production bundle |
 | `npm test` | Determinism, navigation and combat tests |
 | `npm run bench` | Headless simulation benchmark |
+| `npm start` | Serve a production build on `PORT` |
 
 ## Controls
 
@@ -145,6 +146,8 @@ src/game/     content: map, champions, abilities, items, scenes, dressing
 tests/        determinism, navigation and combat tests
 tools/        headless benchmark, asset generation, pack importer
 ```
+
+Deployed on Railway; see [docs/DEPLOY.md](docs/DEPLOY.md).
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for why it is shaped this way,
 [docs/ASSET-PIPELINE.md](docs/ASSET-PIPELINE.md) for how the mesh pack is made,
