@@ -38,6 +38,8 @@ interface Batch {
   assetId: string;
   mesh: InstancedMesh;
   props: Prop[];
+  /** The pack's world scale for this asset, folded into every instance. */
+  meshScale: number;
 }
 
 const scratchMatrix = new Matrix4();
@@ -140,7 +142,7 @@ export class PropViews {
       batch.mesh.count = props.length;
       const jitter = this.assets.jitterOf(assetId);
       for (let i = 0; i < props.length; i++) {
-        batch.mesh.setMatrixAt(i, this.matrixFor(props[i], 0));
+        batch.mesh.setMatrixAt(i, this.matrixFor(props[i], 0, batch.meshScale));
         // Keyed on the prop id rather than the loop index, so a house keeps its
         // own shade of plaster when something else on the map is deleted and
         // the batch is repacked.
@@ -163,13 +165,13 @@ export class PropViews {
     // available, so the batch is always submitted and the GPU sorts it out.
     mesh.frustumCulled = false;
     this.group.add(mesh);
-    return { assetId, mesh, props: [] };
+    return { assetId, mesh, props: [], meshScale: this.assets.meshScale(assetId) };
   }
 
-  private matrixFor(prop: Prop, lift: number): Matrix4 {
+  private matrixFor(prop: Prop, lift: number, meshScale = 1): Matrix4 {
     scratchPos.set(prop.x, lift, prop.y);
     scratchQuat.setFromAxisAngle(UP, prop.rotation);
-    scratchScale.setScalar(prop.scale);
+    scratchScale.setScalar(prop.scale * meshScale);
     return scratchMatrix.compose(scratchPos, scratchQuat, scratchScale);
   }
 
@@ -185,7 +187,7 @@ export class PropViews {
         const lift = 0.35 + Math.sin(phase) * 0.09;
         scratchPos.set(prop.x, lift, prop.y);
         scratchQuat.setFromAxisAngle(UP, prop.rotation + time * 0.9);
-        scratchScale.setScalar(prop.scale);
+        scratchScale.setScalar(prop.scale * batch.meshScale);
         scratchMatrix.compose(scratchPos, scratchQuat, scratchScale);
         batch.mesh.setMatrixAt(i, scratchMatrix);
         touched = true;

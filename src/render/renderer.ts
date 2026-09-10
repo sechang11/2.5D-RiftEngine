@@ -11,12 +11,17 @@
 
 import {
   ACESFilmicToneMapping,
+  BackSide,
   Color,
   DirectionalLight,
   Fog,
   HemisphereLight,
+  Mesh,
   PCFSoftShadowMap,
+  PMREMGenerator,
   Scene,
+  ShaderMaterial,
+  SphereGeometry,
   SRGBColorSpace,
   WebGLRenderer,
 } from 'three';
@@ -39,7 +44,43 @@ const HORIZON_FOG_NEAR = 120;
 const HORIZON_FOG_FAR = 260;
 
 /** Half-extent of the shadow frustum in world units. */
-const SHADOW_EXTENT = 46;
+const SHADOW_EXTENT = 92;
+
+const SKY_VERT = /* glsl */ `
+  varying vec3 vDir;
+  void main() {
+    vDir = normalize( position );
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+  }
+`;
+
+const SKY_FRAG = /* glsl */ `
+  varying vec3 vDir;
+  void main() {
+    float t = clamp( vDir.y * 0.5 + 0.5, 0.0, 1.0 );
+    vec3 ground = vec3( 0.17, 0.15, 0.12 );
+    vec3 horizon = vec3( 0.55, 0.56, 0.58 );
+    vec3 sky = vec3( 0.42, 0.55, 0.78 );
+    vec3 c = t < 0.5 ? mix( ground, horizon, t * 2.0 ) : mix( horizon, sky, ( t - 0.5 ) * 2.0 );
+    gl_FragColor = vec4( c, 1.0 );
+  }
+`;
+
+/** Prefilters a sky gradient into an environment map, once. */
+function buildSkyEnvironment(renderer: WebGLRenderer) {
+  const pmrem = new PMREMGenerator(renderer);
+  const scene = new Scene();
+  const sphere = new Mesh(
+    new SphereGeometry(1, 24, 16),
+    new ShaderMaterial({ vertexShader: SKY_VERT, fragmentShader: SKY_FRAG, side: BackSide }),
+  );
+  scene.add(sphere);
+  const target = pmrem.fromScene(scene, 0.02);
+  sphere.geometry.dispose();
+  (sphere.material as ShaderMaterial).dispose();
+  pmrem.dispose();
+  return target.texture;
+}
 
 export interface RendererOptions {
   viewTeam?: Team;
@@ -128,6 +169,19 @@ export class Renderer {
     this.sun.shadow.normalBias = 0.035;
     this.scene.add(this.sun);
     this.scene.add(this.sun.target);
+
+    // A sky probe, because a metal without one is black.
+    //
+    // Physically shaded metal has no diffuse term: everything it shows is
+    // reflection, and with only a sun and a hemisphere light there is nothing
+    // to reflect, so every gilded and iron surface in the pack rendered as a
+    // silhouette. A two-colour gradient sphere is enough to give them a sky to
+    // mirror, and it warms every rough surface as well.
+    this.scene.environment = buildSkyEnvironment(this.renderer);
+    // Held well below one. At full strength the probe lights every rough
+    // surface from every direction at once, which is exactly the light that
+    // hides texture: the whole city went pale and flat the moment it was added.
+    this.scene.environmentIntensity = 0.35;
 
     this.camera = new RtsCamera(1, {
       pitchDegrees: 57,

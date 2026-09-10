@@ -1,0 +1,543 @@
+[
+ {
+  "id": "civic_aqueduct_tall",
+  "name": "Aqueduct",
+  "category": "civic",
+  "tags": [
+   "kit",
+   "blocks"
+  ],
+  "height": 14.0,
+  "faces": 6000,
+  "upright": "none",
+  "prompt": "a monumental two-tier stone aqueduct, tall round arches below and smaller arches above carrying a covered water channel across the sky, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_ashlar_warm",
+   "top": "flagstone",
+   "scale": 1.0,
+   "jitter": 0.05,
+   "tint": null
+  },
+  "fit": [
+   16.0,
+   14.0,
+   3.2
+  ]
+ },
+ {
+  "id": "civic_aqueduct_low",
+  "name": "Aqueduct Span",
+  "category": "civic",
+  "tags": [
+   "kit",
+   "blocks"
+  ],
+  "height": 7.0,
+  "faces": 4500,
+  "upright": "none",
+  "prompt": "a single-tier stone aqueduct arcade of round arches carrying an open water channel, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_ashlar_warm",
+   "top": "flagstone",
+   "scale": 1.0,
+   "jitter": 0.05,
+   "tint": null
+  },
+  "fit": [
+   16.0,
+   7.0,
+   3.0
+  ]
+ },
+ {
+  "id": "civic_conduit_house",
+  "name": "Conduit House",
+  "category": "civic",
+  "tags": [],
+  "height": 6.0,
+  "faces": 5000,
+  "upright": "none",
+  "prompt": "a small ornate stone water house with a domed roof, carved spouts on every face pouring into a ring basin, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_limestone",
+   "top": "roof_lead",
+   "scale": 1.0,
+   "jitter": 0.05,
+   "tint": null
+  }
+ },
+ {
+  "id": "civic_cistern",
+  "name": "Cistern",
+  "category": "civic",
+  "tags": [],
+  "height": 3.0,
+  "faces": 4000,
+  "upright": "none",
+  "prompt": "a low vaulted stone cistern half sunk into the ground, an iron grille over the mouth and steps down one side, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_limestone",
+   "top": "flagstone",
+   "scale": 1.0,
+   "jitter": 0.05,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_water_channel",
+  "name": "Water Channel",
+  "category": "street",
+  "tags": [
+   "kit"
+  ],
+  "height": 0.7,
+  "faces": 1400,
+  "upright": "none",
+  "prompt": "a straight open stone irrigation channel running with clear water, cut kerbs either side, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_limestone",
+   "top": "flagstone",
+   "scale": 0.8,
+   "jitter": 0.06,
+   "tint": null
+  },
+  "fit": [
+   6.0,
+   0.7,
+   1.6
+  ]
+ },
+ {
+  "id": "street_sluice_gate",
+  "name": "Sluice",
+  "category": "street",
+  "tags": [],
+  "height": 2.0,
+  "faces": 2000,
+  "upright": "none",
+  "prompt": "a small timber and iron sluice gate in a stone channel, the paddle raised on a screw, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "wood_beam",
+   "top": "iron_rust",
+   "scale": 0.8,
+   "jitter": 0.07,
+   "tint": null
+  }
+ },
+ {
+  "id": "rural_irrigation_ditch",
+  "name": "Irrigation Ditch",
+  "category": "rural",
+  "tags": [
+   "kit"
+  ],
+  "height": 0.8,
+  "faces": 1400,
+  "upright": "none",
+  "prompt": "a straight earth irrigation ditch full of water between raised banks of turf, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "dirt_grey",
+   "top": "grass_meadow",
+   "scale": 1.0,
+   "jitter": 0.1,
+   "tint": null
+  },
+  "fit": [
+   8.0,
+   0.8,
+   2.4
+  ]
+ },
+ {
+  "id": "rural_windpump",
+  "name": "Wind Pump",
+  "category": "rural",
+  "tags": [],
+  "height": 6.0,
+  "faces": 3000,
+  "upright": "none",
+  "prompt": "a small timber wind pump on a trestle with a four-bladed fan and a pipe down to a ditch, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "wood_beam",
+   "top": "roof_shingle",
+   "scale": 0.95,
+   "jitter": 0.1,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_horse_trough_long",
+  "name": "Long Trough",
+  "category": "street",
+  "tags": [],
+  "height": 1.0,
+  "faces": 1400,
+  "upright": "none",
+  "prompt": "a long carved stone watering trough fed by a small spout, worn smooth at the rim, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_limestone",
+   "top": "flagstone",
+   "scale": 1.0,
+   "jitter": 0.05,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_throne_stone",
+  "name": "The Throne",
+  "category": "street",
+  "tags": [
+   "hero"
+  ],
+  "height": 4.0,
+  "faces": 4500,
+  "upright": "none",
+  "prompt": "a great carved stone throne with a high back, lion arms and a gilded canopy above it, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_marble",
+   "top": "gold",
+   "scale": 0.9,
+   "jitter": 0.03,
+   "tint": null
+  },
+  "octree": 320
+ },
+ {
+  "id": "street_dais_steps",
+  "name": "Dais",
+  "category": "street",
+  "tags": [],
+  "height": 1.2,
+  "faces": 2400,
+  "upright": "none",
+  "prompt": "a broad three-step stone dais platform, wide and shallow, with a carpet runner up the middle, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_marble",
+   "top": "cloth_banner",
+   "scale": 0.9,
+   "jitter": 0.04,
+   "tint": null
+  },
+  "fit": [
+   9.0,
+   1.2,
+   7.0
+  ]
+ },
+ {
+  "id": "street_hall_column",
+  "name": "Hall Column",
+  "category": "street",
+  "tags": [],
+  "height": 8.0,
+  "faces": 2600,
+  "upright": "none",
+  "prompt": "a single tall carved stone column with a foliate capital on a square plinth, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_marble",
+   "top": "gold",
+   "scale": 0.9,
+   "jitter": 0.03,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_carpet_runner",
+  "name": "Carpet",
+  "category": "street",
+  "tags": [
+   "kit"
+  ],
+  "height": 0.15,
+  "faces": 900,
+  "upright": "none",
+  "prompt": "a long red woven carpet runner with a gold border, laid flat, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "cloth_banner",
+   "top": "cloth_banner",
+   "scale": 1.0,
+   "jitter": 0.06,
+   "tint": null
+  },
+  "fit": [
+   10.0,
+   0.15,
+   3.0
+  ]
+ },
+ {
+  "id": "street_banner_wall",
+  "name": "Hanging Banner",
+  "category": "street",
+  "tags": [],
+  "height": 6.0,
+  "faces": 1600,
+  "upright": "none",
+  "prompt": "a tall heraldic banner hanging flat against a wall from a horizontal pole, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "cloth_banner",
+   "top": "wood_beam",
+   "scale": 0.9,
+   "jitter": 0.14,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_brazier_hall",
+  "name": "Hall Brazier",
+  "category": "street",
+  "tags": [],
+  "height": 2.6,
+  "faces": 2200,
+  "upright": "none",
+  "prompt": "a tall ornate bronze brazier on a tripod with clawed feet, coals glowing, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "bronze",
+   "top": "iron_rust",
+   "scale": 0.7,
+   "jitter": 0.05,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_high_table",
+  "name": "High Table",
+  "category": "street",
+  "tags": [],
+  "height": 1.4,
+  "faces": 2400,
+  "upright": "none",
+  "prompt": "a long carved oak high table on a dais with two heavy chairs behind it, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "wood_beam",
+   "top": "cloth_banner",
+   "scale": 0.8,
+   "jitter": 0.07,
+   "tint": null
+  }
+ },
+ {
+  "id": "rural_quarry_face",
+  "name": "Quarry Face",
+  "category": "rural",
+  "tags": [
+   "blocks"
+  ],
+  "height": 9.0,
+  "faces": 4000,
+  "upright": "none",
+  "prompt": "a cut limestone quarry face in stepped benches with tool marks and spoil at the base, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_limestone",
+   "top": "gravel",
+   "scale": 1.2,
+   "jitter": 0.08,
+   "tint": null
+  }
+ },
+ {
+  "id": "rural_charcoal_burner",
+  "name": "Charcoal Clamp",
+  "category": "rural",
+  "tags": [],
+  "height": 2.6,
+  "faces": 2600,
+  "upright": "none",
+  "prompt": "a smoking turf-covered charcoal burning clamp with a stacked wood pile beside it, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "dirt_grey",
+   "top": "wood_bark",
+   "scale": 0.9,
+   "jitter": 0.1,
+   "tint": null
+  }
+ },
+ {
+  "id": "rural_sheep_pen",
+  "name": "Sheep Pen",
+  "category": "rural",
+  "tags": [],
+  "height": 1.8,
+  "faces": 2400,
+  "upright": "none",
+  "prompt": "a hurdle-fenced sheep pen with a small open shelter in one corner, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "wood_bark",
+   "top": "roof_thatch",
+   "scale": 0.9,
+   "jitter": 0.12,
+   "tint": null
+  }
+ },
+ {
+  "id": "rural_field_furrows",
+  "name": "Ploughed Field",
+  "category": "rural",
+  "tags": [
+   "kit"
+  ],
+  "height": 0.5,
+  "faces": 1600,
+  "upright": "none",
+  "prompt": "a ploughed field of straight earth furrows running in parallel ridges, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "dirt_grey",
+   "top": "grass_meadow",
+   "scale": 1.0,
+   "jitter": 0.1,
+   "tint": null
+  },
+  "fit": [
+   12.0,
+   0.5,
+   12.0
+  ]
+ },
+ {
+  "id": "rural_field_wheat",
+  "name": "Wheat Field",
+  "category": "rural",
+  "tags": [
+   "kit"
+  ],
+  "height": 1.6,
+  "faces": 2000,
+  "upright": "none",
+  "prompt": "a dense field of tall ripe golden wheat standing in rows, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "straw",
+   "top": "straw",
+   "scale": 1.4,
+   "jitter": 0.09,
+   "tint": null
+  },
+  "fit": [
+   12.0,
+   1.6,
+   12.0
+  ]
+ },
+ {
+  "id": "civic_granary_public",
+  "name": "Public Granary",
+  "category": "civic",
+  "tags": [
+   "blocks"
+  ],
+  "height": 9.0,
+  "faces": 6000,
+  "upright": "none",
+  "prompt": "a long stone granary hall on an arcaded base with ventilation slits and a loading door, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_ashlar_warm",
+   "top": "flagstone",
+   "scale": 1.0,
+   "jitter": 0.05,
+   "tint": null
+  }
+ },
+ {
+  "id": "rural_tithe_barn",
+  "name": "Tithe Barn",
+  "category": "rural",
+  "tags": [
+   "blocks"
+  ],
+  "height": 10.0,
+  "faces": 6000,
+  "upright": "none",
+  "prompt": "an enormous stone tithe barn with buttresses and a vast steep slate roof, great doors at the centre, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_rubble",
+   "top": "roof_slate",
+   "scale": 1.05,
+   "jitter": 0.07,
+   "tint": null
+  }
+ },
+ {
+  "id": "civic_weigh_house",
+  "name": "Weigh House",
+  "category": "civic",
+  "tags": [],
+  "height": 6.0,
+  "faces": 5000,
+  "upright": "none",
+  "prompt": "a small open civic weigh house with a great balance beam under a tiled canopy, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "brick_pale",
+   "top": "roof_pantile",
+   "scale": 1.0,
+   "jitter": 0.06,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_road_shrine",
+  "name": "Road Shrine",
+  "category": "street",
+  "tags": [],
+  "height": 2.6,
+  "faces": 2200,
+  "upright": "none",
+  "prompt": "a small roadside stone shrine with a peaked cap and a niche, worn steps in front, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "stone_limestone",
+   "top": "flagstone",
+   "scale": 1.0,
+   "jitter": 0.05,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_toll_post",
+  "name": "Toll Post",
+  "category": "street",
+  "tags": [],
+  "height": 2.6,
+  "faces": 2400,
+  "upright": "none",
+  "prompt": "a striped timber toll barrier on a pivot beside a small stone booth, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "wood_beam",
+   "top": "roof_shingle",
+   "scale": 0.85,
+   "jitter": 0.09,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_cart_ox",
+  "name": "Ox Cart",
+  "category": "street",
+  "tags": [],
+  "height": 2.2,
+  "faces": 2800,
+  "upright": "none",
+  "prompt": "a heavy four-wheeled ox cart loaded with cut stone blocks, shafts resting on the ground, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "wood_plank",
+   "top": "stone_limestone",
+   "scale": 0.85,
+   "jitter": 0.1,
+   "tint": null
+  }
+ },
+ {
+  "id": "street_guild_sign",
+  "name": "Trade Sign",
+  "category": "street",
+  "tags": [],
+  "height": 3.4,
+  "faces": 1800,
+  "upright": "none",
+  "prompt": "an ornate wrought iron bracket over the street carrying a painted trade sign board, stylized medieval fantasy game asset, three-quarter aerial view from above, bold readable architecture, crisp carved detail, clean silhouette, muted natural colours, painted game concept art",
+  "material": {
+   "side": "iron_wrought",
+   "top": "wood_plank",
+   "scale": 0.75,
+   "jitter": 0.12,
+   "tint": null
+  }
+ }
+]

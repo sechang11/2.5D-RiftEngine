@@ -49,6 +49,21 @@ export interface AssetEntry {
    * means the flat category palette, which is what the first pack shipped with.
    */
   material?: MaterialSpec;
+  /**
+   * The concept art's colour in sixteen bands from the ground up.
+   *
+   * The reconstructor keeps shape and throws the colour away; this is it,
+   * recovered from the image the mesh was made from. Forty-eight bytes an
+   * asset, and the difference between a city of grey blocks and the picture
+   * the city was drawn from.
+   */
+  palette?: string[];
+  /**
+   * How much the mesh is enlarged when placed, so it stands the right height
+   * beside a person. `size` and `radius` already include it; the renderer has
+   * to apply it to the geometry, which does not.
+   */
+  meshScale?: number;
 }
 
 export interface AssetManifest {
@@ -104,6 +119,8 @@ export class AssetRegistry {
   private geometries = new Map<string, BufferGeometry>();
   private pending = new Map<string, Promise<BufferGeometry>>();
   private materials = new Map<string, MeshStandardMaterial>();
+  /** One per asset that carries its own palette; the rest are shared by spec. */
+  private assetMaterials = new Map<string, Material>();
   private readonly loader = new GLTFLoader();
   private fallbackGeometry: BufferGeometry | null = null;
 
@@ -272,7 +289,23 @@ export class AssetRegistry {
   materialFor(id: string): Material {
     const entry = this.entries.get(id);
     const spec = this.surfaceOf(id);
-    if (spec && this.surfaces.ready) return this.surfaces.get(spec);
+    if (spec && this.surfaces.ready) {
+      // The palette is sampled against object-space Y, which is the mesh's own
+      // unscaled height. `size` is the world size and already carries the
+      // pack's scale, so dividing it back out matters: left in, a building
+      // only ever sampled the bottom fortieth of its own palette and every
+      // wall in the city came out the colour of its plinth.
+      const meshScale = entry?.meshScale ?? 1;
+      const palette =
+        entry?.palette && entry.palette.length >= 16
+          ? { colours: entry.palette, height: entry.size[1] / meshScale, meshScale }
+          : undefined;
+      const cached = this.assetMaterials.get(id);
+      if (cached) return cached;
+      const material = this.surfaces.get(spec, palette);
+      if (palette) this.assetMaterials.set(id, material);
+      return material;
+    }
     return this.material(entry?.category ?? 'prop');
   }
 
@@ -281,6 +314,11 @@ export class AssetRegistry {
     const entry = this.entries.get(id);
     if (!entry) return undefined;
     return entry.material ?? CATEGORY_SURFACE[entry.category];
+  }
+
+  /** World scale for an asset's geometry. One unless the pack asked for more. */
+  meshScale(id: string): number {
+    return this.entries.get(id)?.meshScale ?? 1;
   }
 
   /** How far instances of this asset may drift in tone. Zero means uniform. */
@@ -302,6 +340,7 @@ export class AssetRegistry {
     for (const m of this.materials.values()) m.dispose();
     this.geometries.clear();
     this.materials.clear();
+    this.assetMaterials.clear();
     this.surfaces.dispose();
   }
 }

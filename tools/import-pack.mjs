@@ -25,6 +25,7 @@ const outIndex = args.indexOf('--out');
 const outDir = outIndex >= 0 ? args[outIndex + 1] : 'public/assets/pack';
 
 const manifestPath = join(stagingDir, 'manifest.json');
+const palettePath = join(stagingDir, 'palettes.json');
 const glbDir = join(stagingDir, 'glb');
 
 let raw;
@@ -34,6 +35,67 @@ try {
   console.error(`Could not read ${manifestPath}: ${err.message}`);
   process.exit(1);
 }
+
+// Colour recovered from the concept art, kept beside the manifest rather than
+// inside it because a generation phase rewrites the manifest from its own copy
+// and would drop anything written while it ran.
+let palettes = {};
+try {
+  palettes = JSON.parse(readFileSync(palettePath, 'utf8'));
+} catch {
+  palettes = {};
+}
+
+/**
+ * How much bigger than its catalogue height each kind of thing is in the world.
+ *
+ * The catalogue sizes were set against each other and never against a person,
+ * and it showed: a two-storey house stood 5.6 units to a champion's 2.2, a
+ * ratio of two and a half. A real one is nine metres to a person's one point
+ * eight, a ratio of five. Everything architectural was about half the size it
+ * should be, which is why the city read as a model village.
+ *
+ * Applied here rather than baked into the meshes, because it is one number per
+ * category and re-deriving it should not mean regenerating five hundred files.
+ * The manifest records the scaled size, so every consumer — plot fitting,
+ * collision, the museum's spacing — already agrees.
+ */
+const WORLD_SCALE = {
+  fort: 2.4,
+  civic: 2.6,
+  house: 2.05,
+  rural: 1.9,
+  dock: 1.7,
+  street: 1.4,
+  nature: 2.4,
+  building: 1.9,
+  prop: 1.2,
+  creature: 1.0,
+  folk: 1.0,
+  weapon: 1.0,
+  shield: 1.0,
+  pickup: 1.0,
+};
+
+// A few things are landmarks rather than examples of their category, and the
+// skyline is the reason to build them at all.
+const SCALE_OVERRIDE = {
+  civic_cathedral: 2.9,
+  civic_keep_great: 2.5,
+  civic_keep_round: 2.5,
+  civic_bell_tower: 3.0,
+  civic_wizard_tower: 2.6,
+  civic_mage_spire: 2.6,
+  civic_clock_tower: 2.8,
+  civic_guild_tower: 2.7,
+  fort_gatehouse_great: 2.3,
+  fort_tower_round: 2.3,
+  street_market_cross: 1.6,
+  street_lamp_post: 1.6,
+  street_statue_king: 1.7,
+  street_gate_arch_free: 2.2,
+  street_obelisk: 2.0,
+};
 
 const available = new Set();
 try {
@@ -66,19 +128,25 @@ for (const [id, entry] of Object.entries(raw.assets ?? {})) {
   const bytes = statSync(src).size;
   copyFileSync(src, join(outDir, file));
 
+  const category = entry.category ?? 'prop';
+  const scale = SCALE_OVERRIDE[id] ?? WORLD_SCALE[category] ?? 1;
+  const size = (info.size ?? [1, 1, 1]).map((v) => Math.round(v * scale * 1e4) / 1e4);
+
   assets.push({
     id,
     name: entry.name ?? id,
     category: entry.category ?? 'prop',
     tags: entry.tags ?? [],
     mesh: file,
-    size: info.size ?? [1, 1, 1],
-    radius: info.radius ?? 0.5,
+    size,
+    radius: Math.round((info.radius ?? 0.5) * scale * 1e4) / 1e4,
+    ...(scale !== 1 ? { meshScale: scale } : {}),
     triangles: info.triangles ?? 0,
     bytes,
     // Which tiling surfaces to project onto this mesh. Absent for the first
     // pack, which predates materials; the runtime falls back to its category.
     ...(entry.material ? { material: entry.material } : {}),
+    ...(palettes[id] ? { palette: palettes[id] } : {}),
   });
   totalBytes += bytes;
   totalTris += info.triangles ?? 0;
@@ -94,7 +162,11 @@ writeFileSync(
 const byCategory = {};
 for (const a of assets) byCategory[a.category] = (byCategory[a.category] ?? 0) + 1;
 
-console.log(`imported ${assets.length} assets into ${resolve(outDir)}`);
+const coloured = assets.filter((a) => a.palette).length;
+console.log(
+  `imported ${assets.length} assets into ${resolve(outDir)}` +
+    (coloured ? `, ${coloured} with concept colour` : ''),
+);
 for (const k of Object.keys(byCategory).sort()) {
   console.log(`  ${k.padEnd(10)} ${byCategory[k]}`);
 }

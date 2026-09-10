@@ -85,7 +85,45 @@ export interface MaterialSpec {
    * thatch deeper than the library's default.
    */
   normalScale?: number;
+  /** How much of the concept art's colour to take, and how much of its tone. */
+  paletteMix?: [number, number];
 }
+
+/** What the concept art was coloured, in sixteen bands from the ground up. */
+export interface AssetPalette {
+  colours: string[];
+  /** Object-space height the bands span, which is the mesh's own height. */
+  height: number;
+  /**
+   * How much the mesh is enlarged when placed.
+   *
+   * Projection is in object space, so a mesh drawn at two and a half times its
+   * modelled size stretches its texture to match: a three-unit ashlar block
+   * became a seven-unit one and the wall read as untextured plaster. Dividing
+   * it back out keeps a stone the size a stone is.
+   */
+  meshScale?: number;
+}
+
+const DEFAULT_PALETTE_MIX: [number, number] = [0.66, 0.24];
+
+let placeholderImage: HTMLCanvasElement | null = null;
+
+/** A one-pixel white image, so an unloaded map reads as "no tint yet". */
+function placeholder(): HTMLCanvasElement {
+  if (!placeholderImage) {
+    placeholderImage = document.createElement('canvas');
+    placeholderImage.width = 1;
+    placeholderImage.height = 1;
+    const ctx = placeholderImage.getContext('2d');
+    if (ctx) {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 1, 1);
+    }
+  }
+  return placeholderImage;
+}
+const NEUTRAL_PALETTE = new Array(16).fill(null).map(() => new Color(1, 1, 1));
 
 export interface MaterialManifest {
   generated?: string;
@@ -133,6 +171,9 @@ uniform vec2 triMetal;
 uniform vec2 triNrmScale;
 uniform vec3 triSideTint;
 uniform vec3 triTopTint;
+uniform vec3 triPalette[ 16 ];
+uniform float triPaletteHeight;   // object-space Y the palette spans
+uniform vec2 triPaletteMix;       // x: how much colour, y: how much of its tone
 
 varying vec3 vTriPos;
 varying mat3 vTriBasis;
@@ -142,6 +183,25 @@ vec3 triBlendWeights( vec3 n ) {
   // across a cube's corner sounds nicer and reads as a smudge.
   vec3 b = pow( abs( n ), vec3( 6.0 ) );
   return b / max( b.x + b.y + b.z, 1e-4 );
+}
+
+/**
+ * The concept art's colour at a given height, interpolated between bands.
+ *
+ * The reference image was a front view of an upright object, so the colour it
+ * had at a height is the colour the mesh should have at that height. Sixteen
+ * bands is enough to carry a red roof over cream plaster over a grey plinth,
+ * which is the arrangement a tiling material cannot express and the thing that
+ * made the concept art look like architecture.
+ */
+vec3 triPaletteAt( float y ) {
+  float t = clamp( y / max( triPaletteHeight, 1e-3 ), 0.0, 0.9999 ) * 15.0;
+  int i = int( floor( t ) );
+  return mix( triPalette[ i ], triPalette[ i + 1 ], fract( t ) );
+}
+
+float triLuma( vec3 c ) {
+  return dot( c, vec3( 0.2126, 0.7152, 0.0722 ) );
 }
 
 vec3 triUnpack( vec2 rg, float strength ) {
@@ -197,6 +257,19 @@ vec3 triTopCol =
   + texture2D( triTopMap, triPy * triScale.y ).rgb * triW.y
   + texture2D( triTopMap, triPz * triScale.y ).rgb * triW.z;
 vec3 triAlbedo = mix( triSideCol * triSideTint, triTopCol * triTopTint, triUp );
+
+// Take the concept art's hue, keep the material's detail, and take part of the
+// concept's own tone so that a dark roof still reads darker than a pale wall.
+// Dividing by the palette's luminance is what preserves the texture: without
+// it the grain is replaced by a flat colour, which is the thing this is trying
+// to fix rather than repeat.
+{
+  vec3 pal = triPaletteAt( vTriPos.y );
+  float palLuma = max( triLuma( pal ), 1e-3 );
+  float texLuma = triLuma( triAlbedo );
+  float luma = mix( texLuma, texLuma * 0.55 + palLuma * 0.45, triPaletteMix.y );
+  triAlbedo = mix( triAlbedo, pal * ( luma / palLuma ), triPaletteMix.x );
+}
 
 vec3 triSnX = texture2D( triSideNrm, triPx * triScale.x ).rgb;
 vec3 triSnY = texture2D( triSideNrm, triPy * triScale.x ).rgb;
@@ -267,6 +340,8 @@ export class MaterialLibrary {
   private defs = new Map<string, MaterialDef>();
   private textures = new Map<string, Texture>();
   private cache = new Map<string, MeshStandardMaterial>();
+  /** Materials carrying one asset's palette, held only so they can be freed. */
+  private perAsset: MeshStandardMaterial[] = [];
   private readonly loader = new TextureLoader();
   private readonly baseUrl: string;
 
@@ -310,7 +385,16 @@ export class MaterialLibrary {
     const key = `${id}_${kind}`;
     let tex = this.textures.get(key);
     if (!tex) {
-      tex = this.loader.load(`${this.baseUrl}${key}.jpg`);
+      // Standing in with white rather than nothing. Three binds a black 1x1 for
+      // a texture that has not arrived, and since the palette transfer divides
+      // the concept colour by the sampled luminance, black in means black out:
+      // every prop was a silhouette for the first second of a load.
+      tex = new Texture(placeholder());
+      tex.needsUpdate = true;
+      this.loader.load(`${this.baseUrl}${key}.jpg`, (loaded) => {
+        tex!.image = loaded.image;
+        tex!.needsUpdate = true;
+      });
       tex.wrapS = RepeatWrapping;
       tex.wrapT = RepeatWrapping;
       // The albedo is authored art and is sRGB. The packed map is data:
@@ -340,14 +424,22 @@ export class MaterialLibrary {
    * through vertex colour, so two assets differing only in jitter still share
    * the same shader.
    */
-  get(spec: MaterialSpec): MeshStandardMaterial {
+  get(spec: MaterialSpec, palette?: AssetPalette): MeshStandardMaterial {
+    // A palette belongs to one asset, so a material carrying one cannot be
+    // shared. The program still is: the cache key ignores the palette, and
+    // three keys its compiled shaders on that rather than on the material.
     const key = MaterialLibrary.key(spec);
-    const cached = this.cache.get(key);
-    if (cached) return cached;
+    if (!palette) {
+      const cached = this.cache.get(key);
+      if (cached) return cached;
+    }
 
     const side = this.def(spec.side);
     const top = this.def(spec.top);
-    const assetScale = spec.scale ?? 1;
+    // Divided, not multiplied: the projection is in object space, so a mesh
+    // drawn at two and a half times its modelled size needs its tiles two and a
+    // half times smaller there to come out the same size in the world.
+    const assetScale = (spec.scale ?? 1) / (palette?.meshScale ?? 1);
     const tint = spec.tint ? new Color(spec.tint) : null;
 
     const uniforms: Record<string, IUniform> = {
@@ -372,6 +464,11 @@ export class MaterialLibrary {
       triTopTint: {
         value: tint ?? (top.tint ? new Color(top.tint) : new Color(1, 1, 1)),
       },
+      triPalette: {
+        value: palette ? palette.colours.map((c) => new Color(c)) : NEUTRAL_PALETTE,
+      },
+      triPaletteHeight: { value: palette?.height ?? 1 },
+      triPaletteMix: { value: palette ? (spec.paletteMix ?? DEFAULT_PALETTE_MIX) : [0, 0] },
     };
 
     const material = new MeshStandardMaterial({
@@ -393,15 +490,18 @@ export class MaterialLibrary {
     material.userData.triUniforms = uniforms;
     // Two materials with different uniforms must not share a compiled program.
     material.customProgramCacheKey = () => 'triplanar:' + key;
-    this.cache.set(key, material);
+    if (!palette) this.cache.set(key, material);
+    else this.perAsset.push(material);
     return material;
   }
 
   dispose(): void {
     for (const t of this.textures.values()) t.dispose();
     for (const m of this.cache.values()) m.dispose();
+    for (const m of this.perAsset) m.dispose();
     this.textures.clear();
     this.cache.clear();
+    this.perAsset.length = 0;
   }
 }
 

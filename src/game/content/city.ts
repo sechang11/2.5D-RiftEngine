@@ -1,31 +1,41 @@
 /**
- * Highhold: a walled castle city, assembled from a kit.
+ * Highhold: a city laid out for the reasons a real one is.
  *
- * No part of this is a model of a city. It is a curtain wall repeated a hundred
- * and forty times, six house shells reused at four rotations, and a street
- * network that decides where they go. That is the only way a city of this size
- * fits in a browser, and it is also how real medieval cities were built: a
- * small vocabulary of pieces, arranged.
+ * The first version of this file zoned a rectangle into blocks and filled each
+ * with whatever fitted. That is a subdivision, not a city. A city is the record
+ * of a set of arguments — about water, fire, smell, defence, money and God —
+ * and every one of them leaves a mark on the plan:
  *
- * The layout is deliberately not organic. It is laid out the way a besieged
- * town actually grows:
+ *   The castle takes the high ground at the back and walls itself off again,
+ *   because it is defending itself from the town as much as from the enemy.
  *
- *   the citadel takes the high ground at the back and walls itself off again
- *   the market square sits where the two main avenues cross
- *   the trades that stink — tanner, butcher, potter — go downwind by the water
- *   the temple precinct takes the best open ground that is not the market
- *   everything else is housing, packed into whatever the streets left over
- *   the river runs through, and the wall crosses it on two water gates
+ *   The market is not in the middle. It is where the roads from the gates meet,
+ *   and the town hall, the weigh house and the guildhall face onto it because
+ *   that is where the money is counted.
  *
- * Everything is stamped into the nav grid at build time rather than left to
- * blocking props. Props block as circles, which is right for a barrel and wrong
- * for a terrace of houses: a circle round a 12-by-6 building either leaves the
- * corners walkable or eats two metres of the street on each side. Buildings
- * here are rectangles in the grid and pure decoration as props, so collision
- * matches the silhouette and the streets stay the width they were drawn.
+ *   The trades are grouped, and the grouping is physical. Tanners, dyers and
+ *   fullers need running water and produce a stench, so they are downstream and
+ *   outside the wall — never upstream of what the town drinks. Smiths, potters
+ *   and bakers are a fire risk, so they are a quarter of their own against the
+ *   wall. Weavers and joiners are clean and quiet and live in the town proper.
  *
- * That means the generator needs the asset catalogue before it can size a plot,
- * which is why the pack loads before the map is built.
+ *   The wharf is where the river is deep, the warehouses are behind it, and the
+ *   worst housing in the city is behind them.
+ *
+ *   Clean water is brought in from outside on an aqueduct, because the river
+ *   inside the walls is a sewer by the time it leaves.
+ *
+ *   Wealth falls off with distance from the market: stone on the High Street,
+ *   timber in the wards, tenements by the docks, hovels against the wall.
+ *
+ * The plan is drawn in that order — water, then walls, then the streets between
+ * the gates, then the precincts that claim their ground, then the wards that
+ * take what is left — because that is the order the arguments were settled in.
+ *
+ * Scale: a champion is 2.2 units, so one unit is about eighty centimetres. A
+ * two-storey house is eleven units, the curtain wall twelve, the keep forty,
+ * the minster sixty-four. Those ratios are the point; the first city was built
+ * at half of them and read as a model village.
  */
 
 import { CellFlag, NavGrid } from '../../core/nav/navgrid';
@@ -36,17 +46,15 @@ import type { GameMap } from './map01';
 import type { AssetRegistry } from '../../render/assets';
 import { PropFlag, type PropStore } from '../../core/world/props';
 
-const COLS = 320;
-const ROWS = 300;
+const COLS = 620;
+const ROWS = 560;
 const CELL = 1;
-const BORDER = 3;
+const BORDER = 4;
 
-/** Half-width of the river channel, before meander. */
-const RIVER_HALF = 7;
-/** One curtain-wall section is this long, so everything on the wall is a multiple. */
-const WALL_SEG = 4;
+/** One curtain-wall section, so everything on the wall is a multiple of it. */
+const WALL_SEG = 9.6;
 /** A tower every this many sections. */
-const TOWER_EVERY = 6;
+const TOWER_EVERY = 5;
 
 export interface Rect {
   x0: number;
@@ -55,58 +63,99 @@ export interface Rect {
   y1: number;
 }
 
+export interface Point {
+  x: number;
+  y: number;
+}
+
 export interface Placement {
   assetId: string;
   x: number;
   y: number;
   rotation: number;
   scale: number;
-  /** Marks the piece as scenery the fog and nav have already accounted for. */
   blocks: boolean;
 }
 
+/**
+ * One quarter of the city.
+ *
+ * `palette` is what may be built here and `crowd` is who is here during the
+ * day, and the two together are what makes a district a place rather than a
+ * colour on a map: the Shambles is butchers' houses with butchers outside them.
+ */
 export interface District {
   name: string;
   rect: Rect;
   palette: string[];
-  /** Smallest plot the subdivider will stop at, in world units. */
+  crowd?: string[];
+  /** Trade clutter scattered along this district's frontages. */
+  fittings?: string[];
   minPlot: number;
-  /** How much of the plot the building fills. */
   fill: number;
+  /** People per hundred square units of district. */
+  crowding?: number;
 }
 
 export interface CityPlan {
-  /** Named points worth putting a label on. */
   landmarks: Array<{ name: string; x: number; y: number }>;
   districts: District[];
   streets: Rect[];
   gates: Array<{ name: string; x: number; y: number }>;
   placements: Placement[];
-  /** Where a visitor starts: outside the south gate, looking up the avenue. */
-  entrance: { x: number; y: number };
+  entrance: Point;
 }
 
 export type CityMap = GameMap & { plan: CityPlan };
 
-// --- the shape of the town -------------------------------------------------
+// ---------------------------------------------------------------------------
+// The ground the city is on
+// ---------------------------------------------------------------------------
 
-const WALL: Rect = { x0: -100, y0: -110, x1: 100, y1: 62 };
-const CITADEL: Rect = { x0: -36, y0: -106, x1: 36, y1: -66 };
-const MARKET: Rect = { x0: -28, y0: -28, x1: 28, y1: 2 };
-
-/** Where the river runs, as a function of x. */
+/** Where the river runs. It is the reason the town is here. */
 function riverY(x: number): number {
-  return 34 + 7 * Math.sin((x + 40) / 52);
+  return 138 + 20 * Math.sin((x + 90) / 150) + 7 * Math.sin((x - 40) / 47);
 }
 
-// --- small grid helpers ----------------------------------------------------
+const RIVER_HALF = 15;
 
-function rectCells(nav: NavGrid, r: Rect): { c0: number; r0: number; c1: number; r1: number } {
+/**
+ * The wall, as a closed circuit.
+ *
+ * An octagon rather than a rectangle. Real circuits follow the ground and the
+ * old ditch, and a rectangle is the one shape that says nobody had to.
+ */
+const WALL_RING: Point[] = [
+  { x: -150, y: -228 },
+  { x: 150, y: -228 },
+  { x: 205, y: -160 },
+  { x: 205, y: 40 },
+  { x: 140, y: 122 },
+  { x: -140, y: 122 },
+  { x: -205, y: 40 },
+  { x: -205, y: -160 },
+];
+
+/** The castle's own circuit, in the north-west corner. */
+const CITADEL: Rect = { x0: -168, y0: -222, x1: -46, y1: -122 };
+/** The cathedral's precinct, opposite it. */
+const CLOSE: Rect = { x0: 40, y0: -216, x1: 190, y1: -118 };
+/** Where the two main streets meet. */
+const MARKET: Rect = { x0: -46, y0: -74, x1: 46, y1: 6 };
+
+const AVENUE = 17;
+const STREET = 11;
+
+// ---------------------------------------------------------------------------
+// grid helpers
+// ---------------------------------------------------------------------------
+
+function rectCells(nav: NavGrid, r: Rect) {
   return {
-    c0: Math.max(0, nav.colAt(r.x0)),
-    r0: Math.max(0, nav.rowAt(r.y0)),
-    c1: Math.min(nav.cols - 1, nav.colAt(r.x1)),
-    r1: Math.min(nav.rows - 1, nav.rowAt(r.y1)),
+    c0: Math.max(0, nav.colAt(Math.min(r.x0, r.x1))),
+    r0: Math.max(0, nav.rowAt(Math.min(r.y0, r.y1))),
+    c1: Math.min(nav.cols - 1, nav.colAt(Math.max(r.x0, r.x1))),
+    r1: Math.min(nav.rows - 1, nav.rowAt(Math.max(r.y0, r.y1))),
   };
 }
 
@@ -117,6 +166,16 @@ function paint(nav: NavGrid, mask: Uint8Array, r: Rect, value: number): void {
       const i = nav.idx(cx, cy);
       if (mask[i] < value) mask[i] = value;
     }
+  }
+}
+
+function paintLine(nav: NavGrid, mask: Uint8Array, a: Point, b: Point, half: number, value: number): void {
+  const steps = Math.ceil(Math.hypot(b.x - a.x, b.y - a.y) / 2) + 1;
+  for (let s = 0; s <= steps; s++) {
+    const t = s / steps;
+    const x = a.x + (b.x - a.x) * t;
+    const y = a.y + (b.y - a.y) * t;
+    paint(nav, mask, { x0: x - half, y0: y - half, x1: x + half, y1: y + half }, value);
   }
 }
 
@@ -139,112 +198,184 @@ function open(nav: NavGrid, r: Rect): void {
   }
 }
 
-function inflate(r: Rect, by: number): Rect {
-  return { x0: r.x0 - by, y0: r.y0 - by, x1: r.x1 + by, y1: r.y1 + by };
+const inflate = (r: Rect, by: number): Rect => ({
+  x0: r.x0 - by, y0: r.y0 - by, x1: r.x1 + by, y1: r.y1 + by,
+});
+const overlaps = (a: Rect, b: Rect): boolean =>
+  a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
+const width = (r: Rect): number => r.x1 - r.x0;
+const depth = (r: Rect): number => r.y1 - r.y0;
+const centre = (r: Rect): Point => ({ x: (r.x0 + r.x1) / 2, y: (r.y0 + r.y1) / 2 });
+
+/** True when a point is inside the wall circuit, by ray casting. */
+function insideRing(ring: Point[], p: Point): boolean {
+  let hit = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const a = ring[i];
+    const b = ring[j];
+    if (a.y > p.y !== b.y > p.y && p.x < ((b.x - a.x) * (p.y - a.y)) / (b.y - a.y) + a.x) {
+      hit = !hit;
+    }
+  }
+  return hit;
 }
 
-function overlaps(a: Rect, b: Rect): boolean {
-  return a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
-}
-
-function width(r: Rect): number {
-  return r.x1 - r.x0;
-}
-
-function depth(r: Rect): number {
-  return r.y1 - r.y0;
-}
-
-// --- district palettes -----------------------------------------------------
-//
-// Names only. Anything the pack does not have yet is dropped at build time, so
-// the city degrades to whatever is available rather than failing to generate.
+// ---------------------------------------------------------------------------
+// What may be built where, and who is standing there
+// ---------------------------------------------------------------------------
 
 const PALETTES: Record<string, string[]> = {
-  citadel: [
+  castle: [
     'civic_keep_great', 'civic_keep_round', 'civic_palace_wing', 'civic_great_hall',
-    'civic_barracks', 'civic_treasury', 'civic_prison', 'civic_bell_tower',
-    'civic_mint', 'civic_granary_tower', 'fort_tower_corner', 'civic_arsenal',
-    'civic_chapter_house', 'house_stone_tower_home', 'house_undercroft',
+    'civic_barracks', 'civic_arsenal', 'civic_treasury', 'civic_prison', 'civic_mint',
+    'fort_tower_corner', 'fort_tower_drum', 'civic_granary_public', 'house_stone_tower_home',
   ],
-  temple: [
-    'civic_cathedral', 'civic_abbey', 'civic_chapel', 'civic_temple_round',
-    'civic_library', 'civic_observatory', 'civic_hospital', 'civic_almshouse',
-    'civic_university', 'civic_basilica', 'civic_chapter_house', 'civic_hospice',
-    'civic_clock_tower',
+  minster: [
+    'civic_cathedral', 'civic_abbey', 'civic_chapter_house', 'civic_basilica',
+    'civic_chapel', 'civic_library', 'civic_hospice', 'civic_almshouse',
+    'civic_university', 'civic_bell_tower',
   ],
-  noble: [
-    'house_manor', 'house_stone_b', 'house_timber_tall', 'civic_guildhall',
-    'civic_courthouse', 'house_row_b', 'civic_wizard_tower', 'house_tower_house',
-    'house_courtyard', 'house_oriel', 'house_balcony', 'civic_university',
-    'house_half_timber_tall', 'house_gallery_house', 'house_turret_house',
-    'house_wing_house', 'civic_moot_hall', 'civic_guild_tower', 'house_gatehouse_house',
+  // Facing the square: the buildings that exist to watch money change hands.
+  market: [
+    'civic_guildhall', 'civic_courthouse', 'civic_weigh_house', 'civic_moot_hall',
+    'civic_customs', 'house_inn', 'house_tavern', 'house_arcade', 'house_shopfront_double',
+    'house_timber_tall', 'house_gable_step', 'house_gable_dutch', 'house_oriel',
   ],
-  craft: [
-    'house_smithy', 'house_tannery', 'house_potter', 'house_weaver', 'house_brewery',
-    'house_bakery', 'house_butcher', 'house_apothecary', 'house_alchemist',
-    'house_bathhouse', 'house_stable_town', 'house_workshop', 'house_cellar',
-    'house_stair_outside', 'civic_baths', 'house_bakehouse', 'house_dyeworks',
-    'house_shopfront_double', 'house_chimney_stack', 'house_undercroft',
+  merchant: [
+    'house_timber_tall', 'house_half_timber_tall', 'house_gable_dutch', 'house_gable_curved',
+    'house_manor', 'house_stone_b', 'house_oriel', 'house_balcony', 'house_courtyard',
+    'house_gallery_house', 'house_turret_house', 'civic_guild_tower', 'civic_treasury',
   ],
-  residential: [
+  // Clean trades. Long upper windows to work by, in the town proper.
+  weavers: [
+    'house_weaver', 'house_timber_a', 'house_timber_b', 'house_timber_c',
+    'house_dormer_row', 'house_stair_outside', 'house_row_a', 'house_shop_front',
+    'house_narrow', 'house_wing_house',
+  ],
+  // Fire trades, kept together and kept against the wall.
+  smiths: [
+    'house_smithy', 'house_potter', 'house_bakery', 'house_bakehouse', 'house_brewery',
+    'house_workshop', 'house_cellar', 'house_chimney_stack', 'house_broad',
+  ],
+  // Butchers, downhill of the town and upwind of nobody who mattered.
+  shambles: [
+    'house_butcher', 'house_shop_front', 'house_narrow', 'house_leaning',
+    'house_overhang', 'house_timber_b', 'house_penthouse',
+  ],
+  // Tanners, dyers and fullers: they need the river, and everyone else needs
+  // them to be downstream of it.
+  tanners: [
+    'house_tannery', 'house_dyeworks', 'house_hovel', 'house_penthouse',
+    'house_half_ruin', 'house_broad', 'house_boat_builder',
+  ],
+  wharf: [
+    'house_warehouse', 'civic_customs', 'house_granary_town', 'civic_granary_public',
+    'dock_boathouse', 'house_boat_builder', 'civic_weigh_house',
+  ],
+  rents: [
+    'house_tenement', 'house_hovel', 'house_penthouse', 'house_leaning',
+    'house_half_ruin', 'house_narrow', 'house_cottage_b', 'house_ruin_house',
+  ],
+  wards: [
     'house_timber_a', 'house_timber_b', 'house_timber_c', 'house_stone_a',
-    'house_row_a', 'house_row_b', 'house_cottage_a', 'house_shop_front',
-    'house_timber_tall', 'house_tenement', 'house_stone_b', 'house_gable_step',
-    'house_gable_curved', 'house_arcade', 'house_oriel', 'house_dormer',
-    'house_overhang', 'house_leaning', 'house_narrow', 'house_broad',
-    'house_balcony', 'house_stair_outside', 'house_cellar', 'house_gable_dutch',
-    'house_hipped_roof', 'house_catslide', 'house_wing_house', 'house_dormer_row',
-    'house_chimney_stack', 'house_gallery_house', 'house_shopfront_double',
-    'house_turret_house', 'house_gatehouse_house', 'house_courtyard_gate',
-  ],
-  dockside: [
-    'house_warehouse', 'house_granary_town', 'house_tenement', 'dock_boathouse',
-    'house_hovel', 'house_cottage_b', 'house_ruin_house', 'house_half_ruin',
-    'house_leaning', 'house_narrow', 'civic_customs', 'civic_granary_tower',
-    'house_penthouse', 'house_boat_builder', 'house_catslide', 'house_dyeworks',
+    'house_row_a', 'house_row_b', 'house_cottage_a', 'house_dormer', 'house_hipped_roof',
+    'house_catslide', 'house_broad', 'house_shop_front', 'house_cellar',
+    'house_stair_outside', 'house_gatehouse_house', 'house_courtyard_gate',
   ],
   suburb: [
-    'house_cottage_a', 'house_cottage_b', 'house_hovel', 'house_broad',
-    'rural_farmhouse', 'house_stone_a', 'house_broad', 'house_half_ruin',
-    'house_catslide', 'house_penthouse', 'house_bakehouse',
+    'house_cottage_a', 'house_cottage_b', 'house_hovel', 'rural_farmhouse',
+    'house_broad', 'house_catslide', 'house_penthouse', 'house_stone_a',
+    'house_bakehouse', 'rural_stable_farm',
   ],
 };
 
-/** Used when the city pack is missing, so the map still builds and still reads. */
+const CROWDS: Record<string, string[]> = {
+  market: [
+    'folk_merchant', 'folk_peasant_woman', 'folk_basket_woman', 'folk_watercarrier',
+    'folk_crier', 'folk_fishwife', 'folk_baker', 'folk_child_running', 'folk_child_standing',
+    'folk_old_woman', 'folk_old_man', 'folk_beggar', 'folk_beggar_seated', 'folk_jester',
+    'folk_musician', 'folk_dancer', 'folk_thief', 'folk_maid', 'folk_scribe',
+    'creature_dog_street', 'creature_goose', 'creature_cat',
+  ],
+  castle: [
+    'folk_knight_plate', 'folk_paladin', 'folk_manatarms', 'folk_sergeant', 'folk_pikeman',
+    'folk_archer', 'folk_squire', 'folk_standard_bearer', 'folk_herald', 'creature_falcon',
+    'creature_warhorse',
+  ],
+  minster: [
+    'folk_bishop', 'folk_cleric', 'folk_monk', 'folk_nun', 'folk_kneeling_pilgrim',
+    'folk_scribe', 'folk_beggar_seated', 'folk_plague_doctor',
+  ],
+  smiths: ['folk_blacksmith', 'folk_smith_apprentice', 'folk_mason', 'folk_carpenter', 'folk_miller'],
+  weavers: ['folk_peasant_woman', 'folk_maid', 'folk_old_woman', 'folk_child_standing', 'folk_scribe'],
+  shambles: ['folk_fishwife', 'folk_cook', 'creature_dog_street', 'creature_pig', 'folk_innkeeper'],
+  tanners: ['folk_peasant_woman', 'folk_beggar', 'folk_drunk', 'creature_rat_giant', 'folk_porter'],
+  wharf: [
+    'folk_fisherman', 'folk_porter', 'folk_cooper', 'folk_mercenary', 'folk_merchant',
+    'folk_stablehand', 'creature_rat_giant', 'creature_goose',
+  ],
+  rents: ['folk_beggar', 'folk_beggar_seated', 'folk_drunk', 'folk_thief', 'folk_child_running', 'folk_old_woman'],
+  wards: ['folk_peasant_woman', 'folk_old_man', 'folk_child_standing', 'folk_maid', 'folk_carpenter', 'creature_cat'],
+  gate: ['folk_guard_city', 'folk_manatarms', 'folk_watchman_lantern', 'folk_crossbowman', 'folk_sergeant'],
+  fields: [
+    'folk_farmer', 'folk_shepherd', 'folk_peasant_woman', 'folk_hunter', 'creature_sheep',
+    'creature_cow', 'creature_ox', 'creature_donkey', 'creature_pig', 'creature_horse_cart',
+  ],
+};
+
+const FITTINGS: Record<string, string[]> = {
+  market: ['street_stall_awning', 'street_stall_fruit', 'street_stall_cloth', 'street_stall_bread',
+    'street_stall_fish', 'street_stall_smith', 'street_stall_covered', 'street_awning_row'],
+  smiths: ['street_anvil_block', 'street_grindstone', 'street_firewood', 'street_cauldron_big',
+    'street_barrel_stack', 'street_brazier_street', 'street_guild_sign'],
+  weavers: ['street_laundry_line', 'street_crate_stack', 'street_bench_wood', 'street_guild_sign',
+    'street_planter'],
+  shambles: ['street_stall_fish', 'street_table_long', 'street_barrel_stack', 'street_dung_heap',
+    'street_guild_sign'],
+  tanners: ['street_barrel_stack', 'street_dung_heap', 'street_rubble_pile', 'street_firewood',
+    'dock_fish_rack', 'street_sluice_gate'],
+  wharf: ['dock_cargo_pile', 'street_crate_stack', 'street_sack_pile', 'dock_net_pile',
+    'street_cart_ox', 'street_barrel_stack'],
+  rents: ['street_dung_heap', 'street_rubble_pile', 'street_laundry_line', 'street_rain_barrel'],
+  wards: ['street_rain_barrel', 'street_firewood', 'street_bench_wood', 'street_planter',
+    'nature_flowerbed', 'street_wheelbarrow'],
+  minster: ['street_bench_stone', 'nature_topiary', 'nature_hedge_section', 'street_shrine_corner'],
+  castle: ['street_weapon_rack', 'street_training_dummy', 'street_archery_butt',
+    'street_brazier_street', 'street_banner_pole'],
+};
+
 const FALLBACK = [
   'building_cottage', 'building_hut_orc', 'building_tavern', 'building_longhouse',
   'building_granary', 'building_stable', 'building_chapel', 'building_watchtower',
 ];
 
-// --- plot subdivision ------------------------------------------------------
+// ---------------------------------------------------------------------------
+// plots
+// ---------------------------------------------------------------------------
 
 /**
- * Splits a block into building plots, cutting a street at every split.
+ * Splits a block into building plots, cutting a lane at every split.
  *
- * A binary partition rather than a grid, because a grid of identical plots
- * produces a suburb. Splitting at a jittered ratio down the longer axis gives
- * the irregular frontages and awkward corner plots that make a street look
- * like it was built over three hundred years.
+ * Binary partition rather than a grid: a grid produces a suburb, and the
+ * irregular frontages and awkward corner plots a jittered split produces are
+ * what three hundred years of infill actually looks like. The lane narrows as
+ * the blocks get smaller, so a ward ends up with streets, lanes and alleys
+ * rather than one width of everything.
  */
 function subdivide(rect: Rect, minPlot: number, rng: Rng, streets: Rect[], out: Rect[]): void {
   const w = width(rect);
   const d = depth(rect);
-  // Only an axis with room for two plots plus a road between them may be cut.
-  // Choosing the longer axis unconditionally turned a district six units deep
-  // into nothing but road: every split took three and a half of the six, and
-  // both halves were then too shallow to keep.
   const canX = w > minPlot * 2;
   const canY = d > minPlot * 2;
   if (!canX && !canY) {
-    if (w >= minPlot * 0.7 && d >= minPlot * 0.7) out.push(rect);
+    if (w >= minPlot * 0.65 && d >= minPlot * 0.65) out.push(rect);
     return;
   }
 
   const alongX = canX && (!canY || w > d);
   const span = alongX ? w : d;
-  const road = span > minPlot * 5 ? 5 : 3.5;
-  const t = 0.5 + (rng.next() - 0.5) * 0.34;
+  const road = span > minPlot * 5 ? STREET : span > minPlot * 3 ? 7.5 : 5;
+  const t = 0.5 + (rng.next() - 0.5) * 0.36;
   const cut = (alongX ? rect.x0 : rect.y0) + span * t;
 
   if (alongX) {
@@ -258,7 +389,9 @@ function subdivide(rect: Rect, minPlot: number, rng: Rng, streets: Rect[], out: 
   }
 }
 
-// --- the build -------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// the build
+// ---------------------------------------------------------------------------
 
 export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
   const nav = new NavGrid({ cols: COLS, rows: ROWS, cellSize: CELL });
@@ -272,30 +405,24 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
 
   const placements: Placement[] = [];
   const streets: Rect[] = [];
+  const roads: Rect[] = [];
   const gates: CityPlan['gates'] = [];
   const landmarks: CityPlan['landmarks'] = [];
-  /** Rectangles nothing further may be placed inside. */
   const taken: Rect[] = [];
 
   const has = (id: string): boolean => !assets || !!assets.get(id);
-  const sizeOf = (id: string): [number, number, number] => assets?.get(id)?.size ?? [4, 4, 4];
+  const sizeOf = (id: string): [number, number, number] => assets?.get(id)?.size ?? [8, 8, 8];
   const usable = (ids: string[]): string[] => {
     const kept = ids.filter(has);
     return kept.length ? kept : FALLBACK.filter(has);
   };
 
-  const place = (assetId: string, x: number, y: number, rotation = 0, scale = 1, blocks = true): void => {
-    if (!has(assetId)) return;
+  const footprintOf = (assetId: string, x: number, y: number, rotation: number, scale: number): Rect => {
     const s = sizeOf(assetId);
     const turned = Math.abs(Math.sin(rotation)) > 0.5;
     const halfW = ((turned ? s[2] : s[0]) * scale) / 2;
     const halfD = ((turned ? s[0] : s[2]) * scale) / 2;
-    const foot = { x0: x - halfW, y0: y - halfD, x1: x + halfW, y1: y + halfD };
-    placements.push({ assetId, x, y, rotation, scale, blocks });
-    if (blocks) {
-      block(nav, builtMask, foot, CellFlag.BlockMove | CellFlag.BlockVision);
-      taken.push(foot);
-    }
+    return { x0: x - halfW, y0: y - halfD, x1: x + halfW, y1: y + halfD };
   };
 
   const free = (r: Rect, pad = 0): boolean => {
@@ -304,22 +431,39 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
     return true;
   };
 
-  // --- the ground ---------------------------------------------------------
+  const place = (assetId: string, x: number, y: number, rotation = 0, scale = 1, blocks = true): boolean => {
+    if (!has(assetId)) return false;
+    const foot = footprintOf(assetId, x, y, rotation, scale);
+    placements.push({ assetId, x, y, rotation, scale, blocks });
+    if (blocks) {
+      block(nav, builtMask, foot, CellFlag.BlockMove | CellFlag.BlockVision);
+      taken.push(foot);
+    }
+    return true;
+  };
+
+  /** Places a piece only if its footprint is clear, and says whether it did. */
+  const tryPlace = (assetId: string, x: number, y: number, rotation = 0, scale = 1, pad = 1.5): boolean => {
+    if (!has(assetId)) return false;
+    if (!free(footprintOf(assetId, x, y, rotation, scale), pad)) return false;
+    return place(assetId, x, y, rotation, scale, true);
+  };
+
+  // --- the border and the river -------------------------------------------
 
   nav.fillRect(nav.minX, nav.minY, nav.maxX, nav.minY + BORDER, CellFlag.BlockMove | CellFlag.BlockVision);
   nav.fillRect(nav.minX, nav.maxY - BORDER, nav.maxX, nav.maxY, CellFlag.BlockMove | CellFlag.BlockVision);
   nav.fillRect(nav.minX, nav.minY, nav.minX + BORDER, nav.maxY, CellFlag.BlockMove | CellFlag.BlockVision);
   nav.fillRect(nav.maxX - BORDER, nav.minY, nav.maxX, nav.maxY, CellFlag.BlockMove | CellFlag.BlockVision);
 
-  // The river, meandering. Blocked so nothing walks it, and flagged as built so
-  // the terrain does not extrude a rock ridge down the middle of the water.
-  const bridges = [-58, -4, 52];
+  const bridges = [-118, -8, 96];
   for (let cx = 0; cx < nav.cols; cx++) {
     const x = nav.cellCentreX(cx);
-    const cy0 = nav.rowAt(riverY(x) - RIVER_HALF);
-    const cy1 = nav.rowAt(riverY(x) + RIVER_HALF);
-    const onBridge = bridges.some((bx) => Math.abs(x - bx) < 5);
-    for (let cy = Math.max(0, cy0); cy <= Math.min(nav.rows - 1, cy1); cy++) {
+    const y = riverY(x);
+    const onBridge = bridges.some((bx) => Math.abs(x - bx) < 9);
+    const from = Math.max(0, nav.rowAt(y - RIVER_HALF));
+    const to = Math.min(nav.rows - 1, nav.rowAt(y + RIVER_HALF));
+    for (let cy = from; cy <= to; cy++) {
       const i = nav.idx(cx, cy);
       riverMask[i] = 255;
       if (onBridge) continue;
@@ -328,205 +472,386 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
     }
   }
 
-  // --- avenues ------------------------------------------------------------
-  //
-  // Drawn before anything is placed, because every district is what the roads
-  // left behind rather than the other way round.
-
-  const AVENUE = 9;
-  // Paved from the citadel to the south gate and no further: the road beyond
-  // the wall is the countryside's, and it is dirt.
-  const mainAvenue: Rect = { x0: -AVENUE / 2, y0: WALL.y0 - 34, x1: AVENUE / 2, y1: WALL.y1 };
-  const crossAvenue: Rect = { x0: WALL.x0, y0: -17, x1: WALL.x1, y1: -17 + AVENUE };
-  streets.push(mainAvenue, crossAvenue);
-
-  // A ring road just inside the wall: the way a garrison actually moves.
-  const ringInset = 11;
-  const ring = inflate(WALL, -ringInset);
-  const RING_W = 6;
-  streets.push(
-    { x0: ring.x0, y0: ring.y0, x1: ring.x1, y1: ring.y0 + RING_W },
-    { x0: ring.x0, y0: ring.y1 - RING_W, x1: ring.x1, y1: ring.y1 },
-    { x0: ring.x0, y0: ring.y0, x1: ring.x0 + RING_W, y1: ring.y1 },
-    { x0: ring.x1 - RING_W, y0: ring.y0, x1: ring.x1, y1: ring.y1 },
-  );
-
-  // Roads out of every gate, to the edge of the world. Kept separate from the
-  // paved streets: nobody cobbled the road to the next village, and a cobbled
-  // ribbon running off across a wheat field looks exactly as wrong as it is.
-  const roads: Rect[] = [
-    { x0: -4, y0: WALL.y1, x1: 4, y1: nav.maxY },
-    { x0: nav.minX, y0: -14, x1: WALL.x0, y1: -6 },
-    { x0: WALL.x1, y0: -14, x1: nav.maxX, y1: -6 },
-    { x0: -132, y0: -22, x1: -100, y1: -14 },
-  ];
-
-  // --- districts ----------------------------------------------------------
-
-  const districts: District[] = [
-    { name: 'Citadel', rect: CITADEL, palette: usable(PALETTES.citadel), minPlot: 16, fill: 0.82 },
-    { name: 'Noble Quarter', rect: { x0: -78, y0: -62, x1: 78, y1: -34 }, palette: usable(PALETTES.noble), minPlot: 13.5, fill: 0.78 },
-    { name: 'Temple Precinct', rect: { x0: 36, y0: -30, x1: 88, y1: 4 }, palette: usable(PALETTES.temple), minPlot: 20, fill: 0.76 },
-    { name: 'Craft Quarter', rect: { x0: -88, y0: -30, x1: -34, y1: 6 }, palette: usable(PALETTES.craft), minPlot: 10.5, fill: 0.8 },
-    { name: 'Old Town', rect: { x0: -88, y0: -1, x1: -8, y1: 10 }, palette: usable(PALETTES.residential), minPlot: 9.5, fill: 0.82 },
-    { name: 'East Ward', rect: { x0: 34, y0: 6, x1: 88, y1: 22 }, palette: usable(PALETTES.residential), minPlot: 9.5, fill: 0.82 },
-    { name: 'Dockside', rect: { x0: -86, y0: 12, x1: 86, y1: 26 }, palette: usable(PALETTES.dockside), minPlot: 10, fill: 0.84 },
-    { name: 'Southbank', rect: { x0: -84, y0: 45, x1: 84, y1: 59 }, palette: usable(PALETTES.suburb), minPlot: 9.5, fill: 0.8 },
-    { name: 'Upper Ward', rect: { x0: -88, y0: -104, x1: -42, y1: -66 }, palette: usable(PALETTES.residential), minPlot: 10.5, fill: 0.8 },
-    { name: 'North Ward', rect: { x0: 42, y0: -104, x1: 88, y1: -66 }, palette: usable(PALETTES.residential), minPlot: 10.5, fill: 0.8 },
-  ];
-
-  // --- the curtain wall ---------------------------------------------------
-
-  const gateSpans: Array<{ side: 'n' | 's' | 'e' | 'w'; at: number; name: string; wide: boolean }> = [
-    { side: 's', at: 0, name: 'Kings Gate', wide: true },
-    { side: 'w', at: -13 + AVENUE / 2, name: 'West Gate', wide: false },
-    { side: 'e', at: -13 + AVENUE / 2, name: 'East Gate', wide: false },
-    { side: 'n', at: -58, name: 'Postern', wide: false },
-  ];
+  // --- the wall, and the gates that decide where the streets go ------------
 
   const wallPiece = has('fort_wall_straight') ? 'fort_wall_straight' : '';
   const towerPiece = has('fort_tower_round') ? 'fort_tower_round' : '';
   const gatePiece = has('fort_gatehouse_great') ? 'fort_gatehouse_great' : '';
-  const smallGate = has('fort_wall_gate') ? 'fort_wall_gate' : '';
+  const sideGate = has('fort_gate_flank') ? 'fort_gate_flank' : towerPiece;
 
-  const runWall = (
-    from: { x: number; y: number },
-    to: { x: number; y: number },
-    side: 'n' | 's' | 'e' | 'w',
-  ): void => {
-    const horizontal = Math.abs(to.x - from.x) > Math.abs(to.y - from.y);
-    const length = horizontal ? Math.abs(to.x - from.x) : Math.abs(to.y - from.y);
+  const gateSpecs: Array<{ name: string; at: Point; great: boolean }> = [
+    { name: 'Kings Gate', at: { x: 0, y: 122 }, great: true },
+    { name: 'Minster Gate', at: { x: 0, y: -228 }, great: false },
+    { name: 'West Gate', at: { x: -205, y: -40 }, great: false },
+    { name: 'East Gate', at: { x: 205, y: -40 }, great: false },
+  ];
+
+  const nearGate = (p: Point, r: number) =>
+    gateSpecs.find((g) => Math.hypot(g.at.x - p.x, g.at.y - p.y) < r);
+
+  /** Runs a wall along a segment at any angle, opening it where a gate is. */
+  const runWall = (a: Point, b: Point): void => {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const length = Math.hypot(dx, dy);
     const steps = Math.max(1, Math.round(length / WALL_SEG));
-    const dirX = horizontal ? Math.sign(to.x - from.x) : 0;
-    const dirY = horizontal ? 0 : Math.sign(to.y - from.y);
-    const rotation = horizontal ? 0 : Math.PI / 2;
+    const angle = Math.atan2(dx, dy);
+    const nx = dx / length;
+    const ny = dy / length;
 
     for (let i = 0; i < steps; i++) {
-      const t = (i + 0.5) * WALL_SEG;
-      const x = from.x + dirX * t;
-      const y = from.y + dirY * t;
-      const along = horizontal ? x : y;
+      const t = (i + 0.5) / steps;
+      const x = a.x + dx * t;
+      const y = a.y + dy * t;
 
-      const gate = gateSpans.find((g) => g.side === side && Math.abs(along - g.at) < (g.wide ? 9 : 6));
+      const gate = nearGate({ x, y }, WALL_SEG * 1.6);
       if (gate) {
-        // The opening is cut once, at the gate's centre, and the gatehouse
-        // stands in it. The nav hole is wider than the arch so a crowd can
-        // actually get through.
-        if (Math.abs(along - gate.at) < WALL_SEG * 0.5) {
-          const hole = horizontal
-            ? { x0: gate.at - 6, y0: y - 4, x1: gate.at + 6, y1: y + 4 }
-            : { x0: x - 4, y0: gate.at - 6, x1: x + 4, y1: gate.at + 6 };
-          open(nav, hole);
-          paint(nav, laneMask, inflate(hole, 3), 255);
-          gates.push({ name: gate.name, x, y });
-          landmarks.push({ name: gate.name, x, y: y + (side === 's' ? 6 : -6) });
-          const piece = gate.wide ? gatePiece || smallGate : smallGate || gatePiece;
+        // Cut the opening once, at the gate itself, and stand the gatehouse
+        // beside the road rather than across it: the arch of a generated
+        // gatehouse is not where its bounding box says it is.
+        if (Math.hypot(gate.at.x - x, gate.at.y - y) < WALL_SEG * 0.6) {
+          const half = gate.great ? 15 : 11;
+          open(nav, { x0: gate.at.x - half, y0: gate.at.y - half, x1: gate.at.x + half, y1: gate.at.y + half });
+          paint(nav, laneMask, inflate({ x0: gate.at.x - half, y0: gate.at.y - half, x1: gate.at.x + half, y1: gate.at.y + half }, 8), 255);
+          gates.push({ name: gate.name, x: gate.at.x, y: gate.at.y });
+          landmarks.push({ name: gate.name, x: gate.at.x, y: gate.at.y });
+          const piece = gate.great ? gatePiece || sideGate : sideGate || gatePiece;
           if (piece) {
-            // Set beside the opening rather than in it: the arch of a generated
-            // gatehouse is not where its bounding box says it is, and a
-            // gatehouse straddling the road seals the road.
-            const off = gate.wide ? 9 : 7;
-            place(piece, horizontal ? x - off : x, horizontal ? y : y - off, rotation);
-            place(piece, horizontal ? x + off : x, horizontal ? y : y + off, rotation);
+            const off = half + (gate.great ? 8 : 5);
+            place(piece, gate.at.x - ny * off, gate.at.y + nx * off, angle, 1, false);
+            place(piece, gate.at.x + ny * off, gate.at.y - nx * off, angle, 1, false);
           }
         }
         continue;
       }
 
-      const isTower = i % TOWER_EVERY === 0;
-      const band = horizontal
-        ? { x0: x - WALL_SEG / 2, y0: y - 1.1, x1: x + WALL_SEG / 2, y1: y + 1.1 }
-        : { x0: x - 1.1, y0: y - WALL_SEG / 2, x1: x + 1.1, y1: y + WALL_SEG / 2 };
-      block(nav, builtMask, band, CellFlag.BlockMove | CellFlag.BlockVision);
-      if (isTower && towerPiece) {
-        placements.push({ assetId: towerPiece, x, y, rotation: 0, scale: 1, blocks: false });
-      } else if (wallPiece) {
-        placements.push({ assetId: wallPiece, x, y, rotation, scale: 1, blocks: false });
+      // The wall's collision is a band along the line rather than a box, so a
+      // diagonal run is a diagonal wall and not a staircase.
+      const half = WALL_SEG / 2;
+      for (let s = -half; s <= half; s += 1.6) {
+        const px = x + nx * s;
+        const py = y + ny * s;
+        block(nav, builtMask, { x0: px - 2.4, y0: py - 2.4, x1: px + 2.4, y1: py + 2.4 },
+          CellFlag.BlockMove | CellFlag.BlockVision);
+      }
+
+      const piece = i % TOWER_EVERY === 0 && towerPiece ? towerPiece : wallPiece;
+      if (piece) {
+        placements.push({
+          assetId: piece,
+          x, y,
+          rotation: piece === towerPiece ? 0 : angle,
+          scale: 1,
+          blocks: false,
+        });
       }
     }
   };
 
-  runWall({ x: WALL.x0, y: WALL.y0 }, { x: WALL.x1, y: WALL.y0 }, 'n');
-  runWall({ x: WALL.x0, y: WALL.y1 }, { x: WALL.x1, y: WALL.y1 }, 's');
-  runWall({ x: WALL.x0, y: WALL.y0 }, { x: WALL.x0, y: WALL.y1 }, 'w');
-  runWall({ x: WALL.x1, y: WALL.y0 }, { x: WALL.x1, y: WALL.y1 }, 'e');
+  for (let i = 0; i < WALL_RING.length; i++) {
+    runWall(WALL_RING[i], WALL_RING[(i + 1) % WALL_RING.length]);
+  }
 
-  // Where the wall meets the water it stops: two water gates, open to boats and
-  // shut to nothing, because the river already blocks the ground.
-  for (const wx of [WALL.x0, WALL.x1]) {
+  // Where the wall meets the river it stops: the water is the barrier, and a
+  // chain across it is the gate.
+  for (const wx of [-205, 205]) {
     const y = riverY(wx);
-    open(nav, { x0: wx - 2, y0: y - RIVER_HALF - 2, x1: wx + 2, y1: y + RIVER_HALF + 2 });
-    for (let cy = nav.rowAt(y - RIVER_HALF - 2); cy <= nav.rowAt(y + RIVER_HALF + 2); cy++) {
-      for (let cx = nav.colAt(wx - 2); cx <= nav.colAt(wx + 2); cx++) {
-        if (!nav.inBounds(cx, cy)) continue;
-        const cyWorld = nav.cellCentreY(cy);
-        if (Math.abs(cyWorld - y) <= RIVER_HALF) nav.set(cx, cy, CellFlag.BlockMove);
-      }
-    }
+    if (!insideRing(WALL_RING, { x: wx, y })) continue;
+    open(nav, { x0: wx - 5, y0: y - RIVER_HALF - 5, x1: wx + 5, y1: y + RIVER_HALF + 5 });
+    place('street_chain_boom', wx, y - RIVER_HALF - 2, Math.PI / 2, 1, false);
     landmarks.push({ name: 'Water Gate', x: wx, y });
   }
 
-  // The citadel's own wall, one gate facing the main avenue.
-  runCitadelWall();
+  // --- the two streets everything else hangs off ---------------------------
 
-  function runCitadelWall(): void {
-    const c = CITADEL;
-    const segments: Array<[{ x: number; y: number }, { x: number; y: number }]> = [
-      [{ x: c.x0, y: c.y1 }, { x: c.x1, y: c.y1 }],
-      [{ x: c.x0, y: c.y0 }, { x: c.x0, y: c.y1 }],
-      [{ x: c.x1, y: c.y0 }, { x: c.x1, y: c.y1 }],
+  const marketC = centre(MARKET);
+  const highStreet: Rect = { x0: marketC.x - AVENUE / 2, y0: MARKET.y1 - 4, x1: marketC.x + AVENUE / 2, y1: 128 };
+  const castleWay: Rect = { x0: marketC.x - AVENUE / 2, y0: -234, x1: marketC.x + AVENUE / 2, y1: MARKET.y0 + 4 };
+  const crossStreet: Rect = { x0: -212, y0: marketC.y - AVENUE / 2, x1: 212, y1: marketC.y + AVENUE / 2 };
+  streets.push(highStreet, castleWay, crossStreet);
+
+  // Minster Way runs from the square to the cathedral door and Wharf Lane from
+  // the square to the water. Both are dog-legs, because the square was there
+  // first and the cathedral was built where there was room.
+  const minsterWay: Rect[] = [
+    { x0: 30, y0: -66, x1: 30 + STREET, y1: -20 },
+    { x0: 30, y0: -66, x1: 116, y1: -66 + STREET },
+    { x0: 108, y0: -140, x1: 108 + STREET, y1: -60 },
+  ];
+  const wharfLane: Rect[] = [
+    { x0: -26, y0: 0, x1: -26 + STREET, y1: 80 },
+    { x0: -104, y0: 76, x1: 44, y1: 76 + STREET },
+  ];
+  streets.push(...minsterWay, ...wharfLane);
+
+  // A road inside the wall the garrison can move on without crossing the town.
+  const ringPath: Point[] = WALL_RING.map((p) => ({ x: p.x * 0.88, y: p.y * 0.88 }));
+  for (let i = 0; i < ringPath.length; i++) {
+    paintLine(nav, laneMask, ringPath[i], ringPath[(i + 1) % ringPath.length], 6, 255);
+  }
+
+  // Roads out of every gate, in dirt: nobody cobbled the way to the next town.
+  roads.push(
+    { x0: -7, y0: 122, x1: 7, y1: nav.maxY },
+    { x0: -7, y0: nav.minY, x1: 7, y1: -228 },
+    { x0: nav.minX, y0: -47, x1: -205, y1: -33 },
+    { x0: 205, y0: -47, x1: nav.maxX, y1: -33 },
+  );
+
+  // --- the districts, in the order they claimed their ground ---------------
+
+  const districts: District[] = [
+    { name: 'The Citadel', rect: CITADEL, palette: usable(PALETTES.castle), crowd: CROWDS.castle,
+      fittings: FITTINGS.castle, minPlot: 40, fill: 0.84, crowding: 0.9 },
+    { name: 'Minster Close', rect: CLOSE, palette: usable(PALETTES.minster), crowd: CROWDS.minster,
+      fittings: FITTINGS.minster, minPlot: 40, fill: 0.84, crowding: 0.8 },
+    { name: 'Market Ward', rect: { x0: -104, y0: -112, x1: 104, y1: -82 }, palette: usable(PALETTES.market),
+      crowd: CROWDS.market, minPlot: 26, fill: 0.86, crowding: 1.4 },
+    { name: 'Market Ward', rect: { x0: -104, y0: 14, x1: 104, y1: 44 }, palette: usable(PALETTES.market),
+      crowd: CROWDS.market, minPlot: 26, fill: 0.86, crowding: 1.4 },
+    { name: 'Merchant Row', rect: { x0: -110, y0: -174, x1: -56, y1: -118 }, palette: usable(PALETTES.merchant),
+      crowd: CROWDS.market, minPlot: 28, fill: 0.82, crowding: 0.7 },
+    { name: 'Silver Street', rect: { x0: 56, y0: -110, x1: 178, y1: -82 }, palette: usable(PALETTES.merchant),
+      crowd: CROWDS.market, minPlot: 26, fill: 0.84, crowding: 0.9 },
+    { name: 'Weavers Ward', rect: { x0: -182, y0: -110, x1: -58, y1: -52 }, palette: usable(PALETTES.weavers),
+      crowd: CROWDS.weavers, fittings: FITTINGS.weavers, minPlot: 22, fill: 0.84, crowding: 0.7 },
+    // Against the wall and away from the thatch of the wards: everything in
+    // here has a furnace in it.
+    { name: 'Smiths Row', rect: { x0: -188, y0: -22, x1: -100, y1: 34 }, palette: usable(PALETTES.smiths),
+      crowd: CROWDS.smiths, fittings: FITTINGS.smiths, minPlot: 24, fill: 0.8, crowding: 0.8 },
+    { name: 'Eastgate Ward', rect: { x0: 100, y0: -22, x1: 188, y1: 40 }, palette: usable(PALETTES.wards),
+      crowd: CROWDS.wards, fittings: FITTINGS.wards, minPlot: 22, fill: 0.84, crowding: 0.7 },
+    { name: 'Northgate Ward', rect: { x0: -40, y0: -204, x1: 26, y1: -122 }, palette: usable(PALETTES.wards),
+      crowd: CROWDS.wards, fittings: FITTINGS.wards, minPlot: 22, fill: 0.84, crowding: 0.7 },
+    { name: 'Kingsgate Ward', rect: { x0: -96, y0: 48, x1: 96, y1: 70 }, palette: usable(PALETTES.wards),
+      crowd: CROWDS.wards, fittings: FITTINGS.wards, minPlot: 20, fill: 0.86, crowding: 0.9 },
+    { name: 'The Shambles', rect: { x0: 48, y0: 48, x1: 152, y1: 72 }, palette: usable(PALETTES.shambles),
+      crowd: CROWDS.shambles, fittings: FITTINGS.shambles, minPlot: 18, fill: 0.88, crowding: 1.0 },
+    { name: 'The Wharf', rect: { x0: -108, y0: 88, x1: 56, y1: 114 }, palette: usable(PALETTES.wharf),
+      crowd: CROWDS.wharf, fittings: FITTINGS.wharf, minPlot: 24, fill: 0.86, crowding: 1.2 },
+    { name: 'Dockside Rents', rect: { x0: 64, y0: 88, x1: 176, y1: 114 }, palette: usable(PALETTES.rents),
+      crowd: CROWDS.rents, fittings: FITTINGS.rents, minPlot: 17, fill: 0.9, crowding: 1.3 },
+    // Outside the wall, on the water, downstream of everything.
+    { name: 'Tanners Bank', rect: { x0: -192, y0: 158, x1: -44, y1: 192 }, palette: usable(PALETTES.tanners),
+      crowd: CROWDS.tanners, fittings: FITTINGS.tanners, minPlot: 20, fill: 0.82, crowding: 0.8 },
+    { name: 'Southgate Suburb', rect: { x0: -66, y0: 200, x1: 40, y1: 250 }, palette: usable(PALETTES.suburb),
+      crowd: CROWDS.wards, fittings: FITTINGS.wards, minPlot: 22, fill: 0.78, crowding: 0.5 },
+  ];
+
+  // --- the castle, and the throne in it ------------------------------------
+
+  const castleC = centre(CITADEL);
+
+  const runPrecinctWall = (r: Rect, gateAt: Point, gateHalf: number): void => {
+    const corners: Point[] = [
+      { x: r.x0, y: r.y0 }, { x: r.x1, y: r.y0 },
+      { x: r.x1, y: r.y1 }, { x: r.x0, y: r.y1 },
     ];
-    for (const [from, to] of segments) {
-      const horizontal = Math.abs(to.x - from.x) > Math.abs(to.y - from.y);
-      const length = horizontal ? Math.abs(to.x - from.x) : Math.abs(to.y - from.y);
+    for (let i = 0; i < 4; i++) {
+      const a = corners[i];
+      const b = corners[(i + 1) % 4];
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const length = Math.hypot(dx, dy);
       const steps = Math.max(1, Math.round(length / WALL_SEG));
-      for (let i = 0; i < steps; i++) {
-        const t = (i + 0.5) * WALL_SEG;
-        const x = horizontal ? from.x + t : from.x;
-        const y = horizontal ? from.y : from.y + t;
-        if (horizontal && Math.abs(x) < 7) continue; // the citadel gate
-        const band = horizontal
-          ? { x0: x - WALL_SEG / 2, y0: y - 1, x1: x + WALL_SEG / 2, y1: y + 1 }
-          : { x0: x - 1, y0: y - WALL_SEG / 2, x1: x + 1, y1: y + WALL_SEG / 2 };
-        block(nav, builtMask, band, CellFlag.BlockMove | CellFlag.BlockVision);
-        const corner = i === 0 || i === steps - 1;
-        const piece = corner && towerPiece ? towerPiece : wallPiece;
+      const angle = Math.atan2(dx, dy);
+      for (let s = 0; s < steps; s++) {
+        const t = (s + 0.5) / steps;
+        const x = a.x + dx * t;
+        const y = a.y + dy * t;
+        if (Math.hypot(x - gateAt.x, y - gateAt.y) < gateHalf) continue;
+        block(nav, builtMask, { x0: x - 2.6, y0: y - 2.6, x1: x + 2.6, y1: y + 2.6 },
+          CellFlag.BlockMove | CellFlag.BlockVision);
+        const corner = s === 0 || s === steps - 1;
+        const piece = corner && has('fort_tower_corner') ? 'fort_tower_corner' : wallPiece;
         if (piece) {
-          placements.push({
-            assetId: piece,
-            x, y,
-            rotation: piece === towerPiece ? 0 : horizontal ? 0 : Math.PI / 2,
-            scale: 1,
-            blocks: false,
-          });
+          placements.push({ assetId: piece, x, y, rotation: piece === wallPiece ? angle : 0, scale: 1, blocks: false });
         }
       }
     }
-    landmarks.push({ name: 'Citadel Gate', x: 0, y: CITADEL.y1 + 5 });
+    open(nav, { x0: gateAt.x - gateHalf, y0: gateAt.y - 8, x1: gateAt.x + gateHalf, y1: gateAt.y + 8 });
+    paint(nav, laneMask, { x0: gateAt.x - gateHalf, y0: gateAt.y - 18, x1: gateAt.x + gateHalf, y1: gateAt.y + 18 }, 255);
+  };
+
+  runPrecinctWall(CITADEL, { x: castleC.x, y: CITADEL.y1 }, 17);
+  landmarks.push({ name: 'Castle Gate', x: castleC.x, y: CITADEL.y1 + 10 });
+
+  /**
+   * The throne room, built as an open court rather than a roofed hall.
+   *
+   * A hall with a roof on it is a box from a camera fifty units up, and the
+   * throne is the thing the player came to see. A colonnade, a dais, a carpet
+   * and braziers inside a walled court reads as an interior from above and
+   * needs no cutaway.
+   */
+  const throne: Point = { x: castleC.x, y: CITADEL.y0 + 38 };
+  {
+    const hall: Rect = { x0: throne.x - 36, y0: throne.y - 28, x1: throne.x + 36, y1: throne.y + 44 };
+    paint(nav, laneMask, hall, 255);
+    for (const side of [-1, 1]) {
+      for (let i = 0; i < 5; i++) {
+        place('street_hall_column', throne.x + side * 24, throne.y - 12 + i * 14, 0, 1, false);
+      }
+    }
+    place('street_dais_steps', throne.x, throne.y, 0, 1, false);
+    place('street_throne_stone', throne.x, throne.y - 3, 0, 1, false);
+    place('street_carpet_runner', throne.x, throne.y + 26, Math.PI / 2, 1, false);
+    for (const side of [-1, 1]) {
+      place('street_banner_wall', throne.x + side * 10, throne.y - 14, 0, 1, false);
+      place('street_brazier_hall', throne.x + side * 14, throne.y + 10, 0, 1, false);
+      place('street_high_table', throne.x + side * 28, throne.y + 34, 0, 1, false);
+    }
+    place('folk_king', throne.x, throne.y + 5, Math.PI, 1, false);
+    place('folk_queen', throne.x + 7, throne.y + 6, Math.PI, 1, false);
+    for (let i = 0; i < 10; i++) {
+      const side = i % 2 === 0 ? -1 : 1;
+      place(i < 4 ? 'folk_knight_plate' : i < 7 ? 'folk_herald' : 'folk_noble_seated',
+        throne.x + side * (16 + rng.next() * 6), throne.y + 16 + Math.floor(i / 2) * 8,
+        Math.PI + (rng.next() - 0.5) * 0.5, 1, false);
+    }
+    taken.push(inflate(hall, 2));
+    landmarks.push({ name: 'The Throne Room', x: throne.x, y: throne.y + 20 });
   }
 
-  // --- fill the districts -------------------------------------------------
+  // The keep stands behind the hall; the rest of the castle fills in round it.
+  if (tryPlace('civic_keep_great', castleC.x - 46, CITADEL.y0 + 34, 0, 1, 3)) {
+    landmarks.push({ name: 'The Keep', x: castleC.x - 46, y: CITADEL.y0 + 34 });
+  }
+  tryPlace('civic_barracks', castleC.x + 48, CITADEL.y0 + 30, Math.PI / 2, 1, 3);
+  tryPlace('civic_arsenal', castleC.x + 48, CITADEL.y1 - 28, Math.PI / 2, 1, 3);
+  tryPlace('civic_chapel', castleC.x - 48, CITADEL.y1 - 26, 0, 1, 3);
+  place('civic_cistern', castleC.x, CITADEL.y1 - 18, 0, 1, false);
 
-  const yardKit = [
+  // --- the minster ---------------------------------------------------------
+
+  const closeC = centre(CLOSE);
+  if (tryPlace('civic_cathedral', closeC.x, closeC.y - 8, 0, 1, 4)) {
+    landmarks.push({ name: 'The Minster', x: closeC.x, y: closeC.y - 8 });
+  }
+  tryPlace('civic_chapter_house', closeC.x + 56, closeC.y + 28, 0, 1, 3);
+  tryPlace('civic_abbey', closeC.x - 58, closeC.y + 24, 0, 1, 3);
+  tryPlace('civic_almshouse', CLOSE.x0 + 28, CLOSE.y1 - 20, 0, 1, 3);
+  place('street_shrine_pillar', closeC.x, CLOSE.y1 - 12, 0, 1, false);
+  for (let i = 0; i < 18; i++) {
+    place('rural_tombstone', CLOSE.x1 - 14 - (i % 4) * 10, CLOSE.y0 + 18 + Math.floor(i / 4) * 10, rng.next(), 1, false);
+  }
+  place('rural_graveyard_gate', CLOSE.x1 - 30, CLOSE.y0 + 10, 0, 1, false);
+
+  // --- clean water, from outside ------------------------------------------
+  //
+  // The river inside the walls is a sewer by the time it leaves, so what the
+  // town drinks is carried in over an aqueduct from the hills and let out at a
+  // conduit in the market square.
+
+  {
+    const from: Point = { x: 302, y: -252 };
+    const to: Point = { x: 178, y: -78 };
+    const steps = 11;
+    const angle = Math.atan2(to.x - from.x, to.y - from.y);
+    for (let i = 0; i < steps; i++) {
+      const t = i / (steps - 1);
+      place(i < steps - 3 ? 'civic_aqueduct_tall' : 'civic_aqueduct_low',
+        from.x + (to.x - from.x) * t, from.y + (to.y - from.y) * t, angle, 1, false);
+    }
+    landmarks.push({ name: 'The Aqueduct', x: 252, y: -172 });
+    place('civic_conduit_house', marketC.x + 32, marketC.y - 24, 0, 1, false);
+    place('street_fountain_wall_large', marketC.x - 32, marketC.y + 20, 0, 1, false);
+    place('street_horse_trough_long', marketC.x - 36, marketC.y - 22, Math.PI / 2, 1, false);
+  }
+
+  // --- the market square ---------------------------------------------------
+
+  paint(nav, laneMask, MARKET, 255);
+  landmarks.push({ name: 'Market Square', x: marketC.x, y: marketC.y });
+  place('street_market_cross', marketC.x, marketC.y - 8, 0, 1, false);
+  place('street_well_covered', marketC.x + 18, marketC.y + 18, 0, 1, false);
+  tryPlace('civic_weigh_house', MARKET.x0 - 24, marketC.y - 22, Math.PI / 2, 1, 2);
+  tryPlace('civic_guildhall', MARKET.x1 + 26, marketC.y + 16, Math.PI / 2, 1, 2);
+
+  const stalls = usable(FITTINGS.market);
+  for (let row = 0; row < 5; row++) {
+    for (let col = 0; col < 9; col++) {
+      const x = MARKET.x0 + 8 + col * 10 + (row % 2) * 2.5;
+      const y = MARKET.y0 + 8 + row * 13;
+      if (Math.hypot(x - marketC.x, y - (marketC.y - 8)) < 15) continue;
+      place(stalls[rng.int(0, stalls.length - 1)], x, y, (rng.next() - 0.5) * 0.4, 1, false);
+    }
+  }
+
+  // --- what the town navigates by ------------------------------------------
+
+  const setPieces: Array<[string, number, number, number, string]> = [
+    ['civic_moot_hall', -74, -32, 0, 'Moot Hall'],
+    ['house_inn', 72, -36, Math.PI, 'The Coaching Inn'],
+    ['house_tavern', -70, 24, 0, 'The Broken Crown'],
+    ['civic_clock_tower', 34, 38, 0, 'Clock Tower'],
+    ['civic_theatre', -154, 66, 0, 'The Playhouse'],
+    ['civic_wizard_tower', 176, -152, 0, "Wizard's Tower"],
+    ['civic_bell_tower', 80, -130, 0, 'Bell Tower'],
+    ['civic_university', -170, -152, 0, 'Scholars Hall'],
+    ['civic_hospital', 154, 10, 0, 'The Hospital'],
+    ['civic_prison', -184, -122, 0, 'The Gaol'],
+  ];
+  for (const [id, x, y, rot, name] of setPieces) {
+    if (tryPlace(id, x, y, rot, 1, 2)) landmarks.push({ name, x, y });
+  }
+
+  // --- the wharf -----------------------------------------------------------
+
+  {
+    for (let i = 0; i < 11; i++) {
+      const x = -112 + i * 17;
+      const bank = riverY(x) - RIVER_HALF;
+      place('dock_harbour_wall', x, bank - 4, 0, 1, false);
+      if (i % 3 === 1) place('dock_pier_section', x, bank + 8, 0, 1, false);
+      if (i % 4 === 2) place('dock_mooring_post', x + 5, bank - 1, 0, 1, false);
+    }
+    place('dock_dock_crane', -48, riverY(-48) - RIVER_HALF - 14, 0, 1, false);
+    place('dock_dock_crane', 20, riverY(20) - RIVER_HALF - 14, 0, 1, false);
+    landmarks.push({ name: 'The Wharf', x: -30, y: riverY(-30) - RIVER_HALF - 18 });
+    for (const [x, kind] of [[-98, 'dock_boat_fishing'], [-30, 'dock_boat_cog'], [44, 'dock_boat_barge'], [-66, 'dock_boat_row']] as Array<[number, string]>) {
+      place(kind, x, riverY(x), rng.next() * 0.3, 1, false);
+    }
+  }
+
+  for (const bx of bridges) {
+    place('street_bridge_stone', bx, riverY(bx), 0, 1, false);
+    paint(nav, laneMask, { x0: bx - 9, y0: riverY(bx) - RIVER_HALF - 12, x1: bx + 9, y1: riverY(bx) + RIVER_HALF + 12 }, 255);
+  }
+  landmarks.push({ name: 'The Great Bridge', x: -8, y: riverY(-8) - 24 });
+
+  // The mill sits on a leat taken off the river above the town, which is also
+  // where the clean water is drawn. The tanners are a long way downstream.
+  tryPlace('rural_watermill', -214, riverY(-214) - 24, 0, 1, 3);
+  landmarks.push({ name: 'The Mill', x: -214, y: riverY(-214) - 30 });
+  place('street_sluice_gate', -198, riverY(-198) - RIVER_HALF - 5, 0, 1, false);
+  tryPlace('rural_windmill', 236, -230, 0, 1, 4);
+
+  // --- the wards -----------------------------------------------------------
+
+  const yardKit = usable([
     'street_firewood', 'street_barrel_stack', 'street_crate_stack', 'street_sack_pile',
     'street_rain_barrel', 'street_cart_hand', 'street_planter', 'street_laundry_line',
-    'street_bench_wood', 'street_dung_heap', 'street_rubble_pile', 'street_table_long',
-    'rural_hay_bales', 'rural_chicken_coop', 'rural_beehives', 'rural_crop_cabbage',
-    'nature_hedge_section', 'nature_flowerbed', 'nature_topiary', 'street_wheelbarrow',
-  ].filter(has);
+    'street_bench_wood', 'street_dung_heap', 'street_rubble_pile', 'street_wheelbarrow',
+    'rural_hay_bales', 'rural_chicken_coop', 'rural_beehives', 'nature_hedge_section',
+    'nature_flowerbed', 'nature_topiary', 'street_dovecote',
+  ]);
 
-  /** Scatters a few small things across a plot no building would fit. */
   const dressYard = (plot: Rect): void => {
     if (!yardKit.length) return;
-    const count = Math.min(4, 1 + Math.floor((width(plot) * depth(plot)) / 46));
+    const count = Math.min(4, 1 + Math.floor((width(plot) * depth(plot)) / 200));
     for (let i = 0; i < count; i++) {
-      const x = plot.x0 + 1 + rng.next() * Math.max(0.1, width(plot) - 2);
-      const y = plot.y0 + 1 + rng.next() * Math.max(0.1, depth(plot) - 2);
+      const x = plot.x0 + 2 + rng.next() * Math.max(0.1, width(plot) - 4);
+      const y = plot.y0 + 2 + rng.next() * Math.max(0.1, depth(plot) - 4);
       if (!nav.isWalkableWorld(x, y)) continue;
       place(yardKit[rng.int(0, yardKit.length - 1)], x, y, rng.next() * Math.PI * 2, 1, false);
     }
   };
+
+  const noBuild: Rect[] = [
+    inflate(highStreet, 2), inflate(castleWay, 2), inflate(crossStreet, 2), inflate(MARKET, 4),
+    ...minsterWay.map((r) => inflate(r, 2)), ...wharfLane.map((r) => inflate(r, 2)),
+  ];
 
   for (const district of districts) {
     const plots: Rect[] = [];
@@ -535,20 +860,13 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
     for (const plot of plots) {
       const pw = width(plot) * district.fill;
       const pd = depth(plot) * district.fill;
-      const cx = (plot.x0 + plot.x1) / 2;
-      const cy = (plot.y0 + plot.y1) / 2;
+      const c = centre(plot);
+      const foot = { x0: c.x - pw / 2, y0: c.y - pd / 2, x1: c.x + pw / 2, y1: c.y + pd / 2 };
 
-      // Buildings never straddle an avenue or the market, and never stand in
-      // the river.
-      const foot = { x0: cx - pw / 2, y0: cy - pd / 2, x1: cx + pw / 2, y1: cy + pd / 2 };
-      if (overlaps(foot, inflate(mainAvenue, 1))) continue;
-      if (overlaps(foot, inflate(crossAvenue, 1))) continue;
-      if (overlaps(foot, inflate(MARKET, 2))) continue;
-      if (Math.abs(cy - riverY(cx)) < RIVER_HALF + 4) continue;
-      if (!free(foot, 0.5)) continue;
+      if (noBuild.some((r) => overlaps(foot, r))) continue;
+      if (Math.abs(c.y - riverY(c.x)) < RIVER_HALF + 8) continue;
+      if (!free(foot, 1)) continue;
 
-      // Pick the piece that fills the plot best in either orientation, so a
-      // long thin plot gets a terrace and a square one gets a hall.
       let best: { id: string; rotation: number; scale: number; score: number } | null = null;
       for (const id of district.palette) {
         const s = sizeOf(id);
@@ -557,290 +875,215 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
           const w = turned ? s[2] : s[0];
           const d = turned ? s[0] : s[2];
           const scale = Math.min(pw / w, pd / d);
-          // A narrow band on purpose. Outside it the piece is being visibly
-          // resized rather than chosen, and a street of the same house at four
-          // different scales looks worse than a street with a gap in it — the
-          // gap reads as a yard.
-          if (scale < 0.68 || scale > 1.45) continue;
-          // Reward filling the plot; penalise having to stretch a small asset.
+          if (scale < 0.7 || scale > 1.4) continue;
           const score = (w * scale * d * scale) / (pw * pd) - Math.abs(1 - scale) * 0.35;
           if (!best || score > best.score) best = { id, rotation, scale, score };
         }
       }
       if (!best) {
-        // Nothing in the palette fits without being visibly stretched, so the
-        // plot becomes a yard instead of bare ground. Cities are full of these:
-        // the space behind and between the houses, with the woodpile in it.
         dressYard(foot);
         continue;
       }
-      // A quarter turn either way, so a street is not a row of identical fronts.
       const flip = rng.int(0, 1) === 1 ? Math.PI : 0;
-      place(best.id, cx, cy, best.rotation + flip, best.scale);
+      place(best.id, c.x, c.y, best.rotation + flip, best.scale);
     }
-  }
 
-  // --- the market square and the set pieces --------------------------------
-
-  paint(nav, laneMask, MARKET, 255);
-  landmarks.push({ name: 'Market Square', x: 0, y: -13 });
-
-  const marketProps = [
-    'street_stall_awning', 'street_stall_fruit', 'street_stall_fish', 'street_stall_cloth',
-    'street_stall_bread', 'street_stall_smith', 'street_stall_empty',
-  ].filter(has);
-  if (marketProps.length) {
-    for (let row = 0; row < 4; row++) {
-      for (let col = 0; col < 7; col++) {
-        const x = MARKET.x0 + 5 + col * 6.4 + (row % 2) * 1.2;
-        const y = MARKET.y0 + 5 + row * 6.4;
-        if (Math.hypot(x, y + 13) < 6) continue; // leave the middle for the cross
-        place(marketProps[rng.int(0, marketProps.length - 1)], x, y, rng.next() * 0.4 - 0.2, 1, false);
-      }
-    }
-  }
-  place('street_market_cross', 0, -13, 0, 1, false);
-  place('street_fountain_tiered', -20, 0, 0, 1, false);
-  place('street_well_stone', 19, -25, 0, 1, false);
-
-  // Landmarks that deserve to be placed by hand rather than fall out of a
-  // subdivision: the things a visitor navigates by.
-  const setPieces: Array<[string, number, number, number, string]> = [
-    ['civic_clock_tower', -20, -40, 0, 'Clock Tower'],
-    ['civic_basilica', 54, 10, 0, 'The Basilica'],
-    ['civic_theatre', -60, 8, 0, 'The Playhouse'],
-    ['street_shrine_pillar', 12, -6, 0, 'Plague Column'],
-    ['civic_moot_hall', -14, 6, 0, 'Moot Hall'],
-    ['civic_cathedral', 62, -14, 0, 'Cathedral'],
-    ['civic_keep_great', 0, -88, 0, 'The Keep'],
-    ['civic_wizard_tower', -72, -46, 0, "Wizard's Tower"],
-    ['civic_bell_tower', 22, -38, 0, 'Bell Tower'],
-    ['civic_guildhall', -34, 4, 0, 'Guildhall'],
-    ['house_tavern', 30, 4, Math.PI, 'The Broken Crown'],
-    ['house_inn', -40, -22, 0, 'Coaching Inn'],
-    ['rural_windmill', 118, -78, 0, 'Windmill'],
-    ['rural_watermill', -118, 30, 0, 'Watermill'],
-    ['dock_lighthouse', 96, 40, 0, 'Beacon'],
-  ];
-  for (const [id, x, y, rot, name] of setPieces) {
-    if (!has(id)) continue;
-    const s = sizeOf(id);
-    const foot = { x0: x - s[0] / 2, y0: y - s[2] / 2, x1: x + s[0] / 2, y1: y + s[2] / 2 };
-    if (!free(foot, 1)) continue;
-    place(id, x, y, rot);
-    landmarks.push({ name, x, y });
-  }
-
-  // --- the waterfront ------------------------------------------------------
-
-  for (const side of [-1, 1]) {
-    for (let i = 0; i < 9; i++) {
-      const x = -70 + i * 17 + side * 3;
-      const bank = riverY(x) - RIVER_HALF * side;
-      place('dock_harbour_wall', x, bank - 1.4 * side, 0, 1, false);
-      if (i % 3 === 1) place('dock_pier_section', x, bank + 3 * side, 0, 1, false);
-      if (i % 3 === 2) place('dock_mooring_post', x + 2, bank - 0.4 * side, 0, 1, false);
-    }
-  }
-  for (const [x, kind] of [[-46, 'dock_boat_fishing'], [12, 'dock_boat_barge'], [64, 'dock_boat_cog'], [-16, 'dock_boat_row']] as Array<[number, string]>) {
-    place(kind, x, riverY(x), rng.next() * 0.3, 1, false);
-  }
-  place('dock_dock_crane', 40, riverY(40) - RIVER_HALF - 3, 0, 1, false);
-  landmarks.push({ name: 'The Wharf', x: 40, y: riverY(40) - RIVER_HALF - 6 });
-
-  for (const bx of bridges) {
-    place('street_bridge_stone', bx, riverY(bx), 0, 1, false);
-    paint(nav, laneMask, { x0: bx - 4, y0: riverY(bx) - RIVER_HALF - 4, x1: bx + 4, y1: riverY(bx) + RIVER_HALF + 4 }, 255);
-  }
-
-  // --- outside the walls ---------------------------------------------------
-
-  const farmland: Rect[] = [
-    { x0: -152, y0: -140, x1: -108, y1: -40 },
-    { x0: 108, y0: -140, x1: 152, y1: -40 },
-    { x0: -152, y0: 70, x1: -40, y1: 140 },
-    { x0: 40, y0: 70, x1: 152, y1: 140 },
-  ];
-  const ruralKit = [
-    'rural_farmhouse', 'rural_barn', 'rural_stable_farm', 'rural_haystack', 'rural_hay_bales',
-    'rural_chicken_coop', 'rural_pigsty', 'rural_beehives', 'rural_crop_wheat', 'rural_crop_cabbage',
-    'rural_vineyard_row', 'rural_orchard_tree', 'rural_scarecrow', 'rural_well_farm',
-    'rural_fence_wood', 'rural_wall_field', 'rural_gate_field', 'rural_fence_wattle',
-  ].filter(has);
-  if (ruralKit.length) {
-    for (const field of farmland) {
-      const count = Math.round((width(field) * depth(field)) / 240);
-      for (let i = 0; i < count; i++) {
-        const id = ruralKit[rng.int(0, ruralKit.length - 1)];
-        const x = field.x0 + rng.next() * width(field);
-        const y = field.y0 + rng.next() * depth(field);
-        if (Math.abs(y - riverY(x)) < RIVER_HALF + 3) continue;
+    // The trade's own clutter, along its frontages.
+    const fittings = district.fittings ? district.fittings.filter(has) : [];
+    if (fittings.length) {
+      const n = Math.round((width(district.rect) * depth(district.rect)) / 900);
+      for (let i = 0; i < n; i++) {
+        const x = district.rect.x0 + rng.next() * width(district.rect);
+        const y = district.rect.y0 + rng.next() * depth(district.rect);
         if (!nav.isWalkableWorld(x, y)) continue;
-        const s = sizeOf(id);
-        const foot = { x0: x - s[0] / 2, y0: y - s[2] / 2, x1: x + s[0] / 2, y1: y + s[2] / 2 };
-        if (!free(foot, 1.5)) continue;
-        const heavy = s[1] > 3;
-        place(id, x, y, rng.int(0, 3) * (Math.PI / 2), 1, heavy);
+        place(fittings[rng.int(0, fittings.length - 1)], x, y, rng.next() * Math.PI * 2, 1, false);
       }
     }
   }
 
-  // A graveyard, a shrine and a camp along the roads, so the approach is not
-  // an empty field.
-  place('rural_graveyard_gate', -118, -14, Math.PI / 2, 1, false);
-  for (let i = 0; i < 14; i++) {
-    place('rural_tombstone', -134 + (i % 5) * 5, -26 + Math.floor(i / 5) * 6, rng.next(), 1, false);
-  }
-  place('rural_mausoleum', -136, -6, 0);
-  place('folk_gravedigger', -126, -20, 0.7, 1, false);
-  landmarks.push({ name: 'Boneyard', x: -128, y: -16 });
+  // --- who is where, during the day ----------------------------------------
 
-  for (let i = 0; i < 7; i++) {
-    place(i % 3 === 0 ? 'rural_tent_round' : 'rural_tent_square', -22 + i * 7, 86 + (i % 2) * 9, rng.next(), 1, false);
+  for (const district of districts) {
+    const ids = (district.crowd ?? CROWDS.wards).filter(has);
+    if (!ids.length) continue;
+    const area = width(district.rect) * depth(district.rect);
+    const count = Math.round((area / 100) * (district.crowding ?? 0.6));
+    for (let i = 0; i < count; i++) {
+      const x = district.rect.x0 + rng.next() * width(district.rect);
+      const y = district.rect.y0 + rng.next() * depth(district.rect);
+      if (!nav.isWalkableWorld(x, y)) continue;
+      if (Math.abs(y - riverY(x)) < RIVER_HALF + 3) continue;
+      place(ids[rng.int(0, ids.length - 1)], x, y, rng.next() * Math.PI * 2, 1, false);
+    }
   }
-  place('rural_campfire_ring', 6, 92, 0, 1, false);
-  landmarks.push({ name: 'The Camp', x: 6, y: 88 });
+
+  // The market is the busiest place in the city, and the gates are where
+  // everyone is queuing to get into it.
+  {
+    const ids = CROWDS.market.filter(has);
+    for (let i = 0; i < 52 && ids.length; i++) {
+      const x = MARKET.x0 + 6 + rng.next() * (width(MARKET) - 12);
+      const y = MARKET.y0 + 6 + rng.next() * (depth(MARKET) - 12);
+      if (!nav.isWalkableWorld(x, y)) continue;
+      place(ids[rng.int(0, ids.length - 1)], x, y, rng.next() * Math.PI * 2, 1, false);
+    }
+    const guards = CROWDS.gate.filter(has);
+    for (const gate of gates) {
+      for (let i = 0; i < 5 && guards.length; i++) {
+        const a = rng.next() * Math.PI * 2;
+        const r = 16 + rng.next() * 12;
+        const x = gate.x + Math.cos(a) * r;
+        const y = gate.y + Math.sin(a) * r;
+        if (!nav.isWalkableWorld(x, y)) continue;
+        place(guards[rng.int(0, guards.length - 1)], x, y, rng.next() * Math.PI * 2, 1, false);
+      }
+      const out = gate.y > 0 ? 1 : -1;
+      place('street_toll_post', gate.x + 18, gate.y + out * 24, 0, 1, false);
+      place('street_cart_ox', gate.x - 20, gate.y + out * 30, rng.next(), 1, false);
+    }
+  }
+
+  // --- outside: fields, and the water that reaches them --------------------
+
+  const fields: Rect[] = [
+    { x0: -300, y0: -270, x1: -216, y1: -60 },
+    { x0: 216, y0: -270, x1: 300, y1: -90 },
+    { x0: -300, y0: 202, x1: -120, y1: 268 },
+    { x0: 150, y0: 200, x1: 300, y1: 268 },
+    { x0: 232, y0: 20, x1: 300, y1: 150 },
+  ];
+
+  const cropKit = usable(['rural_field_wheat', 'rural_field_furrows', 'rural_crop_wheat',
+    'rural_crop_cabbage', 'rural_vineyard_row']);
+  const farmKit = usable(['rural_farmhouse', 'rural_barn', 'rural_tithe_barn', 'rural_stable_farm',
+    'rural_haystack', 'rural_hay_bales', 'rural_sheep_pen', 'rural_chicken_coop', 'rural_pigsty',
+    'rural_beehives', 'rural_orchard_tree', 'rural_well_farm', 'rural_windpump',
+    'rural_charcoal_burner', 'rural_scarecrow']);
+
+  for (const field of fields) {
+    // Strips, not scatter: the open-field system laid land out in long furlongs
+    // and the edge of one is the edge of the next.
+    const strips = Math.max(2, Math.floor(width(field) / 28));
+    for (let s = 0; s < strips; s++) {
+      const x0 = field.x0 + (s * width(field)) / strips;
+      const x1 = field.x0 + ((s + 1) * width(field)) / strips;
+      const crop = cropKit[rng.int(0, cropKit.length - 1)];
+      const x = (x0 + x1) / 2;
+      for (let y = field.y0 + 10; y < field.y1 - 10; y += 15) {
+        if (!nav.isWalkableWorld(x, y)) continue;
+        if (Math.abs(y - riverY(x)) < RIVER_HALF + 8) continue;
+        place(crop, x, y, 0, 1, false);
+      }
+      // An irrigation ditch down every other strip boundary.
+      if (s % 2 === 1) {
+        for (let y = field.y0 + 8; y < field.y1 - 8; y += 11) {
+          if (Math.abs(y - riverY(x0)) < RIVER_HALF + 5) continue;
+          place('rural_irrigation_ditch', x0, y, Math.PI / 2, 1, false);
+        }
+      }
+    }
+    for (let i = 0; i < 5; i++) {
+      const id = farmKit[rng.int(0, farmKit.length - 1)];
+      const x = field.x0 + 14 + rng.next() * Math.max(1, width(field) - 28);
+      const y = field.y0 + 14 + rng.next() * Math.max(1, depth(field) - 28);
+      if (!nav.isWalkableWorld(x, y)) continue;
+      if (Math.abs(y - riverY(x)) < RIVER_HALF + 8) continue;
+      tryPlace(id, x, y, rng.int(0, 3) * (Math.PI / 2), 1, 3);
+    }
+    paint(nav, dirtMask, field, 110);
+  }
+
+  {
+    const ids = CROWDS.fields.filter(has);
+    for (let i = 0; i < 54 && ids.length; i++) {
+      const field = fields[rng.int(0, fields.length - 1)];
+      const x = field.x0 + rng.next() * width(field);
+      const y = field.y0 + rng.next() * depth(field);
+      if (!nav.isWalkableWorld(x, y)) continue;
+      place(ids[rng.int(0, ids.length - 1)], x, y, rng.next() * Math.PI * 2, 1, false);
+    }
+  }
+
+  // The quarry the walls came out of, and the road they came in on.
+  if (tryPlace('rural_quarry_face', 268, -182, Math.PI / 2, 1, 4)) {
+    landmarks.push({ name: 'The Quarry', x: 268, y: -182 });
+  }
+  place('street_cart_ox', 242, -174, 0.4, 1, false);
+
+  // Gallows on the road out, a lazar house well away from everyone, and a
+  // wayside shrine where a traveller can be grateful they passed both.
+  place('street_gallows', 36, 182, 0, 1, false);
+  landmarks.push({ name: 'The Gallows', x: 36, y: 178 });
+  if (tryPlace('civic_hospice', -184, 254, 0, 1, 3)) {
+    landmarks.push({ name: 'Lazar House', x: -184, y: 254 });
+  }
+  place('street_road_shrine', -14, 206, 0, 1, false);
+  place('street_road_shrine', -14, -266, 0, 1, false);
+  for (const m of [[-8, 172], [-8, 254], [-8, -270], [254, -40], [-254, -40]] as Array<[number, number]>) {
+    place('rural_milestone', m[0], m[1], 0, 1, false);
+  }
+
+  // The fairground: flat, open, outside the gate, and empty most of the year.
+  {
+    const fair: Rect = { x0: 62, y0: 146, x1: 184, y1: 196 };
+    paint(nav, dirtMask, fair, 210);
+    for (let i = 0; i < 10; i++) {
+      place(i % 3 === 0 ? 'rural_tent_round' : 'rural_tent_square',
+        fair.x0 + 14 + rng.next() * (width(fair) - 28),
+        fair.y0 + 12 + rng.next() * (depth(fair) - 24),
+        rng.next(), 1, false);
+    }
+    place('rural_campfire_ring', 122, 174, 0, 1, false);
+    landmarks.push({ name: 'The Fairground', x: 122, y: 166 });
+  }
 
   // --- street furniture ----------------------------------------------------
-  //
-  // Placed along the streets rather than scattered, and never blocking: the
-  // point of a lamp post is that you walk past it.
 
-  const furniture = [
-    'street_pump', 'street_pillory', 'street_dovecote', 'street_shrine_corner',
-    'street_awning_row', 'street_drain', 'street_lamp_wall', 'street_stall_covered',
-    'street_cage_hanging', 'street_tree_planter', 'street_well_covered',
-    'street_lamp_post', 'street_cart_wagon', 'street_cart_hand', 'street_barrel_stack',
-    'street_crate_stack', 'street_sack_pile', 'street_firewood', 'street_rain_barrel',
-    'street_bench_wood', 'street_signpost', 'street_notice_board', 'street_planter',
-    'street_laundry_line', 'street_brazier_street', 'street_trough', 'street_ladder_lean',
-    'street_cart_broken', 'street_rubble_pile', 'street_banner_pole', 'street_bunting',
-    'nature_tree_street', 'nature_hedge_section', 'nature_flowerbed',
-  ].filter(has);
-  if (furniture.length) {
-    for (const street of streets) {
-      const along = Math.max(width(street), depth(street));
-      const horizontal = width(street) > depth(street);
-      const count = Math.floor(along / 13);
-      for (let i = 0; i < count; i++) {
-        const t = ((i + 0.5) / count) * along;
-        const edge = rng.int(0, 1) === 0 ? -1 : 1;
-        const half = (horizontal ? depth(street) : width(street)) / 2;
-        const x = horizontal ? street.x0 + t : (street.x0 + street.x1) / 2 + edge * (half - 0.8);
-        const y = horizontal ? (street.y0 + street.y1) / 2 + edge * (half - 0.8) : street.y0 + t;
-        if (!nav.isWalkableWorld(x, y)) continue;
-        if (Math.abs(y - riverY(x)) < RIVER_HALF + 2) continue;
-        place(furniture[rng.int(0, furniture.length - 1)], x, y, rng.next() * Math.PI * 2, 1, false);
-      }
-    }
-  }
-
-  // --- the people ----------------------------------------------------------
-  //
-  // Standing figures, not units. A city reads as inhabited from the number of
-  // people in it long before any of them move, and two hundred static citizens
-  // cost one instanced draw call each while two hundred simulated ones cost a
-  // pathfinder. The ones that matter can be promoted to units later.
-
-  const crowds: Array<{ ids: string[]; rect: Rect; count: number }> = [
-    {
-      ids: ['folk_merchant', 'folk_peasant_woman', 'folk_farmer', 'folk_beggar', 'folk_baker',
-        'folk_monk', 'folk_bard', 'folk_thief', 'folk_innkeeper', 'folk_stablehand',
-        'folk_porter', 'folk_watercarrier', 'folk_basket_woman', 'folk_crier',
-        'folk_fishwife', 'folk_child_running', 'folk_child_standing', 'folk_old_woman',
-        'folk_old_man', 'folk_maid', 'folk_jester', 'folk_musician', 'folk_dancer',
-        'folk_beggar_seated', 'folk_scribe', 'folk_cook', 'creature_dog_street',
-        'creature_goose', 'creature_cat'],
-      rect: MARKET,
-      count: 34,
-    },
-    {
-      ids: ['folk_guard_city', 'folk_manatarms', 'folk_sergeant', 'folk_crossbowman',
-        'folk_guard_leaning', 'folk_watchman_lantern', 'folk_standard_bearer'],
-      rect: { x0: -12, y0: WALL.y1 - 16, x1: 12, y1: WALL.y1 - 2 },
-      count: 6,
-    },
-    {
-      ids: ['folk_knight_plate', 'folk_paladin', 'folk_herald', 'folk_pikeman', 'folk_archer',
-        'folk_squire', 'folk_standard_bearer', 'folk_noble_seated', 'creature_falcon'],
-      rect: { x0: CITADEL.x0 + 6, y0: CITADEL.y1 - 16, x1: CITADEL.x1 - 6, y1: CITADEL.y1 - 3 },
-      count: 8,
-    },
-    {
-      ids: ['folk_fisherman', 'folk_stablehand', 'folk_beggar', 'folk_mercenary', 'folk_merchant',
-        'folk_porter', 'folk_cooper', 'folk_carpenter', 'folk_drunk', 'creature_rat_giant',
-        'creature_dog_street'],
-      rect: { x0: -80, y0: 18, x1: 80, y1: 26 },
-      count: 14,
-    },
-    {
-      ids: ['folk_blacksmith', 'folk_peasant_woman', 'folk_stablehand', 'folk_mason',
-        'folk_carpenter', 'folk_smith_apprentice', 'folk_miller', 'folk_cooper'],
-      rect: { x0: -86, y0: -28, x1: -36, y1: 4 },
-      count: 10,
-    },
-    {
-      ids: ['folk_farmer', 'folk_peasant_woman', 'creature_cow', 'creature_pig', 'creature_goat',
-        'creature_chicken', 'creature_mule', 'folk_shepherd', 'folk_hunter', 'creature_sheep',
-        'creature_ox', 'creature_donkey', 'creature_goose', 'creature_horse_cart'],
-      rect: { x0: -150, y0: 74, x1: 150, y1: 136 },
-      count: 22,
-    },
-    {
-      ids: ['folk_wizard', 'folk_cleric', 'folk_bishop', 'folk_monk', 'folk_elf_mage',
-        'folk_nun', 'folk_kneeling_pilgrim', 'folk_scribe', 'folk_plague_doctor'],
-      rect: { x0: 38, y0: -28, x1: 86, y1: 2 },
-      count: 7,
-    },
-  ];
-
-  for (const crowd of crowds) {
-    const ids = crowd.ids.filter(has);
-    if (!ids.length) continue;
-    for (let i = 0; i < crowd.count; i++) {
-      const x = crowd.rect.x0 + rng.next() * width(crowd.rect);
-      const y = crowd.rect.y0 + rng.next() * depth(crowd.rect);
+  const furniture = usable([
+    'street_lamp_post', 'street_lamp_wall', 'street_signpost', 'street_notice_board',
+    'street_cart_wagon', 'street_cart_hand', 'street_barrel_stack', 'street_crate_stack',
+    'street_bench_wood', 'street_trough', 'street_planter', 'street_guild_sign',
+    'street_drain', 'street_pump', 'street_shrine_corner', 'street_tree_planter',
+    'nature_tree_street', 'nature_hedge_section', 'street_banner_pole', 'street_bunting',
+  ]);
+  for (const street of streets) {
+    const along = Math.max(width(street), depth(street));
+    const horizontal = width(street) > depth(street);
+    const count = Math.floor(along / 22);
+    for (let i = 0; i < count; i++) {
+      const t = ((i + 0.5) / count) * along;
+      const edge = rng.int(0, 1) === 0 ? -1 : 1;
+      const half = (horizontal ? depth(street) : width(street)) / 2;
+      const x = horizontal ? street.x0 + t : (street.x0 + street.x1) / 2 + edge * (half - 1.4);
+      const y = horizontal ? (street.y0 + street.y1) / 2 + edge * (half - 1.4) : street.y0 + t;
       if (!nav.isWalkableWorld(x, y)) continue;
-      if (Math.abs(y - riverY(x)) < RIVER_HALF + 2) continue;
-      // People do not block. Walking through a crowd is better than a market
-      // square nobody can cross.
-      place(ids[rng.int(0, ids.length - 1)], x, y, rng.next() * Math.PI * 2, 1, false);
+      if (Math.abs(y - riverY(x)) < RIVER_HALF + 3) continue;
+      place(furniture[rng.int(0, furniture.length - 1)], x, y, rng.next() * Math.PI * 2, 1, false);
     }
   }
 
   // --- masks ---------------------------------------------------------------
 
   for (const street of streets) paint(nav, laneMask, street, 255);
-  paint(nav, laneMask, inflate(CITADEL, -2), 210);
-  // Between the streets is not paving and not lawn. It is the beaten earth of
-  // yards, middens and alleys, which is most of what a medieval city stood on.
-  for (const district of districts) paint(nav, dirtMask, inflate(district.rect, 3), 235);
+  paint(nav, laneMask, inflate(CITADEL, -6), 200);
+  paint(nav, laneMask, inflate(CLOSE, -6), 190);
+  for (const district of districts) paint(nav, dirtMask, inflate(district.rect, 5), 230);
   for (const road of roads) paint(nav, dirtMask, road, 255);
-  for (const field of farmland) paint(nav, dirtMask, field, 120);
-  // A worn apron outside each gate, where the traffic funnels in.
   for (const gate of gates) {
-    paint(nav, dirtMask, { x0: gate.x - 16, y0: gate.y - 16, x1: gate.x + 16, y1: gate.y + 16 }, 220);
+    paint(nav, dirtMask, { x0: gate.x - 34, y0: gate.y - 34, x1: gate.x + 34, y1: gate.y + 34 }, 220);
   }
 
   nav.rebuildClearance();
 
   const bounds = {
-    minX: nav.minX + BORDER + 2,
-    minY: nav.minY + BORDER + 2,
-    maxX: nav.maxX - BORDER - 2,
-    maxY: nav.maxY - BORDER - 2,
+    minX: nav.minX + BORDER + 3,
+    minY: nav.minY + BORDER + 3,
+    maxX: nav.maxX - BORDER - 3,
+    maxY: nav.maxY - BORDER - 3,
   };
 
-  const plan: CityPlan = {
-    landmarks,
-    districts,
-    streets,
-    gates,
-    placements,
-    // On the road below the south gate, far enough out that the whole wall and
-    // the keep behind it are in frame on the first render.
-    entrance: { x: 0, y: WALL.y1 + 26 },
-  };
+  const entrance: Point = { x: 0, y: 176 };
+  const plan: CityPlan = { landmarks, districts, streets, gates, placements, entrance };
 
   return {
     name: 'Highhold',
@@ -852,9 +1095,9 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
     dirtMask,
     lanes: [],
     spawns: {
-      [Team.Blue]: vec2(plan.entrance.x, plan.entrance.y),
-      [Team.Red]: vec2(0, CITADEL.y0 + 8),
-      [Team.Neutral]: vec2(0, 0),
+      [Team.Blue]: vec2(entrance.x, entrance.y),
+      [Team.Red]: vec2(throne.x, throne.y + 24),
+      [Team.Neutral]: vec2(marketC.x, marketC.y),
     } as GameMap['spawns'],
     camps: [],
     towers: [],
@@ -866,9 +1109,9 @@ export function buildCity(seed = 4711, assets?: AssetRegistry): CityMap {
 /**
  * Adds the planned pieces to a prop store.
  *
- * Everything is non-blocking here. The city already stamped its own collision
- * as rectangles when it was planned, and letting props re-stamp circles on top
- * would round off every building and seal half the streets.
+ * All of them non-blocking: the city stamped its own collision as rectangles
+ * when it was planned, and letting props re-stamp circles on top would round
+ * off every building and seal half the streets.
  */
 export function populateCity(plan: CityPlan, props: PropStore, assets: AssetRegistry): number {
   for (const p of plan.placements) {
