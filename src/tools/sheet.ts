@@ -96,7 +96,10 @@ async function build(): Promise<void> {
     `<b>${entries.length} assets</b>` +
     (category ? ` in ${category}` : '') +
     `<br>grey bar = ${REFERENCE_HEIGHT}u champion height` +
-    `<br>${registry.categories().join(' · ')}`;
+    `<br>${registry.categories().join(' · ')}` +
+    // The sheet is a quick overview; judging an asset needs the game's own
+    // camera, scale and lighting, which is what the museum gives.
+    `<br><br><a href="/?mode=museum" style="color:#7dffa8">Walk the museum &rarr;</a>`;
 
   // A slim grey post beside each asset, exactly a champion tall, is the whole
   // point of the sheet: scale errors are obvious against it and invisible

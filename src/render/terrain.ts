@@ -150,6 +150,16 @@ const groundFragmentShader = /* glsl */ `
 export interface TerrainOptions {
   showGrid?: boolean;
   fogEnabled?: boolean;
+  /**
+   * How tall blocked cells are extruded.
+   *
+   * Cliff height suits a battle map, where walls are meant to be terrain you
+   * cannot see past. It is wrong for a building interior: a gallery divided by
+   * three-metre rock is a maze you navigate blind. Low partitions keep the
+   * rooms legible from the fixed camera.
+   */
+  wallHeight?: number;
+  wallVariation?: number;
 }
 
 export class Terrain {
@@ -227,7 +237,10 @@ export class Terrain {
     });
     this.injectFog(this.wallMaterial, nav);
 
-    this.walls = new Mesh(buildWallGeometry(nav), this.wallMaterial);
+    this.walls = new Mesh(
+      buildWallGeometry(nav, opts.wallHeight ?? WALL_BASE_HEIGHT, opts.wallVariation ?? WALL_HEIGHT_VARIATION),
+      this.wallMaterial,
+    );
     this.walls.castShadow = true;
     this.walls.receiveShadow = true;
     this.group.add(this.walls);
@@ -396,7 +409,7 @@ function buildSplatTexture(map: GameMap): Texture {
  * all, which keeps the geometry small while still giving the rock an uneven
  * silhouette.
  */
-function buildWallGeometry(nav: NavGrid): BufferGeometry {
+function buildWallGeometry(nav: NavGrid, baseHeight: number, variation: number): BufferGeometry {
   const positions: number[] = [];
   const normals: number[] = [];
   const uvs: number[] = [];
@@ -406,7 +419,7 @@ function buildWallGeometry(nav: NavGrid): BufferGeometry {
     let h = Math.imul(cx * 374761393 + cy * 668265263, 1274126177) >>> 0;
     h ^= h >>> 13;
     const n = (h % 1000) / 1000;
-    const raw = WALL_BASE_HEIGHT + n * WALL_HEIGHT_VARIATION;
+    const raw = baseHeight + n * variation;
     return Math.round(raw / HEIGHT_QUANTUM) * HEIGHT_QUANTUM;
   };
 

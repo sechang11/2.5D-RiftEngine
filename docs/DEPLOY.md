@@ -35,6 +35,7 @@ the host sets, instead of depending on a default that may change.
 | Path | What it is |
 | --- | --- |
 | `/` | The game |
+| `/?mode=museum` | Every asset laid out as a walkable gallery |
 | `/viewer.html?src=/assets/pack/nature_oak.glb` | Single-mesh inspector |
 | `/sheet.html?category=building` | Asset contact sheet, everything at true scale |
 
@@ -66,5 +67,7 @@ commit and push. Railway redeploys on push.
 curl -I https://<your-domain>/assets/pack/manifest.json
 ```
 
-Expect `200` and `application/json`. Then open `/sheet.html`, which draws every
-mesh in the pack: if the assets are being served correctly, they all appear.
+Expect `200` and `application/json`. Then open `/?mode=museum` and walk in. If
+the pack is being served correctly every exhibit is standing there with a label
+on it, which is a far better check than a contact sheet because it also tells
+you whether the meshes look right at the size the game uses them.

@@ -20,6 +20,26 @@ import type { RtsCamera } from './camera';
 import type { UnitViews } from './unitview';
 import { TEAM_CSS } from '../game/content/units';
 
+/**
+ * A caption pinned to a point in the world.
+ *
+ * Used by the asset museum to name each exhibit. Drawn on the overlay rather
+ * than as world geometry for the same reason health bars are: text has to stay
+ * the same size and stay readable at every zoom, and a billboarded texture is
+ * blurrier and slower.
+ */
+export interface WorldLabel {
+  x: number;
+  /** Height above the ground to anchor at. */
+  height: number;
+  y: number;
+  text: string;
+  /** Smaller second line, for dimensions or a triangle count. */
+  sub?: string;
+  size?: number;
+  colour?: string;
+}
+
 interface FloatingText {
   text: string;
   x: number;
@@ -60,6 +80,18 @@ export class Overlay {
 
   /** Draw health bars for every unit, or only for damaged ones. */
   alwaysShowBars = true;
+
+  /** Captions pinned to world positions. Set by the host, drawn every frame. */
+  labels: readonly WorldLabel[] = [];
+
+  /**
+   * Labels further than this from the camera's focus are skipped.
+   *
+   * A museum holds a couple of hundred captions and only a handful are ever
+   * legible. Projecting all of them is wasted work, and drawing all of them is
+   * a wall of overlapping text.
+   */
+  labelRange = 26;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -166,7 +198,69 @@ export class Overlay {
       this.drawUnitBars(unit, sx, sy, viewTeam, selected.has(unit.id), visibility);
     }
 
+    this.drawLabels(camera);
     this.drawFloatingText(camera, dt);
+  }
+
+  /**
+   * Draws world-pinned captions, nearest last so the closest one wins any
+   * overlap, and fading with distance so a crowded hall stays readable.
+   */
+  private drawLabels(camera: RtsCamera): void {
+    if (this.labels.length === 0) return;
+    const ctx = this.ctx;
+    const fx = camera.focusX;
+    const fy = camera.focusY;
+    const range = this.labelRange;
+
+    const visible: Array<{ label: WorldLabel; sx: number; sy: number; d: number }> = [];
+    for (const label of this.labels) {
+      const d = Math.hypot(label.x - fx, label.y - fy);
+      if (d > range) continue;
+      camera.worldToScreen(label.x, label.height, label.y, this.anchor);
+      if (this.anchor.z > 1) continue;
+      if (this.anchor.x < -120 || this.anchor.x > this.width + 120) continue;
+      if (this.anchor.y < -60 || this.anchor.y > this.height + 60) continue;
+      visible.push({ label, sx: this.anchor.x, sy: this.anchor.y, d });
+    }
+
+    visible.sort((a, b) => b.d - a.d);
+
+    ctx.textAlign = 'center';
+    for (const { label, sx, sy, d } of visible) {
+      // Full strength up close, fading out over the last third of the range.
+      const alpha = Math.min(1, Math.max(0, (range - d) / (range * 0.35)));
+      const size = label.size ?? 12;
+
+      ctx.globalAlpha = alpha;
+      ctx.font = `600 ${size}px ui-sans-serif, system-ui, sans-serif`;
+
+      // A dark plate behind the text, so a pale mesh does not swallow it.
+      const w = ctx.measureText(label.text).width;
+      const subWidth = label.sub
+        ? (() => {
+            ctx.font = `500 ${size - 2}px ui-sans-serif, system-ui, sans-serif`;
+            const m = ctx.measureText(label.sub).width;
+            ctx.font = `600 ${size}px ui-sans-serif, system-ui, sans-serif`;
+            return m;
+          })()
+        : 0;
+      const boxWidth = Math.max(w, subWidth) + 12;
+      const boxHeight = label.sub ? size + 16 : size + 8;
+
+      ctx.fillStyle = 'rgba(8, 12, 19, 0.72)';
+      ctx.fillRect(sx - boxWidth / 2, sy - boxHeight + 2, boxWidth, boxHeight);
+
+      ctx.fillStyle = label.colour ?? '#e6edf7';
+      ctx.fillText(label.text, sx, sy - (label.sub ? size - 1 : 2));
+
+      if (label.sub) {
+        ctx.font = `500 ${size - 2}px ui-sans-serif, system-ui, sans-serif`;
+        ctx.fillStyle = 'rgba(150, 168, 190, 0.95)';
+        ctx.fillText(label.sub, sx, sy - 2);
+      }
+    }
+    ctx.globalAlpha = 1;
   }
 
   private drawUnitBars(

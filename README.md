@@ -79,6 +79,27 @@ Sandbox keys while playing: `B` spawns a minion wave, `V` toggles fog of war,
 `engine.capture('docs/screenshot.jpg')` writes the current view to disk, which
 is how the image above was made; that endpoint is dev-server only.
 
+## Two worlds, one engine
+
+`?mode=` picks which one boots.
+
+| Mode | What it is |
+| --- | --- |
+| `/` | The MOBA sandbox on Hollow Reach |
+| `/?mode=museum` | Every asset in the pack laid out as galleries you walk through |
+
+The museum is not a debug view. It is a second game built from the same map,
+scenario and content layers, with the same camera and the same controls. That
+matters for reviewing art: a mesh that reads well in an asset browser can be a
+smear from the game's fixed camera height, and only the game's own camera tells
+you which. Each exhibit is captioned with its name, its size in world units and
+its triangle count, and your champion stands among them for scale.
+
+![The buildings gallery: a portal arch, a stone keep, a tavern, a granary and a
+dragon statue on open ground, each captioned with its name, world size and
+triangle count, with the visitor among them for
+scale](docs/screenshot-museum.jpg)
+
 ## What is in the box
 
 **Simulation.** Fixed 60 Hz tick with an accumulator and render interpolation.

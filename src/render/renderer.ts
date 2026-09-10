@@ -50,6 +50,9 @@ export interface RendererOptions {
   assets?: AssetRegistry;
   /** Placed props to draw. */
   props?: PropStore;
+  /** Extrusion height for blocked cells. Low values suit interiors. */
+  wallHeight?: number;
+  wallVariation?: number;
 }
 
 export class Renderer {
@@ -133,6 +136,8 @@ export class Renderer {
     this.terrain = new Terrain(map, sim.fog, this.viewTeam, {
       fogEnabled: this.fogEnabled,
       showGrid: opts.showGrid,
+      wallHeight: opts.wallHeight,
+      wallVariation: opts.wallVariation,
     });
     this.scene.add(this.terrain.group);
 

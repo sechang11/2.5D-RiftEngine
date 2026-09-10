@@ -13,7 +13,16 @@
  * it land in the same frame, which is the difference between controls that feel
  * immediate and controls that feel like they lag by one frame.
  *
- * The editor sits alongside the game rather than replacing it. Toggling it does
+ * Two worlds run through this same wiring, chosen by `?mode=`:
+ *
+ *   battle   the MOBA sandbox on Hollow Reach
+ *   museum   every asset in the pack laid out as a gallery you walk through
+ *
+ * The museum is not a debug view bolted on the side. It is a second game built
+ * from the same map, scenario and content layers, which is the only honest test
+ * of whether those layers are actually separable.
+ *
+ * The editor sits alongside both rather than replacing them. Toggling it does
  * not tear anything down: the simulation keeps running underneath, which is why
  * a prop placed in the editor immediately blocks pathfinding and a weapon
  * dropped on the ground can be walked over the moment you switch back.
@@ -23,7 +32,8 @@ import './styles.css';
 import { Sim } from './core/sim/sim';
 import { Team } from './core/ecs/types';
 import { buildMap01 } from './game/content/map01';
-import { buildScenario } from './game/scenario';
+import { buildScenario, type Scenario } from './game/scenario';
+import { buildMuseum, populateMuseum, type MuseumLayout } from './game/museum';
 import { Renderer } from './render/renderer';
 import { InputState } from './input/input';
 import { PlayerController } from './input/controller';
@@ -35,6 +45,7 @@ import { PropStore } from './core/world/props';
 import { Editor } from './editor/editor';
 import { PickupSystem } from './game/pickups';
 import { dressMap } from './game/dressing';
+import type { WorldLabel } from './render/overlay';
 import * as scene from './game/scene';
 
 const MAP_SEED = 9090;
@@ -49,23 +60,48 @@ async function boot(): Promise<void> {
     throw new Error('Missing required DOM nodes');
   }
 
-  const map = buildMap01(MAP_SEED);
-  const sim = new Sim(map.nav, { tickRate: 60, seed: SIM_SEED });
-  const scenario = buildScenario(sim, map);
+  const params = new URLSearchParams(location.search);
+  const museumMode = params.get('mode') === 'museum';
 
-  // The asset pack is optional. Without it the engine runs exactly as before,
-  // with procedural characters and an empty editor palette.
+  // The asset pack is loaded first because the museum's layout is derived from
+  // it: the map cannot be sized until the exhibits are known. Without a pack
+  // the engine still runs, with procedural characters and an empty palette.
   const assets = new AssetRegistry();
   const assetCount = await assets.loadManifest();
 
+  let map;
+  let layout: MuseumLayout | null = null;
+  if (museumMode) {
+    layout = buildMuseum(assets);
+    map = layout.map;
+  } else {
+    map = buildMap01(MAP_SEED);
+  }
+
+  const sim = new Sim(map.nav, { tickRate: 60, seed: SIM_SEED });
   const props = new PropStore(map.nav);
+
+  let scenario: Scenario | null = null;
+  let playerId: number;
+  if (museumMode && layout) {
+    playerId = populateMuseum(sim, layout, props, assets).player.id;
+    await assets.loadAll(new Set(props.props.map((p) => p.assetId)));
+  } else {
+    scenario = buildScenario(sim, map);
+    playerId = scenario.player.id;
+  }
 
   // Prime the fog before the first frame so the map does not flash fully lit.
   sim.fog.update(sim.world.units);
 
   const renderer = new Renderer(app, canvas, overlayCanvas, sim, map, {
     viewTeam: Team.Blue,
-    fogEnabled: true,
+    // A gallery you cannot see across is not a gallery.
+    fogEnabled: !museumMode,
+    // Gallery partitions, not cliffs: low enough to see over from the fixed
+    // camera, high enough to read as rooms.
+    wallHeight: museumMode ? 1.15 : undefined,
+    wallVariation: museumMode ? 0.12 : undefined,
     assets,
     props,
   });
@@ -88,6 +124,10 @@ async function boot(): Promise<void> {
         minimap.setViewTeam(team);
       },
       onSpawnWave: () => {
+        if (!scenario) {
+          hud.log('No lanes to march down in the museum');
+          return;
+        }
         scenario.spawnWaves();
         hud.log(`Minion wave ${scenario.waveCount} deployed`);
       },
@@ -95,9 +135,11 @@ async function boot(): Promise<void> {
     },
   );
 
-  controller.playerUnit = scenario.player.id;
-  renderer.views.selection.add(scenario.player.id);
-  renderer.camera.jumpTo(scenario.player.pos.x, scenario.player.pos.y);
+  controller.playerUnit = playerId;
+  controller.toggles.fogEnabled = !museumMode;
+  renderer.views.selection.add(playerId);
+  const player = sim.world.get(playerId);
+  if (player) renderer.camera.jumpTo(player.pos.x, player.pos.y);
 
   minimap.onOrder = (x, y) => {
     const champion = controller.champion;
@@ -129,38 +171,68 @@ async function boot(): Promise<void> {
     hud.toast(`${item.name} — ${item.description}${replaced ? ' (swapped)' : ''}`);
   };
 
-  // Restore whatever was last being worked on, so a reload does not lose a
-  // dressing session. With nothing saved and a pack available, scatter a
-  // starting layout rather than opening onto bare terrain.
-  const saved = scene.loadLocal('autosave');
-  if (saved) {
-    // Props only on boot. The scenario has already populated the world with
-    // camps, towers and a minion wave, and a save taken mid-session contains a
-    // snapshot of those plus whatever minions happened to be alive; restoring
-    // them here would stack a second set on top. Loading a scene from inside
-    // the editor does replace units, which is what that action should mean.
-    const result = scene.deserialize(saved, props, sim, {
-      spawnUnits: false,
-      radiusOf: (id) => assets.get(id)?.radius ?? 0.5,
-    });
-    await assets.loadAll(new Set(props.props.map((p) => p.assetId)));
-    hud.log(`Restored ${result.props} placed objects`);
-  } else if (assetCount > 0) {
-    const report = dressMap(map, props, assets, { seed: 0x5eed1e, density: 1 });
-    await assets.loadAll(new Set(props.props.map((p) => p.assetId)));
-    hud.log(`Dressed the map with ${report.placed} objects`);
+  if (museumMode && layout) {
+    // Captions: one per exhibit, plus a sign over every gallery door.
+    const labels: WorldLabel[] = [];
+    for (const gallery of layout.galleries) {
+      labels.push({
+        x: gallery.signX,
+        y: gallery.signY,
+        height: 3.4,
+        text: gallery.category.toUpperCase(),
+        sub: `${gallery.count} assets`,
+        size: 15,
+        colour: '#7dffa8',
+      });
+    }
+    for (const exhibit of layout.exhibits) {
+      labels.push({
+        x: exhibit.x,
+        y: exhibit.y,
+        // Just above the mesh, so a tower's label is not buried in its roof.
+        height: exhibit.height + 0.55,
+        text: exhibit.name,
+        sub: `${exhibit.size.map((v) => v.toFixed(1)).join(' × ')}  ·  ${exhibit.triangles} tris`,
+      });
+    }
+    renderer.overlay.labels = labels;
+    hud.log(`Museum: ${layout.exhibits.length} exhibits in ${layout.galleries.length} galleries.`);
+    hud.toast('Right click to walk. Every asset in the pack is on this map.');
+  } else {
+    // Restore whatever was last being worked on, so a reload does not lose a
+    // dressing session. With nothing saved and a pack available, scatter a
+    // starting layout rather than opening onto bare terrain.
+    const saved = scene.loadLocal('autosave');
+    if (saved) {
+      // Props only on boot. The scenario has already populated the world with
+      // camps, towers and a minion wave, and a save taken mid-session contains
+      // a snapshot of those plus whatever minions happened to be alive;
+      // restoring them here would stack a second set on top. Loading a scene
+      // from inside the editor does replace units, which is what that action
+      // should mean.
+      const result = scene.deserialize(saved, props, sim, {
+        spawnUnits: false,
+        radiusOf: (id) => assets.get(id)?.radius ?? 0.5,
+      });
+      await assets.loadAll(new Set(props.props.map((p) => p.assetId)));
+      hud.log(`Restored ${result.props} placed objects`);
+    } else if (assetCount > 0) {
+      const report = dressMap(map, props, assets, { seed: 0x5eed1e, density: 1 });
+      await assets.loadAll(new Set(props.props.map((p) => p.assetId)));
+      hud.log(`Dressed the map with ${report.placed} objects`);
+    }
+
+    hud.log(
+      assetCount > 0
+        ? `Hollow Reach loaded with ${assetCount} assets. F2 for the editor.`
+        : 'Hollow Reach loaded. No asset pack found; editor palette will be empty.',
+    );
+    hud.toast('Right click to move · Q W E R to cast · F2 for the editor');
   }
 
   const resize = () => renderer.resize();
   window.addEventListener('resize', resize);
   resize();
-
-  hud.log(
-    assetCount > 0
-      ? `Hollow Reach loaded with ${assetCount} assets. F2 for the editor.`
-      : 'Hollow Reach loaded. No asset pack found; editor palette will be empty.',
-  );
-  hud.toast('Right click to move · Q W E R to cast · F2 for the editor');
 
   let last = performance.now();
   let elapsed = 0;
@@ -248,6 +320,7 @@ async function boot(): Promise<void> {
       renderer,
       controller,
       scenario,
+      layout,
       hud,
       minimap,
       assets,
