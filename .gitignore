@@ -1,0 +1,7 @@
+node_modules/
+dist/
+*.local
+.DS_Store
+
+# Staging area for a generated asset pack pulled off the generation host.
+assets-staging/

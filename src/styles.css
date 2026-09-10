@@ -1,0 +1,672 @@
+/* HUD styling. The 3D view fills the window; everything here floats above it. */
+
+:root {
+  --panel-bg: rgba(10, 14, 22, 0.82);
+  --panel-border: rgba(120, 150, 190, 0.22);
+  --text: #dde6f2;
+  --text-dim: #8c9bb0;
+  --accent: #6fb6ff;
+  --ready: #7dffa8;
+  --danger: #ff6a5a;
+  --radius: 8px;
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #070a10;
+  color: var(--text);
+  font-family: var(--font);
+  user-select: none;
+}
+
+#app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  outline: none;
+  cursor: crosshair;
+}
+
+#scene,
+#overlay {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#overlay {
+  pointer-events: none;
+}
+
+/* The HUD layer ignores the pointer; individual controls opt back in. */
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  font-size: 12px;
+}
+
+.hud-panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(6px);
+  padding: 10px 12px;
+}
+
+/* --- champion panel ------------------------------------------------------ */
+
+.hud-champion {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  width: 268px;
+}
+
+.champ-name {
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+
+.bar {
+  position: relative;
+  height: 16px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  margin-bottom: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.bar-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  transition: width 90ms linear;
+}
+
+.bar-hp .bar-fill {
+  background: linear-gradient(180deg, #6ee07d, #3aa84f);
+}
+
+.bar-mp {
+  height: 12px;
+}
+
+.bar-mp .bar-fill {
+  background: linear-gradient(180deg, #5aa8ee, #2f6fb8);
+}
+
+.bar-shield {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: rgba(232, 242, 255, 0.85);
+}
+
+.bar-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-family: var(--mono);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  letter-spacing: 0.02em;
+}
+
+.champ-stats {
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text-dim);
+  letter-spacing: 0.01em;
+}
+
+.champ-state {
+  margin-top: 4px;
+  font-size: 10.5px;
+  color: #ffd36b;
+  min-height: 13px;
+}
+
+/* --- ability bar --------------------------------------------------------- */
+
+.hud-abilities {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+}
+
+.slot {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 9px;
+  background: rgba(10, 14, 22, 0.9);
+  border: 1px solid rgba(120, 150, 190, 0.25);
+  overflow: hidden;
+  pointer-events: auto;
+  transition: border-color 120ms ease, transform 90ms ease;
+}
+
+.slot.ready {
+  border-color: rgba(111, 182, 255, 0.75);
+  box-shadow: 0 0 12px rgba(111, 182, 255, 0.18);
+}
+
+.slot.aiming {
+  border-color: var(--ready);
+  transform: translateY(-3px);
+  box-shadow: 0 0 16px rgba(125, 255, 168, 0.3);
+}
+
+.slot.no-mana {
+  border-color: rgba(90, 140, 255, 0.5);
+}
+
+.slot.empty {
+  opacity: 0.25;
+}
+
+.slot-icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: var(--accent);
+  text-shadow: 0 0 12px rgba(111, 182, 255, 0.45);
+}
+
+.slot.ready .slot-icon {
+  color: #cfe6ff;
+}
+
+/* Radial cooldown wipe. --sweep is written by the HUD each frame. */
+.slot-sweep {
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(
+    rgba(4, 7, 12, 0.82) 0 var(--sweep, 0%),
+    transparent var(--sweep, 0%) 100%
+  );
+  pointer-events: none;
+}
+
+.slot-timer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95);
+}
+
+.slot-key {
+  position: absolute;
+  left: 4px;
+  top: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.slot-cost {
+  position: absolute;
+  right: 4px;
+  bottom: 3px;
+  font-size: 9.5px;
+  font-family: var(--mono);
+  color: #6f9fd8;
+}
+
+/* --- minimap ------------------------------------------------------------- */
+
+.hud-minimap {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  padding: 6px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  line-height: 0;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* --- panels -------------------------------------------------------------- */
+
+.hud-perf {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  width: 186px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+}
+
+.perf-title {
+  font-family: var(--font);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+.perf-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  line-height: 1.55;
+}
+
+.perf-label {
+  color: var(--text-dim);
+}
+
+.perf-value {
+  color: var(--text);
+}
+
+.hud-help {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  width: 236px;
+}
+
+.help-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 10px;
+  font-size: 10.5px;
+  line-height: 1.45;
+}
+
+.help-grid span:nth-child(odd) {
+  font-family: var(--mono);
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.help-grid span:nth-child(even) {
+  color: var(--text-dim);
+}
+
+/* --- log and toast ------------------------------------------------------- */
+
+.hud-log {
+  position: absolute;
+  right: 16px;
+  top: 292px;
+  width: 236px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-end;
+}
+
+.log-line {
+  background: rgba(10, 14, 22, 0.72);
+  border-left: 2px solid var(--accent);
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-size: 10.5px;
+  color: var(--text-dim);
+  max-width: 100%;
+}
+
+.hud-toast {
+  position: absolute;
+  left: 50%;
+  top: 24px;
+  transform: translateX(-50%) translateY(-8px);
+  background: rgba(10, 14, 22, 0.9);
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.hud-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* --- mesh inspector (viewer.html) -------------------------------------- */
+
+#viewer-app,
+#sheet-app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+#viewer-canvas,
+#sheet-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#viewer-info,
+#sheet-info {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.65;
+  color: var(--text);
+}
+
+/* --- editor ------------------------------------------------------------- */
+
+.editor {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  font-size: 12px;
+}
+
+.editor-toolbar {
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 7px 10px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+
+.editor-title {
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  font-size: 10.5px;
+  color: var(--ready);
+  margin-right: 6px;
+}
+
+.editor-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--panel-border);
+  color: var(--text);
+  border-radius: 5px;
+  padding: 4px 9px;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: background 100ms ease, border-color 100ms ease;
+}
+
+.editor-btn:hover {
+  background: rgba(255, 255, 255, 0.13);
+  border-color: var(--accent);
+}
+
+.editor-btn.active {
+  border-color: var(--ready);
+  color: var(--ready);
+}
+
+.editor-btn.danger:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* palette on the left */
+.editor-palette {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  bottom: 12px;
+  width: 272px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 10px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+}
+
+.editor-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.editor-cat {
+  background: transparent;
+  border: 1px solid var(--panel-border);
+  color: var(--text-dim);
+  border-radius: 999px;
+  padding: 3px 9px;
+  font: inherit;
+  font-size: 10.5px;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.editor-cat.active {
+  background: rgba(111, 182, 255, 0.16);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.editor-search {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--panel-border);
+  border-radius: 5px;
+  color: var(--text);
+  padding: 6px 9px;
+  font: inherit;
+  font-size: 11.5px;
+  outline: none;
+}
+
+.editor-search:focus {
+  border-color: var(--accent);
+}
+
+.editor-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-right: 3px;
+}
+
+.editor-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.editor-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.editor-item.active {
+  background: rgba(125, 255, 168, 0.14);
+  border-color: var(--ready);
+}
+
+.editor-item-name {
+  font-size: 11.5px;
+}
+
+.editor-item-detail {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.editor-empty {
+  color: var(--text-dim);
+  font-size: 11px;
+  line-height: 1.5;
+  padding: 8px 4px;
+}
+
+/* inspector on the right */
+.editor-inspector {
+  position: absolute;
+  right: 12px;
+  top: 62px;
+  width: 236px;
+  padding: 10px 12px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(6px);
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.editor-inspector-head {
+  font-weight: 700;
+  font-size: 12.5px;
+}
+
+.editor-field-readonly {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text-dim);
+}
+
+.editor-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.editor-field-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: var(--text-dim);
+}
+
+.editor-field-value {
+  font-family: var(--mono);
+  color: var(--text);
+}
+
+.editor-slider {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.editor-flags {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.editor-check {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.editor-check input {
+  accent-color: var(--ready);
+}
+
+.editor-row {
+  display: flex;
+  gap: 5px;
+}
+
+.editor-row .editor-btn {
+  flex: 1;
+}
+
+.editor-status {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  padding: 5px 12px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* The palette sits below the toolbar rather than under it. */
+.editor-palette {
+  top: 58px;
+}
+
+/* While editing, gameplay chrome that would collide with the editor is
+   hidden. The minimap, log and performance panel stay: they are all useful
+   while dressing a map. */
+.hud.editing .hud-help,
+.hud.editing .hud-champion,
+.hud.editing .hud-abilities,
+.hud.editing .hud-perf {
+  display: none;
+}

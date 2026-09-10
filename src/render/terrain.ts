@@ -1,0 +1,540 @@
+/**
+ * Terrain rendering: ground, walls, brush and the fog-of-war mask.
+ *
+ * The simulation is flat. Everything with height here is scenery built from the
+ * same nav grid the simulation collides against, which is what keeps the visual
+ * map and the collision map from ever disagreeing: if you can see a rock, you
+ * cannot walk through it, because both came from the same bits.
+ *
+ * Fog of war is a single-channel texture sampled by every terrain material.
+ * Sampling it per-fragment rather than compositing a black overlay quad means
+ * fog darkens the actual surfaces, including the sides of walls, and costs one
+ * texture read.
+ */
+
+import {
+  BufferAttribute,
+  BufferGeometry,
+  DataTexture,
+  DoubleSide,
+  Group,
+  InstancedMesh,
+  LinearFilter,
+  Matrix4,
+  Mesh,
+  MeshStandardMaterial,
+  PlaneGeometry,
+  RedFormat,
+  ShaderMaterial,
+  SphereGeometry,
+  UnsignedByteType,
+  Vector2,
+  type Texture,
+} from 'three';
+import { CellFlag, type NavGrid } from '../core/nav/navgrid';
+import { Team } from '../core/ecs/types';
+import type { FogOfWar } from '../core/vision/fog';
+import type { GameMap } from '../game/content/map01';
+import { Rng } from '../core/math/rng';
+import {
+  createGroundTexture,
+  createMacroTexture,
+  createRockTexture,
+} from './textures/procedural';
+
+/** Brightness multiplier for terrain that has never been seen. */
+const UNEXPLORED = 0.06;
+/** Brightness for terrain seen before but not currently visible. */
+const EXPLORED = 0.42;
+
+/** World units covered by one repeat of the ground texture. */
+const GROUND_TILE = 12;
+
+const WALL_BASE_HEIGHT = 3.0;
+const WALL_HEIGHT_VARIATION = 1.8;
+/** Wall heights snap to this step so adjacent cells usually agree. */
+const HEIGHT_QUANTUM = 0.45;
+
+const groundVertexShader = /* glsl */ `
+  varying vec2 vMapUv;
+  varying vec2 vTileUv;
+  varying vec3 vWorld;
+
+  uniform vec2 uMapMin;
+  uniform vec2 uMapSize;
+  uniform float uTile;
+
+  void main() {
+    vec4 world = modelMatrix * vec4(position, 1.0);
+    vWorld = world.xyz;
+    vMapUv = (world.xz - uMapMin) / uMapSize;
+    vTileUv = world.xz / uTile;
+    gl_Position = projectionMatrix * viewMatrix * world;
+  }
+`;
+
+const groundFragmentShader = /* glsl */ `
+  precision highp float;
+
+  // The tone mapping functions are already in the shader prefix three builds
+  // for every material, so only the call site is included below. Pulling in
+  // <tonemapping_pars_fragment> here would redefine all of them and the
+  // program would fail to link.
+
+  varying vec2 vMapUv;
+  varying vec2 vTileUv;
+  varying vec3 vWorld;
+
+  uniform sampler2D uGround;
+  uniform sampler2D uMacro;
+  uniform sampler2D uSplat;
+  uniform sampler2D uFog;
+  uniform float uFogEnabled;
+  uniform float uGridEnabled;
+  uniform float uUnexplored;
+  uniform float uExplored;
+  uniform vec3 uLaneColor;
+  uniform vec3 uRiverColor;
+  uniform vec3 uBrushColor;
+
+  void main() {
+    // Textures tagged sRGB are uploaded with an sRGB internal format, so the
+    // GPU decodes them on sample. Everything below is already linear; decoding
+    // again here would darken the whole map.
+    vec3 base = texture2D(uGround, vTileUv).rgb;
+
+    // A single stretched noise field breaks up the tiling at map scale.
+    vec3 macro = texture2D(uMacro, vMapUv).rgb;
+    base *= 0.78 + macro * 0.9;
+
+    // R: lane, G: brush, B: river. Authored by the map generator.
+    vec3 splat = texture2D(uSplat, vMapUv).rgb;
+
+    // Regions repaint the hue but keep the ground texture's luminance, so a
+    // lane reads as trodden earth with all its grain intact rather than as a
+    // flat band of paint.
+    float lum = dot(base, vec3(0.299, 0.587, 0.114));
+    base = mix(base, uLaneColor * (0.45 + lum * 1.9), clamp(splat.r * 0.9, 0.0, 1.0));
+    base = mix(base, uRiverColor * (0.5 + lum * 1.7), splat.b * 0.72);
+    // Brush only darkens and deepens what is already there.
+    base = mix(base, base * uBrushColor, splat.g * 0.85);
+
+    // Debug grid, one line every ten world units.
+    if (uGridEnabled > 0.5) {
+      vec2 g = abs(fract(vWorld.xz / 10.0 - 0.5) - 0.5) / fwidth(vWorld.xz / 10.0);
+      float line = 1.0 - min(min(g.x, g.y), 1.0);
+      base = mix(base, vec3(0.9, 0.95, 1.0), line * 0.18);
+    }
+
+    float visibility = 1.0;
+    if (uFogEnabled > 0.5) {
+      float f = texture2D(uFog, vMapUv).r;
+      // The stored byte is 0, 110 or 255; remap those bands to brightness.
+      float explored = smoothstep(0.15, 0.55, f);
+      float visible = smoothstep(0.55, 0.95, f);
+      visibility = mix(uUnexplored, uExplored, explored);
+      visibility = mix(visibility, 1.0, visible);
+    }
+
+    vec3 color = base * visibility;
+    // Desaturate what is out of sight, so remembered terrain reads as memory.
+    float grey = dot(color, vec3(0.299, 0.587, 0.114));
+    color = mix(vec3(grey), color, 0.35 + 0.65 * visibility);
+
+    gl_FragColor = vec4(color, 1.0);
+    #include <tonemapping_fragment>
+    #include <colorspace_fragment>
+  }
+`;
+
+export interface TerrainOptions {
+  showGrid?: boolean;
+  fogEnabled?: boolean;
+}
+
+export class Terrain {
+  readonly group = new Group();
+  readonly ground: Mesh;
+  readonly walls: Mesh;
+  readonly bushes: InstancedMesh | null;
+
+  private readonly fogTexture: DataTexture;
+  /** Narrowed to a plain ArrayBuffer so it satisfies the texture upload path. */
+  private readonly fogBytes: Uint8Array<ArrayBuffer>;
+  /** Intermediate buffer for the separable blur. */
+  private readonly fogScratch: Uint8Array;
+  private readonly fog: FogOfWar;
+  private readonly groundMaterial: ShaderMaterial;
+  private readonly wallMaterial: MeshStandardMaterial;
+  private readonly bushMaterial: MeshStandardMaterial;
+  /** Which team's fog is displayed. */
+  private viewTeam: Team;
+
+  constructor(map: GameMap, fog: FogOfWar, viewTeam: Team, opts: TerrainOptions = {}) {
+    this.fog = fog;
+    this.viewTeam = viewTeam;
+
+    // Backed by an explicit ArrayBuffer so the type is narrow enough for the
+    // WebGL texture upload path.
+    this.fogBytes = new Uint8Array(new ArrayBuffer(fog.cols * fog.rows));
+    this.fogScratch = new Uint8Array(fog.cols * fog.rows);
+    this.fogTexture = new DataTexture(this.fogBytes, fog.cols, fog.rows, RedFormat, UnsignedByteType);
+    this.fogTexture.minFilter = LinearFilter;
+    this.fogTexture.magFilter = LinearFilter;
+    // Rows are not a multiple of four bytes wide, so the default alignment
+    // would shear the texture.
+    this.fogTexture.unpackAlignment = 1;
+    this.fogTexture.needsUpdate = true;
+
+    const nav = map.nav;
+    const splat = buildSplatTexture(map);
+
+    this.groundMaterial = new ShaderMaterial({
+      vertexShader: groundVertexShader,
+      fragmentShader: groundFragmentShader,
+      uniforms: {
+        uGround: { value: createGroundTexture(512, 7) },
+        uMacro: { value: createMacroTexture(256, 31) },
+        uSplat: { value: splat },
+        uFog: { value: this.fogTexture },
+        uFogEnabled: { value: opts.fogEnabled === false ? 0 : 1 },
+        uGridEnabled: { value: opts.showGrid ? 1 : 0 },
+        uUnexplored: { value: UNEXPLORED },
+        uExplored: { value: EXPLORED },
+        uMapMin: { value: new Vector2(nav.minX, nav.minY) },
+        uMapSize: { value: new Vector2(nav.width, nav.height) },
+        uTile: { value: GROUND_TILE },
+        // Lane and river are linear-space hues that replace the ground's own.
+        // Brush is a multiplier centred below one, so it only deepens.
+        uLaneColor: { value: [0.36, 0.26, 0.14] },
+        uRiverColor: { value: [0.11, 0.23, 0.34] },
+        uBrushColor: { value: [0.5, 0.76, 0.44] },
+      },
+    });
+
+    const plane = new PlaneGeometry(nav.width, nav.height, 1, 1);
+    plane.rotateX(-Math.PI / 2);
+    this.ground = new Mesh(plane, this.groundMaterial);
+    this.ground.receiveShadow = false;
+    this.ground.renderOrder = -10;
+    this.group.add(this.ground);
+
+    const rock = createRockTexture(256, 404);
+    this.wallMaterial = new MeshStandardMaterial({
+      map: rock,
+      roughness: 0.94,
+      metalness: 0,
+    });
+    this.injectFog(this.wallMaterial, nav);
+
+    this.walls = new Mesh(buildWallGeometry(nav), this.wallMaterial);
+    this.walls.castShadow = true;
+    this.walls.receiveShadow = true;
+    this.group.add(this.walls);
+
+    this.bushMaterial = new MeshStandardMaterial({
+      color: 0x2f6a33,
+      roughness: 0.85,
+      metalness: 0,
+      transparent: true,
+      opacity: 0.92,
+      side: DoubleSide,
+    });
+    this.injectFog(this.bushMaterial, nav);
+
+    this.bushes = buildBushes(map, this.bushMaterial);
+    if (this.bushes) this.group.add(this.bushes);
+  }
+
+  /**
+   * Adds fog sampling to a stock material.
+   *
+   * Hooking `color_fragment` scales albedo before lighting rather than editing
+   * the very end of the shader, which is the stable part of the chunk chain
+   * across three.js versions and keeps shadows and instancing working as-is.
+   */
+  private injectFog(material: MeshStandardMaterial, nav: NavGrid): void {
+    const uMapMin = { value: new Vector2(nav.minX, nav.minY) };
+    const uMapSize = { value: new Vector2(nav.width, nav.height) };
+    const uFog = { value: this.fogTexture };
+    const uFogEnabled = { value: 1 };
+    material.userData.fogUniforms = { uMapMin, uMapSize, uFog, uFogEnabled };
+
+    material.onBeforeCompile = (shader) => {
+      shader.uniforms.uMapMin = uMapMin;
+      shader.uniforms.uMapSize = uMapSize;
+      shader.uniforms.uFogTex = uFog;
+      shader.uniforms.uFogEnabled = uFogEnabled;
+
+      shader.vertexShader = shader.vertexShader
+        .replace('#include <common>', '#include <common>\nvarying vec2 vFogUv;\nuniform vec2 uMapMin;\nuniform vec2 uMapSize;')
+        .replace(
+          '#include <begin_vertex>',
+          `#include <begin_vertex>
+           vec4 fogWorld = modelMatrix * vec4(transformed, 1.0);
+           #ifdef USE_INSTANCING
+             fogWorld = modelMatrix * instanceMatrix * vec4(transformed, 1.0);
+           #endif
+           vFogUv = (fogWorld.xz - uMapMin) / uMapSize;`,
+        );
+
+      shader.fragmentShader = shader.fragmentShader
+        .replace('#include <common>', '#include <common>\nvarying vec2 vFogUv;\nuniform sampler2D uFogTex;\nuniform float uFogEnabled;')
+        .replace(
+          '#include <color_fragment>',
+          `#include <color_fragment>
+           if (uFogEnabled > 0.5) {
+             float f = texture2D(uFogTex, vFogUv).r;
+             float explored = smoothstep(0.15, 0.55, f);
+             float visible = smoothstep(0.55, 0.95, f);
+             float vis = mix(${UNEXPLORED.toFixed(3)}, ${EXPLORED.toFixed(3)}, explored);
+             vis = mix(vis, 1.0, visible);
+             diffuseColor.rgb *= vis;
+           }`,
+        );
+    };
+  }
+
+  setViewTeam(team: Team): void {
+    this.viewTeam = team;
+    this.uploadFog(true);
+  }
+
+  setFogEnabled(enabled: boolean): void {
+    this.groundMaterial.uniforms.uFogEnabled.value = enabled ? 1 : 0;
+    for (const m of [this.wallMaterial, this.bushMaterial]) {
+      const u = m.userData.fogUniforms;
+      if (u) u.uFogEnabled.value = enabled ? 1 : 0;
+    }
+  }
+
+  setGrid(enabled: boolean): void {
+    this.groundMaterial.uniforms.uGridEnabled.value = enabled ? 1 : 0;
+  }
+
+  /**
+   * Copies the simulation's fog state into the GPU texture.
+   *
+   * The raw state is three discrete levels on a coarse grid, which upscales
+   * into hard-edged wedges wherever a wall or a bush casts a vision shadow.
+   * Blurring before upload turns those into soft gradients. It costs one pass
+   * over a small buffer and is the single biggest difference between fog that
+   * looks like fog and fog that looks like a stencil.
+   */
+  uploadFog(force = false): void {
+    if (!this.fog.dirty && !force) return;
+    const src = this.fog.buffer(this.viewTeam);
+    const dst = this.fogBytes;
+    // 0 unexplored, 1 explored, 2 visible. Spread across the byte range so the
+    // shader's smoothstep bands have room either side of each level.
+    for (let i = 0; i < dst.length; i++) {
+      const s = src[i];
+      dst[i] = s === 2 ? 255 : s === 1 ? 110 : 0;
+    }
+    blurSeparable(dst, this.fogScratch, this.fog.cols, this.fog.rows);
+    blurSeparable(dst, this.fogScratch, this.fog.cols, this.fog.rows);
+    this.fogTexture.needsUpdate = true;
+    this.fog.dirty = false;
+  }
+}
+
+/**
+ * Three-tap box blur, run once horizontally and once vertically.
+ *
+ * Two passes of this approximate a Gaussian closely enough for a mask that is
+ * about to be smoothstepped anyway, and it stays linear in the number of cells
+ * rather than quadratic in the kernel width.
+ */
+function blurSeparable(buffer: Uint8Array, scratch: Uint8Array, cols: number, rows: number): void {
+  for (let y = 0; y < rows; y++) {
+    const row = y * cols;
+    for (let x = 0; x < cols; x++) {
+      const l = buffer[row + (x > 0 ? x - 1 : 0)];
+      const c = buffer[row + x];
+      const r = buffer[row + (x < cols - 1 ? x + 1 : cols - 1)];
+      scratch[row + x] = (l + c + r) / 3;
+    }
+  }
+  for (let x = 0; x < cols; x++) {
+    for (let y = 0; y < rows; y++) {
+      const u = scratch[(y > 0 ? y - 1 : 0) * cols + x];
+      const c = scratch[y * cols + x];
+      const d = scratch[(y < rows - 1 ? y + 1 : rows - 1) * cols + x];
+      buffer[y * cols + x] = (u + c + d) / 3;
+    }
+  }
+}
+
+/**
+ * Packs the map generator's masks into one RGB texture the ground shader reads.
+ * R lane, G brush, B river.
+ */
+function buildSplatTexture(map: GameMap): Texture {
+  const nav = map.nav;
+  const w = nav.cols;
+  const h = nav.rows;
+  const data = new Uint8Array(w * h * 4);
+  for (let i = 0; i < w * h; i++) {
+    data[i * 4 + 0] = map.laneMask[i];
+    data[i * 4 + 1] = map.brushMask[i];
+    data[i * 4 + 2] = map.riverMask[i];
+    data[i * 4 + 3] = 255;
+  }
+  const tex = new DataTexture(data, w, h);
+  tex.minFilter = LinearFilter;
+  tex.magFilter = LinearFilter;
+  tex.needsUpdate = true;
+  return tex;
+}
+
+/**
+ * Turns blocked nav cells into a solid mesh.
+ *
+ * Faces are only emitted where they would actually be visible: a top for every
+ * blocked cell, and a side wherever the neighbour is open or shorter. Heights
+ * are quantised so most neighbours match exactly and produce no side face at
+ * all, which keeps the geometry small while still giving the rock an uneven
+ * silhouette.
+ */
+function buildWallGeometry(nav: NavGrid): BufferGeometry {
+  const positions: number[] = [];
+  const normals: number[] = [];
+  const uvs: number[] = [];
+
+  const heightAt = (cx: number, cy: number): number => {
+    // Deterministic hash so the same cell always gets the same height.
+    let h = Math.imul(cx * 374761393 + cy * 668265263, 1274126177) >>> 0;
+    h ^= h >>> 13;
+    const n = (h % 1000) / 1000;
+    const raw = WALL_BASE_HEIGHT + n * WALL_HEIGHT_VARIATION;
+    return Math.round(raw / HEIGHT_QUANTUM) * HEIGHT_QUANTUM;
+  };
+
+  const cs = nav.cellSize;
+  const UV = 0.22; // texture repeats per world unit
+
+  const pushQuad = (
+    ax: number, ay: number, az: number,
+    bx: number, by: number, bz: number,
+    cx2: number, cy2: number, cz: number,
+    dx: number, dy: number, dz: number,
+    nx: number, ny: number, nz: number,
+    u0: number, v0: number, u1: number, v1: number,
+  ): void => {
+    positions.push(ax, ay, az, bx, by, bz, cx2, cy2, cz);
+    positions.push(ax, ay, az, cx2, cy2, cz, dx, dy, dz);
+    for (let i = 0; i < 6; i++) normals.push(nx, ny, nz);
+    uvs.push(u0, v0, u1, v0, u1, v1);
+    uvs.push(u0, v0, u1, v1, u0, v1);
+  };
+
+  const blocked = (cx: number, cy: number): boolean => nav.isBlocked(cx, cy);
+
+  for (let cy = 0; cy < nav.rows; cy++) {
+    for (let cx = 0; cx < nav.cols; cx++) {
+      if (!blocked(cx, cy)) continue;
+      const h = heightAt(cx, cy);
+      const x0 = nav.minX + cx * cs;
+      const x1 = x0 + cs;
+      const z0 = nav.minY + cy * cs;
+      const z1 = z0 + cs;
+
+      // Top.
+      pushQuad(
+        x0, h, z0,
+        x1, h, z0,
+        x1, h, z1,
+        x0, h, z1,
+        0, 1, 0,
+        x0 * UV, z0 * UV, x1 * UV, z1 * UV,
+      );
+
+      // Four sides, each only as tall as the step it exposes.
+      const sides: Array<[number, number, number]> = [
+        [1, 0, 0],
+        [-1, 0, 0],
+        [0, 0, 1],
+        [0, 0, -1],
+      ];
+      for (const [sx, , sz] of sides) {
+        const nxC = cx + sx;
+        const nyC = cy + sz;
+        const neighbourH = blocked(nxC, nyC) ? heightAt(nxC, nyC) : 0;
+        if (neighbourH >= h - 1e-4) continue;
+        const base = neighbourH;
+
+        if (sx === 1) {
+          pushQuad(
+            x1, base, z1, x1, base, z0, x1, h, z0, x1, h, z1,
+            1, 0, 0,
+            z1 * UV, base * UV, z0 * UV, h * UV,
+          );
+        } else if (sx === -1) {
+          pushQuad(
+            x0, base, z0, x0, base, z1, x0, h, z1, x0, h, z0,
+            -1, 0, 0,
+            z0 * UV, base * UV, z1 * UV, h * UV,
+          );
+        } else if (sz === 1) {
+          pushQuad(
+            x0, base, z1, x1, base, z1, x1, h, z1, x0, h, z1,
+            0, 0, 1,
+            x0 * UV, base * UV, x1 * UV, h * UV,
+          );
+        } else {
+          pushQuad(
+            x1, base, z0, x0, base, z0, x0, h, z0, x1, h, z0,
+            0, 0, -1,
+            x1 * UV, base * UV, x0 * UV, h * UV,
+          );
+        }
+      }
+    }
+  }
+
+  const geo = new BufferGeometry();
+  geo.setAttribute('position', new BufferAttribute(new Float32Array(positions), 3));
+  geo.setAttribute('normal', new BufferAttribute(new Float32Array(normals), 3));
+  geo.setAttribute('uv', new BufferAttribute(new Float32Array(uvs), 2));
+  geo.computeBoundingSphere();
+  return geo;
+}
+
+/** Scatters low-poly blobs over brush cells so bushes have real presence. */
+function buildBushes(map: GameMap, material: MeshStandardMaterial): InstancedMesh | null {
+  const nav = map.nav;
+  const rng = new Rng(5150);
+  const points: Array<[number, number, number]> = [];
+
+  // Sample a fraction of the brush cells; a blob every few cells is plenty.
+  for (let cy = 0; cy < nav.rows; cy += 2) {
+    for (let cx = 0; cx < nav.cols; cx += 2) {
+      const i = nav.idx(cx, cy);
+      if (!(nav.flags[i] & CellFlag.Brush)) continue;
+      if (map.brushMask[i] < 60) continue;
+      if (!rng.chance(0.5)) continue;
+      points.push([
+        nav.cellCentreX(cx) + rng.range(-0.8, 0.8),
+        nav.cellCentreY(cy) + rng.range(-0.8, 0.8),
+        rng.range(0.85, 1.6),
+      ]);
+    }
+  }
+
+  if (points.length === 0) return null;
+
+  const geo = new SphereGeometry(1, 6, 4);
+  const mesh = new InstancedMesh(geo, material, points.length);
+  const m = new Matrix4();
+  for (let i = 0; i < points.length; i++) {
+    const [x, z, s] = points[i];
+    m.makeScale(s * 1.15, s * 0.72, s * 1.15);
+    m.setPosition(x, s * 0.5, z);
+    mesh.setMatrixAt(i, m);
+  }
+  mesh.instanceMatrix.needsUpdate = true;
+  mesh.castShadow = false;
+  mesh.receiveShadow = false;
+  mesh.frustumCulled = false;
+  return mesh;
+}

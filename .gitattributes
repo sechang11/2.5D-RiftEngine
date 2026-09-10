@@ -1,0 +1,18 @@
+# Normalise line endings so the repo is identical regardless of the platform it
+# was committed from. Without this, a checkout on Windows rewrites every text
+# file and the next diff is the whole tree.
+* text=auto eol=lf
+
+# Binary assets must never be touched.
+*.glb binary
+*.gltf binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.webp binary
+*.safetensors binary
+
+# Generated meshes are not useful in a diff, and there are a hundred and
+# eighty of them.
+public/assets/pack/*.glb linguist-generated=true
+package-lock.json linguist-generated=true

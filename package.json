@@ -1,0 +1,35 @@
+{
+  "name": "rift-engine",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "A 2.5D game engine: 3D meshes on a 2D simulation plane, with unit collision, pathfinding, fog of war, a map editor and a generated asset pack.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/determinism.test.ts tests/navigation.test.ts tests/combat.test.ts tests/world.test.ts",
+    "bench": "node --import tsx tools/bench.ts",
+    "start": "node server.mjs",
+    "serve": "npm run build && npm start"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.2",
+    "@types/three": "^0.169.0",
+    "tsx": "^4.23.13",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  },
+  "dependencies": {
+    "three": "^0.169.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sechang11/2.5D-RiftEngine.git"
+  },
+  "engines": {
+    "node": ">=20.11"
+  }
+}
