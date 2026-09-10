@@ -15,6 +15,7 @@
 import {
   Box3,
   BoxGeometry,
+  Color,
   DynamicDrawUsage,
   Group,
   InstancedMesh,
@@ -26,6 +27,7 @@ import {
   Vector3,
 } from 'three';
 import type { AssetRegistry } from './assets';
+import { jitterColor } from './triplanar';
 import type { Prop, PropId, PropStore } from '../core/world/props';
 import { PropFlag } from '../core/world/props';
 
@@ -42,6 +44,7 @@ const scratchMatrix = new Matrix4();
 const scratchPos = new Vector3();
 const scratchQuat = new Quaternion();
 const scratchScale = new Vector3();
+const scratchColor = new Color();
 const UP = new Vector3(0, 1, 0);
 
 export class PropViews {
@@ -135,10 +138,16 @@ export class PropViews {
       }
       batch.props = props;
       batch.mesh.count = props.length;
+      const jitter = this.assets.jitterOf(assetId);
       for (let i = 0; i < props.length; i++) {
         batch.mesh.setMatrixAt(i, this.matrixFor(props[i], 0));
+        // Keyed on the prop id rather than the loop index, so a house keeps its
+        // own shade of plaster when something else on the map is deleted and
+        // the batch is repacked.
+        if (jitter > 0) batch.mesh.setColorAt(i, jitterColor(scratchColor, props[i].id, jitter));
       }
       batch.mesh.instanceMatrix.needsUpdate = true;
+      if (batch.mesh.instanceColor) batch.mesh.instanceColor.needsUpdate = true;
       batch.mesh.computeBoundingSphere();
     }
   }
@@ -146,8 +155,7 @@ export class PropViews {
   private createBatch(assetId: string, capacity: number): Batch | null {
     const geo = this.assets.geometry(assetId);
     if (!geo) return null;
-    const entry = this.assets.get(assetId);
-    const mesh = new InstancedMesh(geo, this.assets.material(entry?.category ?? 'prop'), capacity);
+    const mesh = new InstancedMesh(geo, this.assets.materialFor(assetId), capacity);
     mesh.instanceMatrix.setUsage(DynamicDrawUsage);
     mesh.castShadow = true;
     mesh.receiveShadow = true;

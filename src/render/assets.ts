@@ -29,6 +29,7 @@ import {
   type Material,
 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { MaterialLibrary, type MaterialSpec } from './triplanar';
 
 export interface AssetEntry {
   id: string;
@@ -43,6 +44,11 @@ export interface AssetEntry {
   radius: number;
   triangles: number;
   bytes: number;
+  /**
+   * Which tiling surfaces the engine should project onto this mesh. Absent
+   * means the flat category palette, which is what the first pack shipped with.
+   */
+  material?: MaterialSpec;
 }
 
 export interface AssetManifest {
@@ -68,6 +74,31 @@ const CATEGORY_STYLE: Record<string, { color: number; roughness: number; metalne
 
 const DEFAULT_STYLE = { color: 0xa6adb8, roughness: 0.8, metalness: 0.05 };
 
+/**
+ * What to project onto an asset that does not name its own surfaces.
+ *
+ * The first pack was generated before materials existed and has no specs at
+ * all. Guessing by category is crude — every creature gets hide, every weapon
+ * gets steel — and it is still an enormous improvement on one flat colour per
+ * category, so the whole back catalogue gets textured for free and anything
+ * that deserves better can say so in its own entry.
+ */
+const CATEGORY_SURFACE: Record<string, MaterialSpec> = {
+  weapon: { side: 'steel', top: 'wood_beam', scale: 0.55, jitter: 0.05 },
+  shield: { side: 'wood_plank', top: 'iron_wrought', scale: 0.5, jitter: 0.07 },
+  building: { side: 'stone_rubble', top: 'roof_shingle', scale: 1, jitter: 0.1 },
+  nature: { side: 'wood_bark', top: 'grass_meadow', scale: 1, jitter: 0.14 },
+  prop: { side: 'wood_plank', top: 'wood_plank', scale: 0.8, jitter: 0.12 },
+  pickup: { side: 'gold', top: 'gold', scale: 0.5, jitter: 0.06 },
+  creature: { side: 'leather', top: 'fur_brown', scale: 0.6, jitter: 0.12 },
+  fort: { side: 'stone_ashlar', top: 'stone_ashlar', scale: 1, jitter: 0.05 },
+  house: { side: 'plaster_white', top: 'roof_clay', scale: 1, jitter: 0.14 },
+  civic: { side: 'stone_limestone', top: 'roof_slate', scale: 1, jitter: 0.05 },
+  street: { side: 'wood_plank', top: 'wood_plank', scale: 0.8, jitter: 0.12 },
+  rural: { side: 'wood_plank', top: 'roof_thatch', scale: 0.9, jitter: 0.12 },
+  dock: { side: 'wood_plank', top: 'wood_plank', scale: 0.9, jitter: 0.1 },
+};
+
 export class AssetRegistry {
   private entries = new Map<string, AssetEntry>();
   private geometries = new Map<string, BufferGeometry>();
@@ -79,19 +110,33 @@ export class AssetRegistry {
   /** Where GLB files live, relative to the site root. */
   readonly baseUrl: string;
 
-  constructor(baseUrl = '/assets/pack/') {
+  /** Tiling surfaces, projected onto meshes that carry a material spec. */
+  readonly surfaces: MaterialLibrary;
+
+  constructor(baseUrl = '/assets/pack/', surfaces = new MaterialLibrary()) {
     this.baseUrl = baseUrl;
+    this.surfaces = surfaces;
   }
 
-  /** Loads the catalogue. Cheap: metadata only, no geometry. */
+  /**
+   * Loads the catalogue, and the material library alongside it.
+   *
+   * Both are metadata; neither pulls a mesh or a texture. They are fetched
+   * together because an asset's material spec is meaningless without the
+   * library that resolves it, and a caller that got one without the other
+   * would silently render the whole pack in flat grey.
+   */
   async loadManifest(url = '/assets/pack/manifest.json'): Promise<number> {
+    const surfaces = this.surfaces.loadManifest();
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
       const manifest = (await res.json()) as AssetManifest;
       for (const entry of manifest.assets) this.entries.set(entry.id, entry);
+      await surfaces;
       return manifest.assets.length;
     } catch (err) {
+      await surfaces;
       // A missing pack is a normal state during development, not a crash: the
       // engine still runs, the editor palette is simply empty.
       console.warn(`[assets] no pack at ${url}:`, err);
@@ -216,9 +261,31 @@ export class AssetRegistry {
     return m;
   }
 
+  /**
+   * The material to draw an asset with.
+   *
+   * A projected material when the asset asks for one and the library is there,
+   * and the flat category palette otherwise. The fallback is not a courtesy: it
+   * is what keeps the engine running against a pack generated before materials
+   * existed, and what it degrades to if the texture pack fails to load.
+   */
   materialFor(id: string): Material {
     const entry = this.entries.get(id);
+    const spec = this.surfaceOf(id);
+    if (spec && this.surfaces.ready) return this.surfaces.get(spec);
     return this.material(entry?.category ?? 'prop');
+  }
+
+  /** The surfaces an asset should wear: its own, or its category's. */
+  surfaceOf(id: string): MaterialSpec | undefined {
+    const entry = this.entries.get(id);
+    if (!entry) return undefined;
+    return entry.material ?? CATEGORY_SURFACE[entry.category];
+  }
+
+  /** How far instances of this asset may drift in tone. Zero means uniform. */
+  jitterOf(id: string): number {
+    return this.surfaces.ready ? (this.surfaceOf(id)?.jitter ?? 0) : 0;
   }
 
   /** A visible stand-in, so a broken asset reads as broken instead of absent. */
@@ -235,5 +302,6 @@ export class AssetRegistry {
     for (const m of this.materials.values()) m.dispose();
     this.geometries.clear();
     this.materials.clear();
+    this.surfaces.dispose();
   }
 }

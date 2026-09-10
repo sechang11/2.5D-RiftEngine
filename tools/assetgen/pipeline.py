@@ -141,6 +141,7 @@ def _stage_and_record(spec, file_entry, manifest):
             "tags": spec.get("tags", []),
             "concept": aid + ".png",
             "conceptInfo": info,
+            "material": spec.get("material"),
         }
     )
 
@@ -171,6 +172,10 @@ def phase_meshes(catalog, manifest, only=None, limit=None, log=print, batch=MESH
     ]
     if limit:
         todo = todo[:limit]
+    # One octree setting applies to a whole submission, so batches have to be
+    # homogeneous in it. Sorting first means a hero asset's 320 is never quietly
+    # applied to the four ordinary props that happened to follow it.
+    todo.sort(key=lambda s: (s.get("octree", OCTREE), s.get("meshSteps", MESH_STEPS)))
     log("meshes: %d to do in batches of %d" % (len(todo), batch))
 
     done = 0
@@ -215,6 +220,7 @@ def phase_meshes(catalog, manifest, only=None, limit=None, log=print, batch=MESH
                     target_height=spec.get("height", 2.0),
                     upright=spec.get("upright", "none"),
                     ground=spec.get("ground", True),
+                    fit=spec.get("fit"),
                 )
                 manifest["assets"][aid].update({"mesh": aid + ".glb", "meshInfo": meta})
                 done += 1
@@ -301,6 +307,7 @@ def phase_retry(catalog, manifest, rounds=2, only=None, log=print):
                         target_height=spec.get("height", 2.0),
                         upright=spec.get("upright", "none"),
                         ground=spec.get("ground", True),
+                        fit=spec.get("fit"),
                     )
                     entry = manifest["assets"][aid]
                     before = quality.score(entry)

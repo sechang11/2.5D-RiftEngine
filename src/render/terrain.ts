@@ -28,14 +28,16 @@ import {
   ShaderMaterial,
   SphereGeometry,
   UnsignedByteType,
+  Texture,
   Vector2,
-  type Texture,
+  Vector3,
 } from 'three';
 import { CellFlag, type NavGrid } from '../core/nav/navgrid';
 import { Team } from '../core/ecs/types';
 import type { FogOfWar } from '../core/vision/fog';
 import type { GameMap } from '../game/content/map01';
 import { Rng } from '../core/math/rng';
+import type { MaterialLibrary } from './triplanar';
 import {
   createGroundTexture,
   createMacroTexture,
@@ -89,6 +91,15 @@ const groundFragmentShader = /* glsl */ `
   uniform sampler2D uMacro;
   uniform sampler2D uSplat;
   uniform sampler2D uFog;
+  uniform sampler2D uBaseTex;
+  uniform sampler2D uBaseNrm;
+  uniform sampler2D uLaneTex;
+  uniform sampler2D uLaneNrm;
+  uniform sampler2D uDirtTex;
+  uniform sampler2D uDirtNrm;
+  uniform vec3 uGroundTiles;
+  uniform float uGroundTextured;
+  uniform vec3 uSunDir;
   uniform float uFogEnabled;
   uniform float uGridEnabled;
   uniform float uUnexplored;
@@ -98,24 +109,69 @@ const groundFragmentShader = /* glsl */ `
   uniform vec3 uBrushColor;
 
   void main() {
-    // Textures tagged sRGB are uploaded with an sRGB internal format, so the
-    // GPU decodes them on sample. Everything below is already linear; decoding
-    // again here would darken the whole map.
-    vec3 base = texture2D(uGround, vTileUv).rgb;
+    // Every texture below is tagged sRGB and so is uploaded with an sRGB
+    // internal format, which means the GPU decodes on sample and everything
+    // here is already linear. Decoding again would darken the whole map.
 
     // A single stretched noise field breaks up the tiling at map scale.
     vec3 macro = texture2D(uMacro, vMapUv).rgb;
-    base *= 0.78 + macro * 0.9;
 
     // R: lane, G: brush, B: river. Authored by the map generator.
-    vec3 splat = texture2D(uSplat, vMapUv).rgb;
+    vec4 splat = texture2D(uSplat, vMapUv);
+    float lane = clamp(splat.r * 1.15, 0.0, 1.0);
+    // Alpha carries bare earth. Paving wins where they overlap, because a road
+    // through a yard is still a road.
+    float dirt = clamp(splat.a * 1.1, 0.0, 1.0) * (1.0 - lane);
 
-    // Regions repaint the hue but keep the ground texture's luminance, so a
-    // lane reads as trodden earth with all its grain intact rather than as a
-    // flat band of paint.
-    float lum = dot(base, vec3(0.299, 0.587, 0.114));
-    base = mix(base, uLaneColor * (0.45 + lum * 1.9), clamp(splat.r * 0.9, 0.0, 1.0));
-    base = mix(base, uRiverColor * (0.5 + lum * 1.7), splat.b * 0.72);
+    vec3 base;
+    if (uGroundTextured > 0.5) {
+      // Two real surfaces, chosen by the map: open ground, and whatever the
+      // lane mask means here — a trodden path on a battle map, a cobbled street
+      // in a city. The mask was already there to tint the procedural ground;
+      // this makes it select a material instead, which is the same authoring
+      // for a far better result.
+      vec2 uvBase = vWorld.xz * uGroundTiles.x;
+      vec2 uvLane = vWorld.xz * uGroundTiles.y;
+      vec2 uvDirt = vWorld.xz * uGroundTiles.z;
+
+      // The open ground covers the whole map, so its tiling is the one that
+      // shows. Cross-fading a second sample at a very different scale, driven
+      // by the macro field, breaks the period without breaking the seam: both
+      // samples tile, so their blend does too.
+      vec3 baseCol = mix(
+        texture2D(uBaseTex, uvBase).rgb,
+        texture2D(uBaseTex, uvBase * 0.31 + 0.37).rgb,
+        smoothstep(0.34, 0.66, macro.r)
+      );
+
+      base = mix(baseCol, texture2D(uDirtTex, uvDirt).rgb, dirt);
+      base = mix(base, texture2D(uLaneTex, uvLane).rgb, lane);
+      base *= 0.86 + macro * 0.5;
+
+      // The ground is drawn unlit, so relief has to be faked. Reconstructing a
+      // normal from the packed map and shading it against the sun direction is
+      // two instructions and the difference between a photograph of cobbles
+      // and actual cobbles.
+      vec2 tn = mix(
+        texture2D(uBaseNrm, uvBase).rg * 2.0 - 1.0,
+        texture2D(uDirtNrm, uvDirt).rg * 2.0 - 1.0,
+        dirt
+      );
+      tn = mix(tn, texture2D(uLaneNrm, uvLane).rg * 2.0 - 1.0, lane);
+      vec3 nrm = normalize(vec3(tn.x, 1.45, tn.y));
+      base *= clamp(0.66 + 0.62 * dot(nrm, uSunDir), 0.42, 1.3);
+    } else {
+      base = texture2D(uGround, vTileUv).rgb;
+      base *= 0.78 + macro * 0.9;
+      // Regions repaint the hue but keep the ground texture's luminance, so a
+      // lane reads as trodden earth with all its grain intact rather than as a
+      // flat band of paint.
+      float lum = dot(base, vec3(0.299, 0.587, 0.114));
+      base = mix(base, uLaneColor * (0.45 + lum * 1.9), clamp(splat.r * 0.9, 0.0, 1.0));
+    }
+
+    float wetLum = dot(base, vec3(0.299, 0.587, 0.114));
+    base = mix(base, uRiverColor * (0.5 + wetLum * 1.7), splat.b * 0.72);
     // Brush only darkens and deepens what is already there.
     base = mix(base, base * uBrushColor, splat.g * 0.85);
 
@@ -160,7 +216,31 @@ export interface TerrainOptions {
    */
   wallHeight?: number;
   wallVariation?: number;
+  /** Tiling surfaces. Without it the ground falls back to procedural noise. */
+  surfaces?: MaterialLibrary;
+  /** Which two surfaces the ground is made of. */
+  ground?: GroundSurfaces;
 }
+
+/**
+ * What the two ground layers are.
+ *
+ * `lane` is whatever the map's lane mask means: a trodden path between camps,
+ * or a cobbled street through a city. The mask is authored the same way either
+ * way, so a map picks its own vocabulary by naming a material here.
+ */
+export interface GroundSurfaces {
+  base: string;
+  lane: string;
+  /** The third layer, selected by the map's dirt mask. Bare earth, usually. */
+  dirt?: string;
+}
+
+const DEFAULT_GROUND: Required<GroundSurfaces> = {
+  base: 'grass_meadow',
+  lane: 'dirt_path',
+  dirt: 'mud',
+};
 
 export class Terrain {
   readonly group = new Group();
@@ -199,6 +279,18 @@ export class Terrain {
     const nav = map.nav;
     const splat = buildSplatTexture(map);
 
+    // The ground uses the material pack when there is one and the procedural
+    // noise when there is not, and the choice is made once here rather than
+    // branched on everywhere: the shader carries both paths behind a flag.
+    const surfaces = opts.surfaces;
+    const ground = opts.ground ?? DEFAULT_GROUND;
+    const textured = !!surfaces?.ready;
+    const blank = new Texture();
+    const pick = (id: string, kind: 'a' | 'nr') =>
+      textured && surfaces ? surfaces.texture(id, kind) : blank;
+    const tilesPerUnit = (id: string) =>
+      textured && surfaces ? 1 / surfaces.def(id).scale : 1 / GROUND_TILE;
+
     this.groundMaterial = new ShaderMaterial({
       vertexShader: groundVertexShader,
       fragmentShader: groundFragmentShader,
@@ -214,6 +306,23 @@ export class Terrain {
         uMapMin: { value: new Vector2(nav.minX, nav.minY) },
         uMapSize: { value: new Vector2(nav.width, nav.height) },
         uTile: { value: GROUND_TILE },
+        uBaseTex: { value: pick(ground.base, 'a') },
+        uBaseNrm: { value: pick(ground.base, 'nr') },
+        uLaneTex: { value: pick(ground.lane, 'a') },
+        uLaneNrm: { value: pick(ground.lane, 'nr') },
+        uDirtTex: { value: pick(ground.dirt ?? DEFAULT_GROUND.dirt, 'a') },
+        uDirtNrm: { value: pick(ground.dirt ?? DEFAULT_GROUND.dirt, 'nr') },
+        uGroundTiles: {
+          value: new Vector3(
+            tilesPerUnit(ground.base),
+            tilesPerUnit(ground.lane),
+            tilesPerUnit(ground.dirt ?? DEFAULT_GROUND.dirt),
+          ),
+        },
+        uGroundTextured: { value: textured ? 1 : 0 },
+        // Matches the renderer's sun, so ground relief is lit from the same
+        // side as everything standing on it.
+        uSunDir: { value: new Vector3(-52, 88, 46).normalize() },
         // Lane and river are linear-space hues that replace the ground's own.
         // Brush is a multiplier centred below one, so it only deepens.
         uLaneColor: { value: [0.36, 0.26, 0.14] },
@@ -238,7 +347,12 @@ export class Terrain {
     this.injectFog(this.wallMaterial, nav);
 
     this.walls = new Mesh(
-      buildWallGeometry(nav, opts.wallHeight ?? WALL_BASE_HEIGHT, opts.wallVariation ?? WALL_HEIGHT_VARIATION),
+      buildWallGeometry(
+        nav,
+        opts.wallHeight ?? WALL_BASE_HEIGHT,
+        opts.wallVariation ?? WALL_HEIGHT_VARIATION,
+        map.builtMask ?? null,
+      ),
       this.wallMaterial,
     );
     this.walls.castShadow = true;
@@ -391,7 +505,7 @@ function buildSplatTexture(map: GameMap): Texture {
     data[i * 4 + 0] = map.laneMask[i];
     data[i * 4 + 1] = map.brushMask[i];
     data[i * 4 + 2] = map.riverMask[i];
-    data[i * 4 + 3] = 255;
+    data[i * 4 + 3] = map.dirtMask ? map.dirtMask[i] : 0;
   }
   const tex = new DataTexture(data, w, h);
   tex.minFilter = LinearFilter;
@@ -409,7 +523,21 @@ function buildSplatTexture(map: GameMap): Texture {
  * all, which keeps the geometry small while still giving the rock an uneven
  * silhouette.
  */
-function buildWallGeometry(nav: NavGrid, baseHeight: number, variation: number): BufferGeometry {
+/**
+ * Extrudes blocked cells into rock.
+ *
+ * `skip` marks blocked cells that are somebody else's job to draw. A city's
+ * curtain wall is stamped into the same grid as its cliffs, because collision
+ * does not care which is which, but the wall is built out of generated masonry
+ * standing on the ground and a band of procedural rock under it would show
+ * through every gate arch.
+ */
+function buildWallGeometry(
+  nav: NavGrid,
+  baseHeight: number,
+  variation: number,
+  skip?: Uint8Array | null,
+): BufferGeometry {
   const positions: number[] = [];
   const normals: number[] = [];
   const uvs: number[] = [];
@@ -441,7 +569,8 @@ function buildWallGeometry(nav: NavGrid, baseHeight: number, variation: number):
     uvs.push(u0, v0, u1, v1, u0, v1);
   };
 
-  const blocked = (cx: number, cy: number): boolean => nav.isBlocked(cx, cy);
+  const blocked = (cx: number, cy: number): boolean =>
+    nav.isBlocked(cx, cy) && !(skip && skip[nav.idx(cx, cy)]);
 
   for (let cy = 0; cy < nav.rows; cy++) {
     for (let cx = 0; cx < nav.cols; cx++) {

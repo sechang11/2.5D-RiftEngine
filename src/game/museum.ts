@@ -103,10 +103,11 @@ const footprint = (e: AssetEntry): number => Math.max(e.size[0], e.size[2]);
  * content fits is how you end up with a museum that runs off the edge of the
  * world.
  */
-function planRooms(assets: AssetRegistry): PlannedRoom[] {
+function planRooms(assets: AssetRegistry, only?: string[]): PlannedRoom[] {
   const rooms: PlannedRoom[] = [];
 
   for (const category of assets.categories()) {
+    if (only && !only.includes(category)) continue;
     const entries = assets.byCategory(category);
     if (entries.length === 0) continue;
 
@@ -160,8 +161,16 @@ function planRooms(assets: AssetRegistry): PlannedRoom[] {
  * The nav grid is sized to the plan plus a border, then walls are stamped
  * around each gallery with a doorway on its south side.
  */
-export function buildMuseum(assets: AssetRegistry): MuseumLayout {
-  const rooms = planRooms(assets);
+/**
+ * Lays out the galleries.
+ *
+ * `only` restricts it to named categories. With the whole pack that is four
+ * hundred and sixty meshes to fetch before the first frame, which is fine when
+ * the museum is the destination and tiresome when you wanted to look at the
+ * roofs, so `?mode=museum&category=house` builds just that hall.
+ */
+export function buildMuseum(assets: AssetRegistry, only?: string[]): MuseumLayout {
+  const rooms = planRooms(assets, only && only.length ? only : undefined);
 
   if (rooms.length === 0) {
     // No pack. Return a small empty courtyard rather than a zero-sized grid.

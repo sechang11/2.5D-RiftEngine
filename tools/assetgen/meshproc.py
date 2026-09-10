@@ -114,16 +114,32 @@ def _keep_significant_parts(mesh, min_fraction=0.12):
     return trimesh.util.concatenate(keep)
 
 
-def _decimate(mesh, target_faces):
+def _decimate(mesh, target_faces, passes=4):
+    """
+    Collapses to a triangle budget, repeatedly.
+
+    One call to the quadric simplifier does not reach the target from a million
+    faces: it stops early rather than collapse edges it judges harmful, and asked
+    for 3,000 from 1,042,218 it returned 4,967. Iterating on its own output gets
+    there, because each pass starts from a mesh whose remaining edges are cheaper
+    to judge. Measured over the pack this is the difference between a 30 MB
+    download and a 17 MB one, for detail that the projected texture supplies
+    anyway.
+    """
     if len(mesh.faces) <= target_faces:
         return mesh
     if HAVE_FS:
-        verts = np.asarray(mesh.vertices, dtype=np.float32)
-        faces = np.asarray(mesh.faces, dtype=np.int32)
-        ratio = 1.0 - (target_faces / float(len(faces)))
-        ratio = min(max(ratio, 0.0), 0.999)
-        v, f = fast_simplification.simplify(verts, faces, ratio)
-        return trimesh.Trimesh(vertices=v, faces=f, process=False)
+        for _ in range(passes):
+            faces = np.asarray(mesh.faces, dtype=np.int32)
+            if len(faces) <= target_faces * 1.15:
+                break
+            verts = np.asarray(mesh.vertices, dtype=np.float32)
+            ratio = min(max(1.0 - (target_faces / float(len(faces))), 0.0), 0.999)
+            v, f = fast_simplification.simplify(verts, faces, ratio)
+            if len(f) >= len(faces):
+                break  # no progress; another pass would spin
+            mesh = trimesh.Trimesh(vertices=v, faces=f, process=False)
+        return mesh
     # Vertex clustering fallback: snap to a grid sized to hit roughly the
     # target count, averaging positions per cell so the silhouette survives.
     extent = float(np.max(mesh.extents))
@@ -163,6 +179,7 @@ def process(
     target_height=2.0,
     upright="none",
     ground=True,
+    fit=None,
 ):
     """
     Returns a metadata dict describing the written asset, or raises.
@@ -201,6 +218,21 @@ def process(
     height = float(extents[1]) if extents[1] > 1e-6 else float(np.max(extents))
     scale = target_height / height if height > 1e-6 else 1.0
     mesh.apply_scale(scale)
+
+    # Kit pieces are forced into an exact box, non-uniformly.
+    #
+    # A wall section that comes back 3.87 units long leaves a gap every time it
+    # repeats, and forty repeats is a hole you can walk through. The distortion
+    # is a few percent on a piece whose proportions were already asked for in
+    # the prompt, and it is the difference between a kit and a pile of props.
+    if fit:
+        extents = mesh.extents
+        mesh.apply_scale(
+            [
+                (fit[i] / extents[i]) if (fit[i] and extents[i] > 1e-6) else 1.0
+                for i in range(3)
+            ]
+        )
 
     # Centre in X/Z and rest the base on the ground plane, so a placed prop
     # sits on the terrain instead of floating or sinking.

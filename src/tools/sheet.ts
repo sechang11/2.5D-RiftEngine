@@ -54,7 +54,9 @@ scene.background = new Color(0x121822);
 scene.fog = new Fog(0x121822, 60, 220);
 scene.add(new HemisphereLight(0xbcd6ff, 0x2a3324, 1.15));
 const sun = new DirectionalLight(0xfff0d8, 2.0);
-sun.position.set(20, 40, 20);
+// Front-left, matching the game's own sun, so an asset judged here is lit the
+// way it will be lit in play.
+sun.position.set(-26, 44, 34);
 scene.add(sun);
 
 const ground = new Mesh(
@@ -128,7 +130,7 @@ async function build(): Promise<void> {
       const z = (Math.floor(i / cols) - (rows - 1) / 2) * spacing;
       try {
         const geo = await registry.load(entry.id);
-        const mesh = new Mesh(geo, registry.material(entry.category));
+        const mesh = new Mesh(geo, registry.materialFor(entry.id));
         mesh.position.set(x, 0, z);
         mesh.castShadow = true;
         world.add(mesh);

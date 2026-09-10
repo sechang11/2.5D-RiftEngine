@@ -49,6 +49,17 @@ export interface GameMap {
   brushMask: Uint8Array;
   /** Per nav cell: 255 in the river band. */
   riverMask: Uint8Array;
+  /**
+   * Per nav cell: non-zero where something built covers a blocked cell, so the
+   * terrain leaves it alone rather than extruding rock through a wall or a gate.
+   */
+  builtMask?: Uint8Array;
+  /**
+   * Per nav cell: how much of the ground's third surface shows through. Bare
+   * earth, in practice — a country road, a yard, a worn verge — as distinct
+   * from the paved lane mask.
+   */
+  dirtMask?: Uint8Array;
   lanes: Lane[];
   spawns: Record<Team, Vec2>;
   camps: CampSpec[];

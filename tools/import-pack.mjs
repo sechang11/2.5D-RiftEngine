@@ -76,6 +76,9 @@ for (const [id, entry] of Object.entries(raw.assets ?? {})) {
     radius: info.radius ?? 0.5,
     triangles: info.triangles ?? 0,
     bytes,
+    // Which tiling surfaces to project onto this mesh. Absent for the first
+    // pack, which predates materials; the runtime falls back to its category.
+    ...(entry.material ? { material: entry.material } : {}),
   });
   totalBytes += bytes;
   totalTris += info.triangles ?? 0;

@@ -1,0 +1,475 @@
+{
+ "generated": "2026-09-10T15:09:14.380756Z",
+ "materials": [
+  {
+   "id": "bone",
+   "name": "Bone",
+   "group": "character",
+   "scale": 1.2,
+   "roughness": 0.85,
+   "metalness": 0.0,
+   "normalStrength": 0.7,
+   "tint": null
+  },
+  {
+   "id": "brick_red",
+   "name": "Red Brick",
+   "group": "surface",
+   "scale": 2.2,
+   "roughness": 0.9,
+   "metalness": 0.0,
+   "normalStrength": 1.3,
+   "tint": null
+  },
+  {
+   "id": "bronze",
+   "name": "Aged Bronze",
+   "group": "metal",
+   "scale": 1.4,
+   "roughness": 0.4,
+   "metalness": 0.9,
+   "normalStrength": 0.7,
+   "tint": null
+  },
+  {
+   "id": "canvas_stripe",
+   "name": "Market Awning",
+   "group": "cloth",
+   "scale": 2.0,
+   "roughness": 0.95,
+   "metalness": 0.0,
+   "normalStrength": 0.8,
+   "tint": null
+  },
+  {
+   "id": "chainmail",
+   "name": "Chainmail",
+   "group": "character",
+   "scale": 0.8,
+   "roughness": 0.45,
+   "metalness": 0.85,
+   "normalStrength": 1.5,
+   "tint": null
+  },
+  {
+   "id": "cloth_banner",
+   "name": "Heraldic Cloth",
+   "group": "cloth",
+   "scale": 1.8,
+   "roughness": 0.95,
+   "metalness": 0.0,
+   "normalStrength": 0.7,
+   "tint": null
+  },
+  {
+   "id": "cobblestone",
+   "name": "Cobblestone Street",
+   "group": "surface",
+   "scale": 3.0,
+   "roughness": 0.9,
+   "metalness": 0.0,
+   "normalStrength": 1.6,
+   "tint": null
+  },
+  {
+   "id": "daub",
+   "name": "Wattle and Daub",
+   "group": "surface",
+   "scale": 2.6,
+   "roughness": 0.97,
+   "metalness": 0.0,
+   "normalStrength": 1.0,
+   "tint": null
+  },
+  {
+   "id": "dirt_path",
+   "name": "Dirt Road",
+   "group": "ground",
+   "scale": 3.2,
+   "roughness": 0.98,
+   "metalness": 0.0,
+   "normalStrength": 1.1,
+   "tint": null
+  },
+  {
+   "id": "flagstone",
+   "name": "Flagstone Paving",
+   "group": "surface",
+   "scale": 3.6,
+   "roughness": 0.9,
+   "metalness": 0.0,
+   "normalStrength": 1.1,
+   "tint": null
+  },
+  {
+   "id": "fur_brown",
+   "name": "Brown Fur",
+   "group": "character",
+   "scale": 1.0,
+   "roughness": 0.95,
+   "metalness": 0.0,
+   "normalStrength": 1.2,
+   "tint": null
+  },
+  {
+   "id": "gold",
+   "name": "Gilded Gold",
+   "group": "metal",
+   "scale": 1.2,
+   "roughness": 0.25,
+   "metalness": 1.0,
+   "normalStrength": 0.6,
+   "tint": null
+  },
+  {
+   "id": "grass_meadow",
+   "name": "Meadow Grass",
+   "group": "ground",
+   "scale": 2.6,
+   "roughness": 0.98,
+   "metalness": 0.0,
+   "normalStrength": 1.0,
+   "tint": null
+  },
+  {
+   "id": "gravel",
+   "name": "Gravel",
+   "group": "ground",
+   "scale": 2.0,
+   "roughness": 0.98,
+   "metalness": 0.0,
+   "normalStrength": 1.4,
+   "tint": null
+  },
+  {
+   "id": "iron_rust",
+   "name": "Rusted Iron",
+   "group": "metal",
+   "scale": 1.6,
+   "roughness": 0.85,
+   "metalness": 0.55,
+   "normalStrength": 1.2,
+   "tint": null
+  },
+  {
+   "id": "iron_wrought",
+   "name": "Wrought Iron",
+   "group": "metal",
+   "scale": 1.4,
+   "roughness": 0.45,
+   "metalness": 0.9,
+   "normalStrength": 0.9,
+   "tint": null
+  },
+  {
+   "id": "leather",
+   "name": "Worn Leather",
+   "group": "cloth",
+   "scale": 1.2,
+   "roughness": 0.8,
+   "metalness": 0.0,
+   "normalStrength": 0.9,
+   "tint": null
+  },
+  {
+   "id": "mud",
+   "name": "Churned Mud",
+   "group": "ground",
+   "scale": 2.8,
+   "roughness": 0.6,
+   "metalness": 0.0,
+   "normalStrength": 1.2,
+   "tint": null
+  },
+  {
+   "id": "plaster_ochre",
+   "name": "Ochre Render",
+   "group": "surface",
+   "scale": 3.0,
+   "roughness": 0.95,
+   "metalness": 0.0,
+   "normalStrength": 0.7,
+   "tint": null
+  },
+  {
+   "id": "plaster_white",
+   "name": "Lime Plaster",
+   "group": "surface",
+   "scale": 3.0,
+   "roughness": 0.95,
+   "metalness": 0.0,
+   "normalStrength": 0.7,
+   "tint": null
+  },
+  {
+   "id": "robe_cloth",
+   "name": "Wizard Wool",
+   "group": "character",
+   "scale": 1.2,
+   "roughness": 0.96,
+   "metalness": 0.0,
+   "normalStrength": 0.7,
+   "tint": null
+  },
+  {
+   "id": "roof_clay",
+   "name": "Clay Tile Roof",
+   "group": "roof",
+   "scale": 1.8,
+   "roughness": 0.8,
+   "metalness": 0.0,
+   "normalStrength": 1.6,
+   "tint": null
+  },
+  {
+   "id": "roof_copper",
+   "name": "Verdigris Copper",
+   "group": "roof",
+   "scale": 2.4,
+   "roughness": 0.55,
+   "metalness": 0.35,
+   "normalStrength": 0.9,
+   "tint": null
+  },
+  {
+   "id": "roof_lead",
+   "name": "Lead Sheet",
+   "group": "roof",
+   "scale": 2.4,
+   "roughness": 0.6,
+   "metalness": 0.3,
+   "normalStrength": 0.8,
+   "tint": null
+  },
+  {
+   "id": "roof_shingle",
+   "name": "Wood Shingle",
+   "group": "roof",
+   "scale": 1.7,
+   "roughness": 0.92,
+   "metalness": 0.0,
+   "normalStrength": 1.4,
+   "tint": null
+  },
+  {
+   "id": "roof_slate",
+   "name": "Slate Roof",
+   "group": "roof",
+   "scale": 1.8,
+   "roughness": 0.7,
+   "metalness": 0.0,
+   "normalStrength": 1.5,
+   "tint": null
+  },
+  {
+   "id": "roof_thatch",
+   "name": "Thatch",
+   "group": "roof",
+   "scale": 2.0,
+   "roughness": 0.98,
+   "metalness": 0.0,
+   "normalStrength": 1.7,
+   "tint": null
+  },
+  {
+   "id": "rope",
+   "name": "Rope Coil",
+   "group": "cloth",
+   "scale": 1.0,
+   "roughness": 0.95,
+   "metalness": 0.0,
+   "normalStrength": 1.3,
+   "tint": null
+  },
+  {
+   "id": "sand",
+   "name": "Sand",
+   "group": "ground",
+   "scale": 3.0,
+   "roughness": 0.97,
+   "metalness": 0.0,
+   "normalStrength": 0.8,
+   "tint": null
+  },
+  {
+   "id": "scale_green",
+   "name": "Dragon Scale",
+   "group": "character",
+   "scale": 0.9,
+   "roughness": 0.45,
+   "metalness": 0.0,
+   "normalStrength": 1.4,
+   "tint": null
+  },
+  {
+   "id": "skin_green",
+   "name": "Orc Hide",
+   "group": "character",
+   "scale": 1.0,
+   "roughness": 0.85,
+   "metalness": 0.0,
+   "normalStrength": 0.8,
+   "tint": null
+  },
+  {
+   "id": "skin_human",
+   "name": "Human Skin",
+   "group": "character",
+   "scale": 1.0,
+   "roughness": 0.7,
+   "metalness": 0.0,
+   "normalStrength": 0.35,
+   "tint": null
+  },
+  {
+   "id": "snow",
+   "name": "Snow",
+   "group": "ground",
+   "scale": 3.2,
+   "roughness": 0.75,
+   "metalness": 0.0,
+   "normalStrength": 0.7,
+   "tint": null
+  },
+  {
+   "id": "steel",
+   "name": "Polished Steel",
+   "group": "metal",
+   "scale": 1.4,
+   "roughness": 0.25,
+   "metalness": 1.0,
+   "normalStrength": 0.5,
+   "tint": null
+  },
+  {
+   "id": "stone_ashlar",
+   "name": "Castle Ashlar",
+   "group": "surface",
+   "scale": 3.0,
+   "roughness": 0.92,
+   "metalness": 0.0,
+   "normalStrength": 1.35,
+   "tint": null
+  },
+  {
+   "id": "stone_dark",
+   "name": "Dark Granite",
+   "group": "surface",
+   "scale": 3.2,
+   "roughness": 0.88,
+   "metalness": 0.0,
+   "normalStrength": 1.4,
+   "tint": null
+  },
+  {
+   "id": "stone_limestone",
+   "name": "Limestone Block",
+   "group": "surface",
+   "scale": 3.0,
+   "roughness": 0.9,
+   "metalness": 0.0,
+   "normalStrength": 1.1,
+   "tint": null
+  },
+  {
+   "id": "stone_marble",
+   "name": "White Marble",
+   "group": "surface",
+   "scale": 3.0,
+   "roughness": 0.35,
+   "metalness": 0.0,
+   "normalStrength": 0.4,
+   "tint": null
+  },
+  {
+   "id": "stone_mossy",
+   "name": "Mossy Stone",
+   "group": "surface",
+   "scale": 2.8,
+   "roughness": 0.96,
+   "metalness": 0.0,
+   "normalStrength": 1.4,
+   "tint": null
+  },
+  {
+   "id": "stone_rubble",
+   "name": "Rubble Masonry",
+   "group": "surface",
+   "scale": 2.6,
+   "roughness": 0.95,
+   "metalness": 0.0,
+   "normalStrength": 1.5,
+   "tint": null
+  },
+  {
+   "id": "stone_sandstone",
+   "name": "Sandstone Block",
+   "group": "surface",
+   "scale": 3.0,
+   "roughness": 0.93,
+   "metalness": 0.0,
+   "normalStrength": 1.2,
+   "tint": null
+  },
+  {
+   "id": "straw",
+   "name": "Straw Bale",
+   "group": "cloth",
+   "scale": 1.6,
+   "roughness": 0.98,
+   "metalness": 0.0,
+   "normalStrength": 1.4,
+   "tint": null
+  },
+  {
+   "id": "wood_bark",
+   "name": "Bark",
+   "group": "surface",
+   "scale": 1.6,
+   "roughness": 0.97,
+   "metalness": 0.0,
+   "normalStrength": 1.6,
+   "tint": null
+  },
+  {
+   "id": "wood_beam",
+   "name": "Tudor Timber",
+   "group": "surface",
+   "scale": 2.4,
+   "roughness": 0.9,
+   "metalness": 0.0,
+   "normalStrength": 1.2,
+   "tint": null
+  },
+  {
+   "id": "wood_door",
+   "name": "Studded Door",
+   "group": "surface",
+   "scale": 2.0,
+   "roughness": 0.85,
+   "metalness": 0.0,
+   "normalStrength": 1.3,
+   "tint": null
+  },
+  {
+   "id": "wood_pale",
+   "name": "Pale Timber",
+   "group": "surface",
+   "scale": 2.2,
+   "roughness": 0.85,
+   "metalness": 0.0,
+   "normalStrength": 1.0,
+   "tint": null
+  },
+  {
+   "id": "wood_plank",
+   "name": "Oak Planks",
+   "group": "surface",
+   "scale": 2.2,
+   "roughness": 0.88,
+   "metalness": 0.0,
+   "normalStrength": 1.1,
+   "tint": null
+  }
+ ]
+}

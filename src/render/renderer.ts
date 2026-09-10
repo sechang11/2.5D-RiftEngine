@@ -24,7 +24,7 @@ import type { Sim } from '../core/sim/sim';
 import type { GameMap } from '../game/content/map01';
 import { Team } from '../core/ecs/types';
 import { SimEventType } from '../core/events/bus';
-import { Terrain } from './terrain';
+import { Terrain, type GroundSurfaces } from './terrain';
 import { UnitViews } from './unitview';
 import { Indicators } from './indicators';
 import { Effects } from './fx';
@@ -53,6 +53,8 @@ export interface RendererOptions {
   /** Extrusion height for blocked cells. Low values suit interiors. */
   wallHeight?: number;
   wallVariation?: number;
+  /** Which two surfaces the ground is made of, when a material pack is loaded. */
+  ground?: GroundSurfaces;
 }
 
 export class Renderer {
@@ -128,8 +130,13 @@ export class Renderer {
     this.camera = new RtsCamera(1, {
       pitchDegrees: 57,
       distance: 38,
-      minDistance: 18,
-      maxDistance: 78,
+      // Wide enough at the bottom to stand at a wall and read the stonework,
+      // and at the top to see a whole city district at once. Playing happens
+      // in the middle of that range; the ends are for looking.
+      minDistance: 5,
+      maxDistance: 210,
+      minPitchDegrees: 24,
+      pitchEaseDistance: 26,
       bounds: map.bounds,
     });
 
@@ -138,6 +145,8 @@ export class Renderer {
       showGrid: opts.showGrid,
       wallHeight: opts.wallHeight,
       wallVariation: opts.wallVariation,
+      surfaces: opts.assets?.surfaces,
+      ground: opts.ground,
     });
     this.scene.add(this.terrain.group);
 
@@ -227,6 +236,7 @@ export class Renderer {
     this.indicators.update(dt);
 
     this.updateSun();
+    this.updateFog();
 
     this.renderer.render(this.scene, this.camera.camera);
 
@@ -244,11 +254,36 @@ export class Renderer {
     this.frameMs = performance.now() - started;
   }
 
-  /** Keeps the shadow frustum centred on what the camera is looking at. */
+  /**
+   * Keeps the distance haze proportional to how far the camera can see.
+   *
+   * Fixed near and far planes were tuned for a camera that lived between 22 and
+   * 78 units out. Zoomed all the way back, the far half of a city sat beyond
+   * the old far plane and dissolved into sky; zoomed all the way in, the haze
+   * started closer than the building being inspected. The coefficients are
+   * chosen to reproduce the original 120 and 260 at the default distance.
+   */
+  private updateFog(): void {
+    const fog = this.scene.fog as Fog | null;
+    if (!fog) return;
+    const d = this.camera.currentDistance;
+    fog.near = d * 1.1 + 78;
+    fog.far = d * 2.6 + 161;
+  }
+
+  /**
+   * Keeps the shadow frustum centred on what the camera is looking at.
+   *
+   * The sun sits on the camera's side of the world, not behind it. The yaw is
+   * fixed, so a light at negative Z put every visible face in shadow: with flat
+   * category colours that read as moody, and with real materials it read as
+   * broken — pale cream stone rendered as wet slate, and the texture work was
+   * invisible until the light came round to the front.
+   */
   private updateSun(): void {
     const fx = this.camera.focusX;
     const fz = this.camera.focusY;
-    this.sun.position.set(fx - 42, 78, fz - 36);
+    this.sun.position.set(fx - 52, 88, fz + 46);
     this.sun.target.position.set(fx, 0, fz);
     this.sun.target.updateMatrixWorld();
     this.sun.shadow.camera.updateProjectionMatrix();

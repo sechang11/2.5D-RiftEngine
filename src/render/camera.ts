@@ -23,8 +23,12 @@ export interface CameraBounds {
 }
 
 export interface RtsCameraOptions {
-  /** Angle below the horizon, in degrees. */
+  /** Angle below the horizon, in degrees, at playing distance and beyond. */
   pitchDegrees?: number;
+  /** Angle at full zoom-in. Lower means more facade and less roof. */
+  minPitchDegrees?: number;
+  /** Distance below which the pitch starts easing towards `minPitchDegrees`. */
+  pitchEaseDistance?: number;
   minDistance?: number;
   maxDistance?: number;
   distance?: number;
@@ -46,7 +50,27 @@ export class RtsCamera {
 
   distance: number;
   private smoothDistance: number;
-  readonly pitch: number;
+  private readonly basePitch: number;
+  private readonly minPitch: number;
+  private readonly pitchEaseDistance: number;
+
+  /**
+   * Current angle below the horizon.
+   *
+   * Fixed for the whole playing range, which is what keeps the view 2.5D: a
+   * click maps to one ground point and a unit's facing is the facing it has in
+   * the simulation. Below `pitchEaseDistance` it tips towards the horizontal,
+   * because at that range nobody is playing — they have zoomed in to look at
+   * something, and from directly above a building is a roof.
+   */
+  get pitch(): number {
+    const span = this.pitchEaseDistance - this.minDistance;
+    if (span <= 1e-3) return this.basePitch;
+    const t = clamp((this.smoothDistance - this.minDistance) / span, 0, 1);
+    // Eased rather than linear so the tilt is barely there for the first part
+    // of the zoom and arrives as the camera actually gets close.
+    return this.minPitch + (this.basePitch - this.minPitch) * (t * t);
+  }
 
   /** When set, the camera follows this point every frame. */
   followTarget: Vec2 | null = null;
@@ -66,16 +90,22 @@ export class RtsCamera {
   private viewportHeight = 1;
 
   constructor(aspect: number, opts: RtsCameraOptions = {}) {
-    this.pitch = (opts.pitchDegrees ?? 58) * DEG2RAD;
-    this.minDistance = opts.minDistance ?? 22;
-    this.maxDistance = opts.maxDistance ?? 88;
+    this.basePitch = (opts.pitchDegrees ?? 58) * DEG2RAD;
+    this.minPitch = (opts.minPitchDegrees ?? 24) * DEG2RAD;
+    this.pitchEaseDistance = opts.pitchEaseDistance ?? 26;
+    this.minDistance = opts.minDistance ?? 5;
+    this.maxDistance = opts.maxDistance ?? 210;
     this.distance = opts.distance ?? 46;
     this.smoothDistance = this.distance;
     this.panSpeed = opts.panSpeed ?? 46;
     this.edgeMargin = opts.edgeMargin ?? 8;
     this.bounds = opts.bounds ?? { minX: -1000, minY: -1000, maxX: 1000, maxY: 1000 };
 
-    this.camera = new PerspectiveCamera(46, aspect, 1, 600);
+    // The far plane has to clear the whole map from the top of the zoom range,
+    // and the near plane has to let the camera get close enough to read a
+    // mortar joint. Both were sized for a fixed 22-to-88 range and neither
+    // survived widening it.
+    this.camera = new PerspectiveCamera(46, aspect, 0.4, 2200);
     this.applyTransform();
   }
 

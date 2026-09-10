@@ -31,9 +31,12 @@
 import './styles.css';
 import { Sim } from './core/sim/sim';
 import { Team } from './core/ecs/types';
+import { vec2 } from './core/math/vec2';
 import { buildMap01 } from './game/content/map01';
-import { buildScenario, type Scenario } from './game/scenario';
+import { buildScenario, spawnUnit, type Scenario } from './game/scenario';
 import { buildMuseum, populateMuseum, type MuseumLayout } from './game/museum';
+import { buildCity, populateCity, type CityMap } from './game/content/city';
+
 import { Renderer } from './render/renderer';
 import { InputState } from './input/input';
 import { PlayerController } from './input/controller';
@@ -49,6 +52,7 @@ import type { WorldLabel } from './render/overlay';
 import * as scene from './game/scene';
 
 const MAP_SEED = 9090;
+const CITY_SEED = 4711;
 const SIM_SEED = 20260909;
 
 async function boot(): Promise<void> {
@@ -61,7 +65,9 @@ async function boot(): Promise<void> {
   }
 
   const params = new URLSearchParams(location.search);
-  const museumMode = params.get('mode') === 'museum';
+  const mode = params.get('mode') ?? 'battle';
+  const museumMode = mode === 'museum';
+  const cityMode = mode === 'city';
 
   // The asset pack is loaded first because the museum's layout is derived from
   // it: the map cannot be sized until the exhibits are known. Without a pack
@@ -71,9 +77,15 @@ async function boot(): Promise<void> {
 
   let map;
   let layout: MuseumLayout | null = null;
+  let city: CityMap | null = null;
   if (museumMode) {
-    layout = buildMuseum(assets);
+    layout = buildMuseum(assets, (params.get('category') ?? '').split(',').filter(Boolean));
     map = layout.map;
+  } else if (cityMode) {
+    // The city sizes its plots from the catalogue, so it is built after the
+    // manifest and before anything that needs a map.
+    city = buildCity(CITY_SEED, assets);
+    map = city;
   } else {
     map = buildMap01(MAP_SEED);
   }
@@ -86,6 +98,13 @@ async function boot(): Promise<void> {
   if (museumMode && layout) {
     playerId = populateMuseum(sim, layout, props, assets).player.id;
     await assets.loadAll(new Set(props.props.map((p) => p.assetId)));
+  } else if (cityMode && city) {
+    populateCity(city.plan, props, assets);
+    props.rebuildNav(true);
+    const visitor = spawnUnit(sim, 'warden', Team.Blue, vec2(city.plan.entrance.x, city.plan.entrance.y));
+    visitor.name = 'Traveller';
+    playerId = visitor.id;
+    await assets.loadAll(new Set(props.props.map((p) => p.assetId)));
   } else {
     scenario = buildScenario(sim, map);
     playerId = scenario.player.id;
@@ -97,11 +116,14 @@ async function boot(): Promise<void> {
   const renderer = new Renderer(app, canvas, overlayCanvas, sim, map, {
     viewTeam: Team.Blue,
     // A gallery you cannot see across is not a gallery.
-    fogEnabled: !museumMode,
+    fogEnabled: !museumMode && !cityMode,
     // Gallery partitions, not cliffs: low enough to see over from the fixed
     // camera, high enough to read as rooms.
     wallHeight: museumMode ? 1.15 : undefined,
     wallVariation: museumMode ? 0.12 : undefined,
+    // The city paves its streets with the lane mask, so that is what the
+    // cobbles follow; outside the walls the same mask is the road.
+    ground: cityMode ? { base: 'grass_meadow', lane: 'cobblestone', dirt: 'dirt_path' } : undefined,
     assets,
     props,
   });
@@ -136,7 +158,7 @@ async function boot(): Promise<void> {
   );
 
   controller.playerUnit = playerId;
-  controller.toggles.fogEnabled = !museumMode;
+  controller.toggles.fogEnabled = !museumMode && !cityMode;
   renderer.views.selection.add(playerId);
   const player = sim.world.get(playerId);
   if (player) renderer.camera.jumpTo(player.pos.x, player.pos.y);
@@ -198,6 +220,21 @@ async function boot(): Promise<void> {
     renderer.overlay.labels = labels;
     hud.log(`Museum: ${layout.exhibits.length} exhibits in ${layout.galleries.length} galleries.`);
     hud.toast('Right click to walk. Every asset in the pack is on this map.');
+  } else if (cityMode && city) {
+    renderer.overlay.labels = city.plan.landmarks.map((l) => ({
+      x: l.x,
+      y: l.y,
+      height: 7.5,
+      text: l.name.toUpperCase(),
+      size: 14,
+      colour: '#ffd9a0',
+    }));
+    renderer.overlay.labelRange = 70;
+    hud.log(
+      `Highhold: ${city.plan.placements.length} pieces, ` +
+        `${city.plan.districts.length} districts, ${city.plan.gates.length} gates.`,
+    );
+    hud.toast('Right click to walk. Mouse wheel zooms right in.');
   } else {
     // Restore whatever was last being worked on, so a reload does not lose a
     // dressing session. With nothing saved and a pack available, scatter a

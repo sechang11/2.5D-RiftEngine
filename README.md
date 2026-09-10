@@ -48,7 +48,7 @@ Then open the URL Vite prints.
 | Arrow keys, screen edge | Scroll the map |
 | `Space` | Centre on your champion (hold to follow) |
 | `Y` | Toggle camera lock |
-| Mouse wheel | Zoom |
+| Mouse wheel | Zoom, from five units to two hundred and ten |
 | Walk over an item | Pick it up and equip it |
 | `F2` | Open the editor |
 
@@ -79,13 +79,14 @@ Sandbox keys while playing: `B` spawns a minion wave, `V` toggles fog of war,
 `engine.capture('docs/screenshot.jpg')` writes the current view to disk, which
 is how the image above was made; that endpoint is dev-server only.
 
-## Two worlds, one engine
+## Three worlds, one engine
 
 `?mode=` picks which one boots.
 
 | Mode | What it is |
 | --- | --- |
 | `/` | The MOBA sandbox on Hollow Reach |
+| `/?mode=city` | Highhold: a walled castle city, its town and the country round it |
 | `/?mode=museum` | Every asset in the pack laid out as galleries you walk through |
 
 The museum is not a debug view. It is a second game built from the same map,
@@ -94,6 +95,12 @@ matters for reviewing art: a mesh that reads well in an asset browser can be a
 smear from the game's fixed camera height, and only the game's own camera tells
 you which. Each exhibit is captioned with its name, its size in world units and
 its triangle count, and your champion stands among them for scale.
+
+Highhold is the other direction: the same pieces, assembled. A curtain wall
+repeated round a two-hundred-unit circuit, six house shells at four rotations, a
+citadel, a market square where the avenues cross, a river with three bridges and
+two water gates, docks, a temple precinct, and farms outside the walls. Nothing
+in it is a model of a city. It is a kit and a street plan.
 
 ![The buildings gallery: a portal arch, a stone keep, a tavern, a granary and a
 dragon statue on open ground, each captioned with its name, world size and
@@ -132,9 +139,17 @@ joints, with three body plans: bipeds, quadrupeds and floating. Two dozen
 fantasy archetypes from knights and wizards to dire wolves, drakes and liches,
 each a few hundred triangles and a line of data.
 
-**Assets.** An optional generated mesh pack of buildings, terrain, props,
-weapons and creatures, drawn with one instanced draw call per asset type. See
+**Assets.** A generated mesh pack of castle, town and country pieces, weapons,
+creatures and people, drawn with one instanced draw call per asset type. See
 [docs/ASSET-PIPELINE.md](docs/ASSET-PIPELINE.md).
+
+**Materials.** Generated meshes have no UVs, so the texture is projected rather
+than mapped: each fragment samples a tiling surface down all three object-space
+axes and blends by facing. Walls get one material and up-facing surfaces get
+another, which is what puts slate on a roof and ashlar on the wall beneath it
+without the mesh knowing what a roof is. Tiling makes resolution nearly free —
+512 pixels per world unit — so the camera zooms from a whole district down to a
+mortar joint. See [docs/MATERIALS.md](docs/MATERIALS.md).
 
 **Editor.** Press `F2`. A searchable palette of every asset and unit archetype,
 click to place, drag to move, undo and redo, per-object flags for movement and
@@ -163,7 +178,7 @@ src/render/   Three.js: terrain, characters, props, camera, effects, overlay
 src/editor/   the map editor and its panel
 src/input/    raw input capture and the player controller
 src/ui/       HUD and minimap
-src/game/     content: map, champions, abilities, items, scenes, dressing
+src/game/     content: maps, the city, champions, abilities, items, dressing
 tests/        determinism, navigation and combat tests
 tools/        headless benchmark, asset generation, pack importer
 ```
@@ -172,4 +187,5 @@ Deployed on Railway; see [docs/DEPLOY.md](docs/DEPLOY.md).
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for why it is shaped this way,
 [docs/ASSET-PIPELINE.md](docs/ASSET-PIPELINE.md) for how the mesh pack is made,
+[docs/MATERIALS.md](docs/MATERIALS.md) for how untextured meshes get textured,
 and [docs/ROADMAP.md](docs/ROADMAP.md) for what a full MOBA still needs.

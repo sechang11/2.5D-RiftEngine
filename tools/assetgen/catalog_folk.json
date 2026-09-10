@@ -1,0 +1,1482 @@
+[
+ {
+  "id": "folk_king",
+  "name": "The King",
+  "category": "folk",
+  "tags": [],
+  "height": 2.7,
+  "faces": 9000,
+  "upright": "longest",
+  "prompt": "a crowned king in a fur-trimmed royal robe over gilded armour, holding a sceptre, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "steel",
+   "top": "cloth_banner",
+   "scale": 0.5,
+   "jitter": 0.05
+  },
+  "octree": 320
+ },
+ {
+  "id": "folk_queen",
+  "name": "The Queen",
+  "category": "folk",
+  "tags": [],
+  "height": 2.6,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a queen in a long embroidered gown with a jewelled circlet and a trailing mantle, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "robe_cloth",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_prince",
+  "name": "Young Lord",
+  "category": "folk",
+  "tags": [],
+  "height": 2.5,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a young noble lord in a fitted doublet, hose and a short cape, a sword at his hip, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "robe_cloth",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_noblewoman",
+  "name": "Noblewoman",
+  "category": "folk",
+  "tags": [],
+  "height": 2.5,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a noblewoman in a fine houppelande with hanging sleeves and a horned headdress, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "robe_cloth",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_knight_plate",
+  "name": "Knight",
+  "category": "folk",
+  "tags": [],
+  "height": 2.7,
+  "faces": 9000,
+  "upright": "longest",
+  "prompt": "a knight in full plate armour with a closed visor helm, a heraldic surcoat and a longsword, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "steel",
+   "top": "cloth_banner",
+   "scale": 0.5,
+   "jitter": 0.05
+  },
+  "octree": 320
+ },
+ {
+  "id": "folk_knight_kneeling",
+  "name": "Champion",
+  "category": "folk",
+  "tags": [],
+  "height": 2.7,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "an armoured champion in ornate plate with a great helm crest and a kite shield, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "steel",
+   "top": "cloth_banner",
+   "scale": 0.5,
+   "jitter": 0.05
+  }
+ },
+ {
+  "id": "folk_paladin",
+  "name": "Paladin",
+  "category": "folk",
+  "tags": [],
+  "height": 2.8,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a paladin in radiant silvered plate with a winged helm and a warhammer, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "steel",
+   "top": "cloth_banner",
+   "scale": 0.5,
+   "jitter": 0.05
+  }
+ },
+ {
+  "id": "folk_manatarms",
+  "name": "Man-at-Arms",
+  "category": "folk",
+  "tags": [],
+  "height": 2.6,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a man-at-arms in a mail hauberk and kettle helm with a spear and a round shield, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "chainmail",
+   "top": "steel",
+   "scale": 0.55,
+   "jitter": 0.06
+  }
+ },
+ {
+  "id": "folk_sergeant",
+  "name": "Sergeant",
+  "category": "folk",
+  "tags": [],
+  "height": 2.6,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a grizzled sergeant in a padded gambeson and mail coif, holding a halberd, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "chainmail",
+   "top": "steel",
+   "scale": 0.55,
+   "jitter": 0.06
+  }
+ },
+ {
+  "id": "folk_pikeman",
+  "name": "Pikeman",
+  "category": "folk",
+  "tags": [],
+  "height": 2.6,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a pikeman in a brigandine and open helm holding a very long pike upright, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "chainmail",
+   "top": "steel",
+   "scale": 0.55,
+   "jitter": 0.06
+  }
+ },
+ {
+  "id": "folk_archer",
+  "name": "Archer",
+  "category": "folk",
+  "tags": [],
+  "height": 2.5,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a longbowman in a green hood and leather jerkin, longbow held at his side, quiver on his back, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "leather",
+   "top": "wood_plank",
+   "scale": 0.6,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_crossbowman",
+  "name": "Crossbowman",
+  "category": "folk",
+  "tags": [],
+  "height": 2.5,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a crossbowman in a padded jack and wide brimmed helm with a spanned crossbow, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "leather",
+   "top": "wood_plank",
+   "scale": 0.6,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_guard_city",
+  "name": "City Guard",
+  "category": "folk",
+  "tags": [],
+  "height": 2.6,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a city watchman in a mail shirt and tabard with a lantern and a cudgel, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "chainmail",
+   "top": "steel",
+   "scale": 0.55,
+   "jitter": 0.06
+  }
+ },
+ {
+  "id": "folk_herald",
+  "name": "Herald",
+  "category": "folk",
+  "tags": [],
+  "height": 2.5,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a herald in a bright quartered tabard holding a rolled proclamation and a horn, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "robe_cloth",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_wizard",
+  "name": "Archmage",
+  "category": "folk",
+  "tags": [],
+  "height": 2.6,
+  "faces": 9000,
+  "upright": "longest",
+  "prompt": "an old archmage in a long star-patterned robe and pointed hat with a gnarled staff, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "robe_cloth",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  },
+  "octree": 320
+ },
+ {
+  "id": "folk_sorceress",
+  "name": "Sorceress",
+  "category": "folk",
+  "tags": [],
+  "height": 2.5,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a sorceress in flowing layered robes with a circlet, holding a glowing orb, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "robe_cloth",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_necromancer",
+  "name": "Necromancer",
+  "category": "folk",
+  "tags": [],
+  "height": 2.6,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a gaunt necromancer in tattered black robes with a bone staff and a skull amulet, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "robe_cloth",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_druid",
+  "name": "Druid",
+  "category": "folk",
+  "tags": [],
+  "height": 2.5,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a druid in furs and leaves with antlers in his hair, holding a living wooden staff, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_cleric",
+  "name": "Cleric",
+  "category": "folk",
+  "tags": [],
+  "height": 2.5,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a cleric in a hooded habit with a heavy holy symbol and a mace, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "robe_cloth",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_bishop",
+  "name": "Bishop",
+  "category": "folk",
+  "tags": [],
+  "height": 2.6,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a bishop in an embroidered cope and mitre holding a crozier, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "robe_cloth",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_monk",
+  "name": "Monk",
+  "category": "folk",
+  "tags": [],
+  "height": 2.4,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a tonsured monk in a plain brown habit with a rope belt, carrying a book, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "robe_cloth",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_bard",
+  "name": "Bard",
+  "category": "folk",
+  "tags": [],
+  "height": 2.4,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a bard in a parti-coloured tunic and feathered cap with a lute slung at his side, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "robe_cloth",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_thief",
+  "name": "Cutpurse",
+  "category": "folk",
+  "tags": [],
+  "height": 2.3,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a lean cutpurse in a dark hood and wrapped boots with two daggers at his belt, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "leather",
+   "top": "wood_plank",
+   "scale": 0.6,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_assassin",
+  "name": "Assassin",
+  "category": "folk",
+  "tags": [],
+  "height": 2.5,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a masked assassin in close-fitting dark leathers with a curved dagger reversed in one hand, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "leather",
+   "top": "wood_plank",
+   "scale": 0.6,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_mercenary",
+  "name": "Sellsword",
+  "category": "folk",
+  "tags": [],
+  "height": 2.6,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a scarred sellsword in mismatched armour with a two-handed sword over one shoulder, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "leather",
+   "top": "wood_plank",
+   "scale": 0.6,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_barbarian",
+  "name": "Barbarian",
+  "category": "folk",
+  "tags": [],
+  "height": 2.9,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a huge bare-chested barbarian in fur and iron with a great axe and braided hair, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_ranger",
+  "name": "Ranger",
+  "category": "folk",
+  "tags": [],
+  "height": 2.5,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a ranger in a hooded travelling cloak with a bow, a short sword and a bedroll, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "leather",
+   "top": "wood_plank",
+   "scale": 0.6,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_merchant",
+  "name": "Merchant",
+  "category": "folk",
+  "tags": [],
+  "height": 2.4,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a portly merchant in a fur-trimmed gown and a hat, holding a ledger and a purse, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "robe_cloth",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_blacksmith",
+  "name": "Blacksmith",
+  "category": "folk",
+  "tags": [],
+  "height": 2.5,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a broad blacksmith in a scorched leather apron with bare arms, holding a hammer and tongs, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "canvas_stripe",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.16
+  }
+ },
+ {
+  "id": "folk_baker",
+  "name": "Baker",
+  "category": "folk",
+  "tags": [],
+  "height": 2.4,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a baker in a flour-dusted apron and cap carrying a wide tray of loaves, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "canvas_stripe",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.16
+  }
+ },
+ {
+  "id": "folk_fisherman",
+  "name": "Fisherman",
+  "category": "folk",
+  "tags": [],
+  "height": 2.4,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a weathered fisherman in an oiled coat and boots with a net over one shoulder, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "canvas_stripe",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.16
+  }
+ },
+ {
+  "id": "folk_farmer",
+  "name": "Farmer",
+  "category": "folk",
+  "tags": [],
+  "height": 2.4,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a farmer in a rough tunic and straw hat leaning on a pitchfork, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "canvas_stripe",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.16
+  }
+ },
+ {
+  "id": "folk_peasant_woman",
+  "name": "Goodwife",
+  "category": "folk",
+  "tags": [],
+  "height": 2.3,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a peasant woman in a long apron and headscarf carrying a basket on her hip, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "canvas_stripe",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.16
+  }
+ },
+ {
+  "id": "folk_beggar",
+  "name": "Beggar",
+  "category": "folk",
+  "tags": [],
+  "height": 2.2,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a ragged beggar hunched in a patched cloak holding out a wooden bowl, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "canvas_stripe",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.16
+  }
+ },
+ {
+  "id": "folk_innkeeper",
+  "name": "Innkeeper",
+  "category": "folk",
+  "tags": [],
+  "height": 2.4,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a stout innkeeper in a stained apron with rolled sleeves holding a tankard, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "canvas_stripe",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.16
+  }
+ },
+ {
+  "id": "folk_stablehand",
+  "name": "Stablehand",
+  "category": "folk",
+  "tags": [],
+  "height": 2.3,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a young stablehand in a short tunic with a coil of rope and a brush, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "canvas_stripe",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.16
+  }
+ },
+ {
+  "id": "folk_executioner",
+  "name": "Executioner",
+  "category": "folk",
+  "tags": [],
+  "height": 2.7,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a hooded executioner, bare-chested with a leather hood, resting on a great axe, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "leather",
+   "top": "wood_plank",
+   "scale": 0.6,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_dwarf_smith",
+  "name": "Dwarf Smith",
+  "category": "folk",
+  "tags": [],
+  "height": 1.9,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a stocky dwarf with a huge braided beard in a mail apron, holding a smith's hammer, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "chainmail",
+   "top": "steel",
+   "scale": 0.55,
+   "jitter": 0.06
+  }
+ },
+ {
+  "id": "folk_dwarf_warrior",
+  "name": "Dwarf Warrior",
+  "category": "folk",
+  "tags": [],
+  "height": 2.0,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "an armoured dwarf warrior with a horned helm, a broad axe and a round shield, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "steel",
+   "top": "cloth_banner",
+   "scale": 0.5,
+   "jitter": 0.05
+  }
+ },
+ {
+  "id": "folk_elf_archer",
+  "name": "Elf Archer",
+  "category": "folk",
+  "tags": [],
+  "height": 2.6,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a tall slender elf archer in layered leaf-green leathers with a long recurve bow, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "leather",
+   "top": "wood_plank",
+   "scale": 0.6,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_elf_mage",
+  "name": "Elf Mage",
+  "category": "folk",
+  "tags": [],
+  "height": 2.6,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "an elven mage in pale flowing robes with silver filigree and a slim staff, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "robe_cloth",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "folk_halfling",
+  "name": "Halfling",
+  "category": "folk",
+  "tags": [],
+  "height": 1.5,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a curly-haired halfling in a waistcoat with bare feet, holding a sling, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "canvas_stripe",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.16
+  }
+ },
+ {
+  "id": "folk_orc_warrior",
+  "name": "Orc Warrior",
+  "category": "folk",
+  "tags": [],
+  "height": 2.9,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a heavy green orc warrior with tusks in scrap iron armour, holding a cleaver blade, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "skin_green",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.1
+  }
+ },
+ {
+  "id": "folk_orc_shaman",
+  "name": "Orc Shaman",
+  "category": "folk",
+  "tags": [],
+  "height": 2.7,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "an orc shaman in bones and hides with a totem staff and painted skin, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "skin_green",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.1
+  }
+ },
+ {
+  "id": "folk_orc_chief",
+  "name": "Orc Warlord",
+  "category": "folk",
+  "tags": [],
+  "height": 3.2,
+  "faces": 9000,
+  "upright": "longest",
+  "prompt": "a massive orc warlord in plundered plate with a horned helm and a two-handed axe, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "skin_green",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.1
+  },
+  "octree": 320
+ },
+ {
+  "id": "folk_goblin",
+  "name": "Goblin",
+  "category": "folk",
+  "tags": [],
+  "height": 1.5,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a small hunched goblin with big ears in scraps of leather, holding a rusty knife, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "skin_green",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.1
+  }
+ },
+ {
+  "id": "folk_hobgoblin",
+  "name": "Hobgoblin",
+  "category": "folk",
+  "tags": [],
+  "height": 2.4,
+  "faces": 7000,
+  "upright": "longest",
+  "prompt": "a disciplined hobgoblin soldier in lamellar armour with a spear and a tower shield, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "skin_green",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.1
+  }
+ },
+ {
+  "id": "creature_troll",
+  "name": "Cave Troll",
+  "category": "creature",
+  "tags": [],
+  "height": 4.2,
+  "faces": 10000,
+  "upright": "none",
+  "prompt": "a hulking grey cave troll with a long nose and knotted muscles, dragging a club, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  },
+  "octree": 320
+ },
+ {
+  "id": "creature_ogre",
+  "name": "Ogre",
+  "category": "creature",
+  "tags": [],
+  "height": 3.8,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a fat brutal ogre in a hide kilt with an iron collar, holding a spiked club, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_giant",
+  "name": "Hill Giant",
+  "category": "creature",
+  "tags": [],
+  "height": 7.5,
+  "faces": 10000,
+  "upright": "none",
+  "prompt": "an enormous hill giant in furs with a tree trunk over one shoulder, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  },
+  "octree": 320
+ },
+ {
+  "id": "creature_minotaur",
+  "name": "Minotaur",
+  "category": "creature",
+  "tags": [],
+  "height": 3.4,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a minotaur with heavy bull horns and a ringed nose, holding a double axe, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_centaur",
+  "name": "Centaur",
+  "category": "creature",
+  "tags": [],
+  "height": 3.2,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a centaur, a man's torso on a horse's body, carrying a bow and a quiver, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_satyr",
+  "name": "Satyr",
+  "category": "creature",
+  "tags": [],
+  "height": 2.4,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a satyr with goat legs and small curled horns, playing a set of pipes, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_harpy",
+  "name": "Harpy",
+  "category": "creature",
+  "tags": [],
+  "height": 2.4,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a harpy with a woman's head and torso and great feathered wings and talons, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_gargoyle",
+  "name": "Gargoyle",
+  "category": "creature",
+  "tags": [],
+  "height": 2.6,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a crouching stone gargoyle with bat wings folded and a snarling face, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "stone_dark",
+   "top": "stone_mossy",
+   "scale": 0.8,
+   "jitter": 0.08
+  }
+ },
+ {
+  "id": "creature_golem_stone",
+  "name": "Stone Golem",
+  "category": "creature",
+  "tags": [],
+  "height": 4.0,
+  "faces": 10000,
+  "upright": "none",
+  "prompt": "a massive stone golem of stacked carved blocks with glowing runes in the joints, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "stone_dark",
+   "top": "stone_mossy",
+   "scale": 0.8,
+   "jitter": 0.08
+  },
+  "octree": 320
+ },
+ {
+  "id": "creature_golem_iron",
+  "name": "Iron Golem",
+  "category": "creature",
+  "tags": [],
+  "height": 4.2,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a riveted iron golem with a furnace glowing in its chest and heavy fists, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "iron_rust",
+   "top": "iron_wrought",
+   "scale": 0.7,
+   "jitter": 0.06
+  }
+ },
+ {
+  "id": "creature_treant",
+  "name": "Treant",
+  "category": "creature",
+  "tags": [],
+  "height": 5.5,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "an ancient walking tree with a face in the bark, long root legs and mossy branches, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "wood_bark",
+   "top": "grass_meadow",
+   "scale": 0.8,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_elemental_fire",
+  "name": "Fire Elemental",
+  "category": "creature",
+  "tags": [],
+  "height": 3.2,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a roaring humanoid figure made of twisting flame with a molten core, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "iron_rust",
+   "top": "iron_rust",
+   "scale": 0.6,
+   "jitter": 0.14
+  }
+ },
+ {
+  "id": "creature_elemental_earth",
+  "name": "Earth Elemental",
+  "category": "creature",
+  "tags": [],
+  "height": 3.4,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a lumbering elemental of packed earth and boulders with crystal shards on its back, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "stone_dark",
+   "top": "stone_mossy",
+   "scale": 0.8,
+   "jitter": 0.08
+  }
+ },
+ {
+  "id": "creature_skeleton_warrior",
+  "name": "Skeleton Warrior",
+  "category": "creature",
+  "tags": [],
+  "height": 2.4,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "an animated skeleton in a rusted helm and rotted tabard with a notched sword and buckler, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "bone",
+   "top": "cloth_banner",
+   "scale": 0.7,
+   "jitter": 0.08
+  }
+ },
+ {
+  "id": "creature_skeleton_archer",
+  "name": "Skeleton Archer",
+  "category": "creature",
+  "tags": [],
+  "height": 2.4,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a skeletal archer with a warped bow and a quiver of black arrows, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "bone",
+   "top": "cloth_banner",
+   "scale": 0.7,
+   "jitter": 0.08
+  }
+ },
+ {
+  "id": "creature_zombie",
+  "name": "Zombie",
+  "category": "creature",
+  "tags": [],
+  "height": 2.4,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a shambling rotted corpse in torn grave clothes with one arm hanging, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "leather",
+   "top": "bone",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_ghoul",
+  "name": "Ghoul",
+  "category": "creature",
+  "tags": [],
+  "height": 2.3,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a crouched pallid ghoul with long claws and a distended jaw, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "skin_human",
+   "top": "bone",
+   "scale": 0.7,
+   "jitter": 0.1
+  }
+ },
+ {
+  "id": "creature_lich",
+  "name": "Lich",
+  "category": "creature",
+  "tags": [],
+  "height": 2.8,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a crowned lich in trailing burial robes with a skeletal face and a rune staff, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "bone",
+   "top": "cloth_banner",
+   "scale": 0.7,
+   "jitter": 0.08
+  }
+ },
+ {
+  "id": "creature_wraith",
+  "name": "Wraith",
+  "category": "creature",
+  "tags": [],
+  "height": 2.9,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a hooded wraith of tattered cloth with no body inside, reaching with a bony hand, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "cloth_banner",
+   "top": "bone",
+   "scale": 0.8,
+   "jitter": 0.1
+  }
+ },
+ {
+  "id": "creature_vampire",
+  "name": "Vampire Lord",
+  "category": "creature",
+  "tags": [],
+  "height": 2.7,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a pale vampire lord in a high-collared cloak with clawed hands and fangs, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "robe_cloth",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_mummy",
+  "name": "Mummy",
+  "category": "creature",
+  "tags": [],
+  "height": 2.5,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a bandaged mummy trailing wrappings with gold funerary ornaments, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "canvas_stripe",
+   "top": "gold",
+   "scale": 0.7,
+   "jitter": 0.1
+  }
+ },
+ {
+  "id": "creature_werewolf",
+  "name": "Werewolf",
+  "category": "creature",
+  "tags": [],
+  "height": 3.0,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a hunched werewolf with a wolf's head, ragged trousers and long claws, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_direwolf",
+  "name": "Dire Wolf",
+  "category": "creature",
+  "tags": [],
+  "height": 1.9,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a huge shaggy dire wolf standing on all fours, head low and snarling, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_bear_cave",
+  "name": "Cave Bear",
+  "category": "creature",
+  "tags": [],
+  "height": 2.4,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "an enormous brown cave bear standing on all fours with a scarred muzzle, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_boar",
+  "name": "Great Boar",
+  "category": "creature",
+  "tags": [],
+  "height": 1.6,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a bristling wild boar with long curved tusks on all fours, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_warhorse",
+  "name": "Warhorse",
+  "category": "creature",
+  "tags": [],
+  "height": 2.6,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "an armoured destrier warhorse in a heraldic caparison and a chanfron, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_mule",
+  "name": "Pack Mule",
+  "category": "creature",
+  "tags": [],
+  "height": 1.9,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a laden pack mule with panniers and rolled bundles strapped on, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_goat",
+  "name": "Goat",
+  "category": "creature",
+  "tags": [],
+  "height": 1.3,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a shaggy mountain goat with curved horns, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_cow",
+  "name": "Cow",
+  "category": "creature",
+  "tags": [],
+  "height": 1.8,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a standing brown and white dairy cow, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_pig",
+  "name": "Pig",
+  "category": "creature",
+  "tags": [],
+  "height": 1.2,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a fat muddy pig standing side on, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_chicken",
+  "name": "Chicken",
+  "category": "creature",
+  "tags": [],
+  "height": 0.7,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a speckled hen standing, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_griffon",
+  "name": "Griffon",
+  "category": "creature",
+  "tags": [],
+  "height": 3.2,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a griffon with an eagle's head and forelegs and a lion's hindquarters, wings half spread, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "leather",
+   "scale": 0.7,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_wyvern",
+  "name": "Wyvern",
+  "category": "creature",
+  "tags": [],
+  "height": 3.6,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a two-legged wyvern with broad membrane wings and a barbed tail, crouched, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "scale_green",
+   "top": "bone",
+   "scale": 0.7,
+   "jitter": 0.1
+  }
+ },
+ {
+  "id": "creature_drake",
+  "name": "Drake",
+  "category": "creature",
+  "tags": [],
+  "height": 2.8,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a squat four-legged drake with a horned head and short wings, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "scale_green",
+   "top": "bone",
+   "scale": 0.7,
+   "jitter": 0.1
+  }
+ },
+ {
+  "id": "creature_dragon_red",
+  "name": "Red Dragon",
+  "category": "creature",
+  "tags": [],
+  "height": 6.0,
+  "faces": 10000,
+  "upright": "none",
+  "prompt": "a great red dragon with spread wings, curved horns and a long spined tail, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "scale_green",
+   "top": "bone",
+   "scale": 0.8,
+   "jitter": 0.08
+  },
+  "octree": 320
+ },
+ {
+  "id": "creature_dragon_bone",
+  "name": "Bone Dragon",
+  "category": "creature",
+  "tags": [],
+  "height": 5.6,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a skeletal undead dragon with tattered wing membranes over bare bones, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "bone",
+   "top": "cloth_banner",
+   "scale": 0.7,
+   "jitter": 0.08
+  }
+ },
+ {
+  "id": "creature_basilisk",
+  "name": "Basilisk",
+  "category": "creature",
+  "tags": [],
+  "height": 1.8,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a heavy eight-legged basilisk lizard with a crested head, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "scale_green",
+   "top": "bone",
+   "scale": 0.7,
+   "jitter": 0.1
+  }
+ },
+ {
+  "id": "creature_serpent_giant",
+  "name": "Giant Serpent",
+  "category": "creature",
+  "tags": [],
+  "height": 2.2,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a coiled giant serpent rearing its head with a flared hood, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "scale_green",
+   "top": "bone",
+   "scale": 0.7,
+   "jitter": 0.1
+  }
+ },
+ {
+  "id": "creature_spider_giant",
+  "name": "Giant Spider",
+  "category": "creature",
+  "tags": [],
+  "height": 1.8,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a bristled giant spider with eight legs braced wide and clustered eyes, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "fur_brown",
+   "top": "bone",
+   "scale": 0.5,
+   "jitter": 0.1
+  }
+ },
+ {
+  "id": "creature_scorpion_giant",
+  "name": "Giant Scorpion",
+  "category": "creature",
+  "tags": [],
+  "height": 1.7,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a giant black scorpion with raised sting and heavy pincers, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "scale_green",
+   "top": "bone",
+   "scale": 0.7,
+   "jitter": 0.1
+  }
+ },
+ {
+  "id": "creature_slime",
+  "name": "Ooze",
+  "category": "creature",
+  "tags": [],
+  "height": 1.3,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a translucent green ooze blob with objects suspended inside it, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "scale_green",
+   "top": "scale_green",
+   "scale": 0.6,
+   "jitter": 0.16
+  }
+ },
+ {
+  "id": "creature_imp",
+  "name": "Imp",
+  "category": "creature",
+  "tags": [],
+  "height": 1.4,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a small red-skinned imp with bat wings, horns and a barbed tail, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "skin_green",
+   "top": "leather",
+   "scale": 0.6,
+   "jitter": 0.12
+  }
+ },
+ {
+  "id": "creature_demon_greater",
+  "name": "Greater Demon",
+  "category": "creature",
+  "tags": [],
+  "height": 4.4,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a towering horned demon with cloven hooves, burning eyes and a flaming sword, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "skin_green",
+   "top": "iron_rust",
+   "scale": 0.7,
+   "jitter": 0.08
+  }
+ },
+ {
+  "id": "creature_elemental_water",
+  "name": "Water Elemental",
+  "category": "creature",
+  "tags": [],
+  "height": 3.0,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a rearing wave-shaped elemental of clear water with a suggestion of a face, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "scale_green",
+   "top": "stone_marble",
+   "scale": 0.7,
+   "jitter": 0.1
+  }
+ },
+ {
+  "id": "creature_banshee",
+  "name": "Banshee",
+  "category": "creature",
+  "tags": [],
+  "height": 2.7,
+  "faces": 7500,
+  "upright": "none",
+  "prompt": "a wailing banshee, a translucent woman in trailing rags with streaming hair, stylized medieval fantasy game character, full body from head to feet, standing upright in a neutral pose, arms held slightly away from the body, feet apart, three-quarter front view, crisp readable silhouette, painted character concept art, muted natural colours",
+  "material": {
+   "side": "cloth_banner",
+   "top": "bone",
+   "scale": 0.8,
+   "jitter": 0.1
+  }
+ }
+]

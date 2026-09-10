@@ -5,3 +5,6 @@ dist/
 
 # Staging area for a generated asset pack pulled off the generation host.
 assets-staging/
+
+# Staging area for a generated material library.
+materials-staging/
