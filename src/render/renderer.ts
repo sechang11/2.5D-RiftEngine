@@ -108,8 +108,10 @@ export class Renderer {
     this.scene.fog = new Fog(SKY_COLOR, HORIZON_FOG_NEAR, HORIZON_FOG_FAR);
 
     // Sky and bounce light. Warm above, cool from the ground, which keeps
-    // shadowed sides readable instead of black.
-    const hemi = new HemisphereLight(0xbcd6ff, 0x2a3324, 1.15);
+    // shadowed sides readable instead of black. The ground term is brighter
+    // than a real bounce because generated buildings are hollow shells: with a
+    // dark bounce, every doorway and missing wall is a black hole.
+    const hemi = new HemisphereLight(0xbcd6ff, 0x4a4536, 1.2);
     this.scene.add(hemi);
 
     this.sun = new DirectionalLight(0xfff0d8, 2.1);
@@ -123,7 +125,7 @@ export class Renderer {
     this.sun.shadow.camera.bottom = -SHADOW_EXTENT;
     // A small negative bias fixes shadow acne on the large flat ground plane.
     this.sun.shadow.bias = -0.0006;
-    this.sun.shadow.normalBias = 0.02;
+    this.sun.shadow.normalBias = 0.035;
     this.scene.add(this.sun);
     this.scene.add(this.sun.target);
 

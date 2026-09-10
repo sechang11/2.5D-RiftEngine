@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-10T16:13:35.595Z",
+ "generated": "2026-09-10T16:33:14.069Z",
  "assets": [
   {
    "id": "building_siege_ballista",
@@ -923,6 +923,27 @@
    "bytes": 72740
   },
   {
+   "id": "creature_banshee",
+   "name": "Banshee",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_banshee.glb",
+   "size": [
+    1.6802,
+    2.7,
+    1.1222
+   ],
+   "radius": 1.0103,
+   "triangles": 7498,
+   "bytes": 139760,
+   "material": {
+    "side": "cloth_banner",
+    "top": "bone",
+    "scale": 0.8,
+    "jitter": 0.1
+   }
+  },
+  {
    "id": "creature_basilisk",
    "name": "Basilisk",
    "category": "creature",
@@ -939,6 +960,27 @@
    "radius": 1.2056,
    "triangles": 3998,
    "bytes": 73316
+  },
+  {
+   "id": "creature_dragon_bone",
+   "name": "Bone Dragon",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_dragon_bone.glb",
+   "size": [
+    5.586,
+    5.6,
+    7.1366
+   ],
+   "radius": 4.5314,
+   "triangles": 7499,
+   "bytes": 137284,
+   "material": {
+    "side": "bone",
+    "top": "cloth_banner",
+    "scale": 0.7,
+    "jitter": 0.08
+   }
   },
   {
    "id": "creature_golem_bone",
@@ -995,6 +1037,90 @@
    "bytes": 124436
   },
   {
+   "id": "creature_troll",
+   "name": "Cave Troll",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_troll.glb",
+   "size": [
+    3.2683,
+    4.2,
+    1.8066
+   ],
+   "radius": 1.8672,
+   "triangles": 9998,
+   "bytes": 182760,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "creature_centaur",
+   "name": "Centaur",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_centaur.glb",
+   "size": [
+    1.0059,
+    3.2,
+    2.8634
+   ],
+   "radius": 1.5174,
+   "triangles": 7499,
+   "bytes": 136544,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "creature_chicken",
+   "name": "Chicken",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_chicken.glb",
+   "size": [
+    0.511,
+    0.7,
+    0.3023
+   ],
+   "radius": 0.2969,
+   "triangles": 7499,
+   "bytes": 139844,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "creature_cow",
+   "name": "Cow",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_cow.glb",
+   "size": [
+    0.7218,
+    1.8,
+    2.8536
+   ],
+   "radius": 1.4717,
+   "triangles": 7498,
+   "bytes": 135996,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
    "id": "creature_demon_brute",
    "name": "Demon Brute",
    "category": "creature",
@@ -1029,6 +1155,27 @@
    "radius": 1.5321,
    "triangles": 3999,
    "bytes": 73992
+  },
+  {
+   "id": "creature_direwolf",
+   "name": "Dire Wolf",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_direwolf.glb",
+   "size": [
+    1.0431,
+    1.9,
+    3.3541
+   ],
+   "radius": 1.7563,
+   "triangles": 7500,
+   "bytes": 139004,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
   },
   {
    "id": "creature_drake",
@@ -1103,6 +1250,27 @@
    "bytes": 72572
   },
   {
+   "id": "creature_ghoul",
+   "name": "Ghoul",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_ghoul.glb",
+   "size": [
+    2.1713,
+    2.3,
+    1.5104
+   ],
+   "radius": 1.3225,
+   "triangles": 7499,
+   "bytes": 136628,
+   "material": {
+    "side": "skin_human",
+    "top": "bone",
+    "scale": 0.7,
+    "jitter": 0.1
+   }
+  },
+  {
    "id": "creature_beetle_giant",
    "name": "Giant Beetle",
    "category": "creature",
@@ -1157,6 +1325,48 @@
    "bytes": 72836
   },
   {
+   "id": "creature_scorpion_giant",
+   "name": "Giant Scorpion",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_scorpion_giant.glb",
+   "size": [
+    1.786,
+    1.7,
+    0.4611
+   ],
+   "radius": 0.9223,
+   "triangles": 7498,
+   "bytes": 136128,
+   "material": {
+    "side": "scale_green",
+    "top": "bone",
+    "scale": 0.7,
+    "jitter": 0.1
+   }
+  },
+  {
+   "id": "creature_serpent_giant",
+   "name": "Giant Serpent",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_serpent_giant.glb",
+   "size": [
+    1.5216,
+    2.2,
+    1.1635
+   ],
+   "radius": 0.9577,
+   "triangles": 7499,
+   "bytes": 136256,
+   "material": {
+    "side": "scale_green",
+    "top": "bone",
+    "scale": 0.7,
+    "jitter": 0.1
+   }
+  },
+  {
    "id": "creature_giant_spider",
    "name": "Giant Spider",
    "category": "creature",
@@ -1173,6 +1383,69 @@
    "radius": 4.8759,
    "triangles": 3999,
    "bytes": 72820
+  },
+  {
+   "id": "creature_spider_giant",
+   "name": "Giant Spider",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_spider_giant.glb",
+   "size": [
+    1.7995,
+    1.8,
+    0.282
+   ],
+   "radius": 0.9107,
+   "triangles": 7498,
+   "bytes": 135756,
+   "material": {
+    "side": "fur_brown",
+    "top": "bone",
+    "scale": 0.5,
+    "jitter": 0.1
+   }
+  },
+  {
+   "id": "creature_goat",
+   "name": "Goat",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_goat.glb",
+   "size": [
+    0.7785,
+    1.3,
+    1.4907
+   ],
+   "radius": 0.8409,
+   "triangles": 7500,
+   "bytes": 139304,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "creature_boar",
+   "name": "Great Boar",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_boar.glb",
+   "size": [
+    1.0525,
+    1.6,
+    2.9497
+   ],
+   "radius": 1.5659,
+   "triangles": 7498,
+   "bytes": 140696,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
   },
   {
    "id": "creature_stag_great",
@@ -1193,6 +1466,48 @@
    "bytes": 73916
   },
   {
+   "id": "creature_demon_greater",
+   "name": "Greater Demon",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_demon_greater.glb",
+   "size": [
+    2.8604,
+    4.4,
+    2.0382
+   ],
+   "radius": 1.7561,
+   "triangles": 7499,
+   "bytes": 136724,
+   "material": {
+    "side": "skin_green",
+    "top": "iron_rust",
+    "scale": 0.7,
+    "jitter": 0.08
+   }
+  },
+  {
+   "id": "creature_griffon",
+   "name": "Griffon",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_griffon.glb",
+   "size": [
+    3.7558,
+    3.2,
+    2.4121
+   ],
+   "radius": 2.2318,
+   "triangles": 7499,
+   "bytes": 138248,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
    "id": "creature_harpy",
    "name": "Harpy",
    "category": "creature",
@@ -1209,6 +1524,27 @@
    "radius": 1.6947,
    "triangles": 3998,
    "bytes": 75496
+  },
+  {
+   "id": "creature_giant",
+   "name": "Hill Giant",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_giant.glb",
+   "size": [
+    8.0121,
+    7.5,
+    3.91
+   ],
+   "radius": 4.4576,
+   "triangles": 9999,
+   "bytes": 181928,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
   },
   {
    "id": "creature_elemental_ice",
@@ -1319,6 +1655,27 @@
    "bytes": 73100
   },
   {
+   "id": "creature_mummy",
+   "name": "Mummy",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_mummy.glb",
+   "size": [
+    2.0001,
+    2.5,
+    0.817
+   ],
+   "radius": 1.0803,
+   "triangles": 7499,
+   "bytes": 137684,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "gold",
+    "scale": 0.7,
+    "jitter": 0.1
+   }
+  },
+  {
    "id": "creature_mushroom_folk",
    "name": "Myconid",
    "category": "creature",
@@ -1355,6 +1712,48 @@
    "bytes": 74008
   },
   {
+   "id": "creature_mule",
+   "name": "Pack Mule",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_mule.glb",
+   "size": [
+    0.8171,
+    1.9,
+    1.0478
+   ],
+   "radius": 0.6644,
+   "triangles": 7500,
+   "bytes": 136856,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "creature_pig",
+   "name": "Pig",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_pig.glb",
+   "size": [
+    1.0018,
+    1.2,
+    0.694
+   ],
+   "radius": 0.6094,
+   "triangles": 7500,
+   "bytes": 136164,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
    "id": "creature_ooze_purple",
    "name": "Purple Ooze",
    "category": "creature",
@@ -1371,6 +1770,48 @@
    "radius": 0.9149,
    "triangles": 4000,
    "bytes": 72644
+  },
+  {
+   "id": "creature_dragon_red",
+   "name": "Red Dragon",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_dragon_red.glb",
+   "size": [
+    6.284,
+    6,
+    2.9616
+   ],
+   "radius": 3.4734,
+   "triangles": 9999,
+   "bytes": 181048,
+   "material": {
+    "side": "scale_green",
+    "top": "bone",
+    "scale": 0.8,
+    "jitter": 0.08
+   }
+  },
+  {
+   "id": "creature_satyr",
+   "name": "Satyr",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_satyr.glb",
+   "size": [
+    1.7943,
+    2.4,
+    0.8513
+   ],
+   "radius": 0.993,
+   "triangles": 7499,
+   "bytes": 136676,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
   },
   {
    "id": "creature_serpent",
@@ -1407,6 +1848,27 @@
    "radius": 0.7208,
    "triangles": 4165,
    "bytes": 76124
+  },
+  {
+   "id": "creature_skeleton_archer",
+   "name": "Skeleton Archer",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_skeleton_archer.glb",
+   "size": [
+    1.4364,
+    2.4,
+    1.1317
+   ],
+   "radius": 0.9143,
+   "triangles": 7499,
+   "bytes": 137412,
+   "material": {
+    "side": "bone",
+    "top": "cloth_banner",
+    "scale": 0.7,
+    "jitter": 0.08
+   }
   },
   {
    "id": "creature_slime",
@@ -1479,6 +1941,90 @@
    "radius": 1.1366,
    "triangles": 4000,
    "bytes": 74768
+  },
+  {
+   "id": "creature_vampire",
+   "name": "Vampire Lord",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_vampire.glb",
+   "size": [
+    2.5327,
+    2.7,
+    1.4629
+   ],
+   "radius": 1.4624,
+   "triangles": 7499,
+   "bytes": 136388,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "creature_warhorse",
+   "name": "Warhorse",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_warhorse.glb",
+   "size": [
+    2.6751,
+    2.6,
+    0.8604
+   ],
+   "radius": 1.405,
+   "triangles": 7500,
+   "bytes": 137328,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "creature_elemental_water",
+   "name": "Water Elemental",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_elemental_water.glb",
+   "size": [
+    2.2588,
+    3,
+    1.5686
+   ],
+   "radius": 1.375,
+   "triangles": 7500,
+   "bytes": 136064,
+   "material": {
+    "side": "scale_green",
+    "top": "stone_marble",
+    "scale": 0.7,
+    "jitter": 0.1
+   }
+  },
+  {
+   "id": "creature_werewolf",
+   "name": "Werewolf",
+   "category": "creature",
+   "tags": [],
+   "mesh": "creature_werewolf.glb",
+   "size": [
+    2.1151,
+    3,
+    1.7676
+   ],
+   "radius": 1.3782,
+   "triangles": 7500,
+   "bytes": 139384,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
   },
   {
    "id": "creature_wisp",
@@ -1876,6 +2422,993 @@
     "scale": 0.9,
     "jitter": 0.08,
     "tint": null
+   }
+  },
+  {
+   "id": "folk_archer",
+   "name": "Archer",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_archer.glb",
+   "size": [
+    1.4116,
+    2.5,
+    1.0835
+   ],
+   "radius": 0.8897,
+   "triangles": 6998,
+   "bytes": 127604,
+   "material": {
+    "side": "leather",
+    "top": "wood_plank",
+    "scale": 0.6,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_wizard",
+   "name": "Archmage",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_wizard.glb",
+   "size": [
+    1.6555,
+    2.6,
+    0.9518
+   ],
+   "radius": 0.9548,
+   "triangles": 9000,
+   "bytes": 163240,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_assassin",
+   "name": "Assassin",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_assassin.glb",
+   "size": [
+    1.5635,
+    2.5,
+    1.0149
+   ],
+   "radius": 0.932,
+   "triangles": 6999,
+   "bytes": 127940,
+   "material": {
+    "side": "leather",
+    "top": "wood_plank",
+    "scale": 0.6,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_baker",
+   "name": "Baker",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_baker.glb",
+   "size": [
+    2.3989,
+    2.4,
+    0.7094
+   ],
+   "radius": 1.2508,
+   "triangles": 6999,
+   "bytes": 126996,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.16
+   }
+  },
+  {
+   "id": "folk_barbarian",
+   "name": "Barbarian",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_barbarian.glb",
+   "size": [
+    2.4161,
+    2.9,
+    0.9762
+   ],
+   "radius": 1.3029,
+   "triangles": 6999,
+   "bytes": 127676,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_bard",
+   "name": "Bard",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_bard.glb",
+   "size": [
+    2.3398,
+    2.4,
+    2.3635
+   ],
+   "radius": 1.6629,
+   "triangles": 7000,
+   "bytes": 127260,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_beggar",
+   "name": "Beggar",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_beggar.glb",
+   "size": [
+    1.0567,
+    2.2,
+    1.1802
+   ],
+   "radius": 0.7921,
+   "triangles": 6999,
+   "bytes": 126920,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.16
+   }
+  },
+  {
+   "id": "folk_bishop",
+   "name": "Bishop",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_bishop.glb",
+   "size": [
+    1.3507,
+    2.6,
+    1.4574
+   ],
+   "radius": 0.9935,
+   "triangles": 6999,
+   "bytes": 127632,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_blacksmith",
+   "name": "Blacksmith",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_blacksmith.glb",
+   "size": [
+    1.7917,
+    2.5,
+    1.1328
+   ],
+   "radius": 1.0599,
+   "triangles": 6999,
+   "bytes": 128108,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.16
+   }
+  },
+  {
+   "id": "folk_knight_kneeling",
+   "name": "Champion",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_knight_kneeling.glb",
+   "size": [
+    2.3333,
+    2.7,
+    1.7151
+   ],
+   "radius": 1.4479,
+   "triangles": 6998,
+   "bytes": 128504,
+   "material": {
+    "side": "steel",
+    "top": "cloth_banner",
+    "scale": 0.5,
+    "jitter": 0.05
+   }
+  },
+  {
+   "id": "folk_guard_city",
+   "name": "City Guard",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_guard_city.glb",
+   "size": [
+    1.2618,
+    2.6,
+    0.6497
+   ],
+   "radius": 0.7096,
+   "triangles": 6999,
+   "bytes": 127680,
+   "material": {
+    "side": "chainmail",
+    "top": "steel",
+    "scale": 0.55,
+    "jitter": 0.06
+   }
+  },
+  {
+   "id": "folk_cleric",
+   "name": "Cleric",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_cleric.glb",
+   "size": [
+    1.3245,
+    2.5,
+    0.8588
+   ],
+   "radius": 0.7893,
+   "triangles": 7000,
+   "bytes": 126536,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_crossbowman",
+   "name": "Crossbowman",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_crossbowman.glb",
+   "size": [
+    1.8442,
+    2.5,
+    1.1313
+   ],
+   "radius": 1.0818,
+   "triangles": 6999,
+   "bytes": 128044,
+   "material": {
+    "side": "leather",
+    "top": "wood_plank",
+    "scale": 0.6,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_thief",
+   "name": "Cutpurse",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_thief.glb",
+   "size": [
+    1.1641,
+    2.3,
+    0.6104
+   ],
+   "radius": 0.6572,
+   "triangles": 6999,
+   "bytes": 127712,
+   "material": {
+    "side": "leather",
+    "top": "wood_plank",
+    "scale": 0.6,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_druid",
+   "name": "Druid",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_druid.glb",
+   "size": [
+    1.7311,
+    2.5,
+    0.9737
+   ],
+   "radius": 0.9931,
+   "triangles": 6999,
+   "bytes": 129968,
+   "material": {
+    "side": "fur_brown",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_dwarf_smith",
+   "name": "Dwarf Smith",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_dwarf_smith.glb",
+   "size": [
+    1.4923,
+    1.9,
+    0.933
+   ],
+   "radius": 0.88,
+   "triangles": 6998,
+   "bytes": 128264,
+   "material": {
+    "side": "chainmail",
+    "top": "steel",
+    "scale": 0.55,
+    "jitter": 0.06
+   }
+  },
+  {
+   "id": "folk_dwarf_warrior",
+   "name": "Dwarf Warrior",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_dwarf_warrior.glb",
+   "size": [
+    1.7059,
+    2,
+    0.7419
+   ],
+   "radius": 0.9301,
+   "triangles": 7000,
+   "bytes": 127592,
+   "material": {
+    "side": "steel",
+    "top": "cloth_banner",
+    "scale": 0.5,
+    "jitter": 0.05
+   }
+  },
+  {
+   "id": "folk_elf_archer",
+   "name": "Elf Archer",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_elf_archer.glb",
+   "size": [
+    1.5358,
+    2.6,
+    1.5104
+   ],
+   "radius": 1.077,
+   "triangles": 7000,
+   "bytes": 128892,
+   "material": {
+    "side": "leather",
+    "top": "wood_plank",
+    "scale": 0.6,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_elf_mage",
+   "name": "Elf Mage",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_elf_mage.glb",
+   "size": [
+    1.3671,
+    2.6,
+    1.186
+   ],
+   "radius": 0.9049,
+   "triangles": 6999,
+   "bytes": 127320,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_executioner",
+   "name": "Executioner",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_executioner.glb",
+   "size": [
+    2.4258,
+    2.7,
+    0.8171
+   ],
+   "radius": 1.2798,
+   "triangles": 6998,
+   "bytes": 127572,
+   "material": {
+    "side": "leather",
+    "top": "wood_plank",
+    "scale": 0.6,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_farmer",
+   "name": "Farmer",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_farmer.glb",
+   "size": [
+    1.4603,
+    2.4,
+    0.6824
+   ],
+   "radius": 0.8059,
+   "triangles": 6998,
+   "bytes": 128076,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.16
+   }
+  },
+  {
+   "id": "folk_fisherman",
+   "name": "Fisherman",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_fisherman.glb",
+   "size": [
+    1.7126,
+    2.4,
+    0.9254
+   ],
+   "radius": 0.9733,
+   "triangles": 6999,
+   "bytes": 127968,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.16
+   }
+  },
+  {
+   "id": "folk_goblin",
+   "name": "Goblin",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_goblin.glb",
+   "size": [
+    1.2599,
+    1.5,
+    0.7222
+   ],
+   "radius": 0.7261,
+   "triangles": 6999,
+   "bytes": 127508,
+   "material": {
+    "side": "skin_green",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.1
+   }
+  },
+  {
+   "id": "folk_peasant_woman",
+   "name": "Goodwife",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_peasant_woman.glb",
+   "size": [
+    0.8291,
+    2.3,
+    1.1001
+   ],
+   "radius": 0.6888,
+   "triangles": 6999,
+   "bytes": 126900,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.16
+   }
+  },
+  {
+   "id": "folk_halfling",
+   "name": "Halfling",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_halfling.glb",
+   "size": [
+    0.991,
+    1.5,
+    0.4628
+   ],
+   "radius": 0.5469,
+   "triangles": 6998,
+   "bytes": 128592,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.16
+   }
+  },
+  {
+   "id": "folk_herald",
+   "name": "Herald",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_herald.glb",
+   "size": [
+    1.4941,
+    2.5,
+    0.9605
+   ],
+   "radius": 0.8881,
+   "triangles": 7000,
+   "bytes": 128072,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_hobgoblin",
+   "name": "Hobgoblin",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_hobgoblin.glb",
+   "size": [
+    1.8362,
+    2.4,
+    2.2306
+   ],
+   "radius": 1.4446,
+   "triangles": 7000,
+   "bytes": 129312,
+   "material": {
+    "side": "skin_green",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.1
+   }
+  },
+  {
+   "id": "folk_innkeeper",
+   "name": "Innkeeper",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_innkeeper.glb",
+   "size": [
+    1.2641,
+    2.4,
+    0.732
+   ],
+   "radius": 0.7304,
+   "triangles": 7000,
+   "bytes": 127416,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.16
+   }
+  },
+  {
+   "id": "folk_knight_plate",
+   "name": "Knight",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_knight_plate.glb",
+   "size": [
+    1.458,
+    2.7,
+    0.8598
+   ],
+   "radius": 0.8463,
+   "triangles": 9000,
+   "bytes": 164676,
+   "material": {
+    "side": "steel",
+    "top": "cloth_banner",
+    "scale": 0.5,
+    "jitter": 0.05
+   }
+  },
+  {
+   "id": "folk_manatarms",
+   "name": "Man-at-Arms",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_manatarms.glb",
+   "size": [
+    2.0455,
+    2.6,
+    1.369
+   ],
+   "radius": 1.2307,
+   "triangles": 6998,
+   "bytes": 127592,
+   "material": {
+    "side": "chainmail",
+    "top": "steel",
+    "scale": 0.55,
+    "jitter": 0.06
+   }
+  },
+  {
+   "id": "folk_merchant",
+   "name": "Merchant",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_merchant.glb",
+   "size": [
+    1.6923,
+    2.4,
+    1.3353
+   ],
+   "radius": 1.0778,
+   "triangles": 6999,
+   "bytes": 128144,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_monk",
+   "name": "Monk",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_monk.glb",
+   "size": [
+    1.824,
+    2.4,
+    1.1671
+   ],
+   "radius": 1.0827,
+   "triangles": 7000,
+   "bytes": 127404,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_necromancer",
+   "name": "Necromancer",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_necromancer.glb",
+   "size": [
+    1.7454,
+    2.6,
+    0.8682
+   ],
+   "radius": 0.9747,
+   "triangles": 6999,
+   "bytes": 127188,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_noblewoman",
+   "name": "Noblewoman",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_noblewoman.glb",
+   "size": [
+    2.4989,
+    2.5,
+    0.5329
+   ],
+   "radius": 1.2775,
+   "triangles": 6999,
+   "bytes": 127208,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_orc_shaman",
+   "name": "Orc Shaman",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_orc_shaman.glb",
+   "size": [
+    2.5548,
+    2.7,
+    1.0467
+   ],
+   "radius": 1.3804,
+   "triangles": 6998,
+   "bytes": 127772,
+   "material": {
+    "side": "skin_green",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.1
+   }
+  },
+  {
+   "id": "folk_orc_chief",
+   "name": "Orc Warlord",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_orc_chief.glb",
+   "size": [
+    2.8267,
+    3.2,
+    1.1599
+   ],
+   "radius": 1.5277,
+   "triangles": 9000,
+   "bytes": 164616,
+   "material": {
+    "side": "skin_green",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.1
+   }
+  },
+  {
+   "id": "folk_orc_warrior",
+   "name": "Orc Warrior",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_orc_warrior.glb",
+   "size": [
+    2.3289,
+    2.9,
+    2.1552
+   ],
+   "radius": 1.5866,
+   "triangles": 6999,
+   "bytes": 127668,
+   "material": {
+    "side": "skin_green",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.1
+   }
+  },
+  {
+   "id": "folk_paladin",
+   "name": "Paladin",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_paladin.glb",
+   "size": [
+    2.6628,
+    2.8,
+    1.409
+   ],
+   "radius": 1.5063,
+   "triangles": 6999,
+   "bytes": 128132,
+   "material": {
+    "side": "steel",
+    "top": "cloth_banner",
+    "scale": 0.5,
+    "jitter": 0.05
+   }
+  },
+  {
+   "id": "folk_pikeman",
+   "name": "Pikeman",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_pikeman.glb",
+   "size": [
+    1.2811,
+    2.6,
+    1.0472
+   ],
+   "radius": 0.8273,
+   "triangles": 6999,
+   "bytes": 127752,
+   "material": {
+    "side": "chainmail",
+    "top": "steel",
+    "scale": 0.55,
+    "jitter": 0.06
+   }
+  },
+  {
+   "id": "folk_ranger",
+   "name": "Ranger",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_ranger.glb",
+   "size": [
+    1.3423,
+    2.5,
+    1.1421
+   ],
+   "radius": 0.8812,
+   "triangles": 6999,
+   "bytes": 127040,
+   "material": {
+    "side": "leather",
+    "top": "wood_plank",
+    "scale": 0.6,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_mercenary",
+   "name": "Sellsword",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_mercenary.glb",
+   "size": [
+    1.546,
+    2.6,
+    1.7969
+   ],
+   "radius": 1.1852,
+   "triangles": 6999,
+   "bytes": 128424,
+   "material": {
+    "side": "leather",
+    "top": "wood_plank",
+    "scale": 0.6,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_sergeant",
+   "name": "Sergeant",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_sergeant.glb",
+   "size": [
+    1.8828,
+    2.6,
+    1.1121
+   ],
+   "radius": 1.0934,
+   "triangles": 6999,
+   "bytes": 128052,
+   "material": {
+    "side": "chainmail",
+    "top": "steel",
+    "scale": 0.55,
+    "jitter": 0.06
+   }
+  },
+  {
+   "id": "folk_sorceress",
+   "name": "Sorceress",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_sorceress.glb",
+   "size": [
+    2.0155,
+    2.5,
+    0.8961
+   ],
+   "radius": 1.1028,
+   "triangles": 6999,
+   "bytes": 127384,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_stablehand",
+   "name": "Stablehand",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_stablehand.glb",
+   "size": [
+    1.2243,
+    2.3,
+    0.5121
+   ],
+   "radius": 0.6635,
+   "triangles": 6998,
+   "bytes": 128096,
+   "material": {
+    "side": "canvas_stripe",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.16
+   }
+  },
+  {
+   "id": "folk_king",
+   "name": "The King",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_king.glb",
+   "size": [
+    1.6713,
+    2.7,
+    1.0091
+   ],
+   "radius": 0.9761,
+   "triangles": 9000,
+   "bytes": 163536,
+   "material": {
+    "side": "steel",
+    "top": "cloth_banner",
+    "scale": 0.5,
+    "jitter": 0.05
+   }
+  },
+  {
+   "id": "folk_queen",
+   "name": "The Queen",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_queen.glb",
+   "size": [
+    1.629,
+    2.6,
+    0.8427
+   ],
+   "radius": 0.917,
+   "triangles": 6998,
+   "bytes": 128160,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
+   }
+  },
+  {
+   "id": "folk_prince",
+   "name": "Young Lord",
+   "category": "folk",
+   "tags": [],
+   "mesh": "folk_prince.glb",
+   "size": [
+    2.153,
+    2.5,
+    1.1484
+   ],
+   "radius": 1.2201,
+   "triangles": 6998,
+   "bytes": 127388,
+   "material": {
+    "side": "robe_cloth",
+    "top": "leather",
+    "scale": 0.7,
+    "jitter": 0.12
    }
   },
   {

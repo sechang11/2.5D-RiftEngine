@@ -108,13 +108,11 @@ const FALLBACK: MaterialDef = {
 
 const VERT_PARS = /* glsl */ `
 varying vec3 vTriPos;
-varying vec3 vTriNrm;
 varying mat3 vTriBasis;
 `;
 
 const VERT_BODY = /* glsl */ `
 vTriPos = position;
-vTriNrm = normal;
 #ifdef USE_INSTANCING
   // Instances are placed with rotation and uniform scale only, so the upper
   // 3x3 doubles as the normal transform without an inverse transpose.
@@ -137,7 +135,6 @@ uniform vec3 triSideTint;
 uniform vec3 triTopTint;
 
 varying vec3 vTriPos;
-varying vec3 vTriNrm;
 varying mat3 vTriBasis;
 
 vec3 triBlendWeights( vec3 n ) {
@@ -171,16 +168,19 @@ vec3 triWhiteout( vec3 tx, vec3 ty, vec3 tz, vec3 n, vec3 w ) {
 // them again in the normal chunk would double a twelve-fetch shader for a
 // value already in a register.
 const FRAG_SETUP = /* glsl */ `
+// The face normal, oriented toward the viewer.
+//
+// Neither of the two things that usually settle this can be trusted on a
+// reconstructed mesh: the winding comes back inverted often enough that the
+// cross product's sign is a coin toss, and the vertex normals it was exported
+// with may disagree with the winding. Trying both — orient to the vertex
+// normal, then flip on back faces — is worse than either, because on a mesh
+// where they disagree the two corrections cancel and the object renders black.
+//
+// The side of a surface you can see is the side that is lit. That is the only
+// rule here, it needs nothing from the file, and it cannot cancel with itself.
 vec3 triFaceN = normalize( cross( dFdx( vTriPos ), dFdy( vTriPos ) ) );
-triFaceN *= sign( dot( triFaceN, vTriNrm ) + 1e-5 );
-#ifdef DOUBLE_SIDED
-  // Reconstructed shells come back with their winding inverted often enough
-  // that it cannot be treated as a defect: a tent rendered as a black hole
-  // because the only visible surface was its inside. Drawing both sides and
-  // flipping the normal on the far one is a cheaper fix than repairing the
-  // winding of a mesh that may not be a closed surface in the first place.
-  triFaceN *= gl_FrontFacing ? 1.0 : -1.0;
-#endif
+triFaceN *= sign( ( vTriBasis * triFaceN ).z + 1e-5 );
 vec3 triW = triBlendWeights( triFaceN );
 float triUp = smoothstep( ${UP_LOW.toFixed(2)}, ${UP_HIGH.toFixed(2)}, triFaceN.y );
 
@@ -379,6 +379,13 @@ export class MaterialLibrary {
       roughness: 1,
       metalness: 0,
       side: DoubleSide,
+      // Three defaults a double-sided material's shadow pass to back faces,
+      // which is right for a closed box and wrong for a canvas tent: its back
+      // face is a millimetre behind its front, so the lit surface reads as
+      // being behind the shadow map and the whole tent goes black. Recording
+      // both sides means the depth map holds the nearest surface, which is the
+      // one being lit, and the ordinary bias handles it.
+      shadowSide: DoubleSide,
     });
     material.onBeforeCompile = (shader) => patch(shader, uniforms);
     // Exposed so the uniforms can be read and nudged from the console, which is
