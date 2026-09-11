@@ -300,6 +300,13 @@ vec3 triAlbedo = mix( triSideCol * triSideTint, triTopCol * triTopTint, triUp );
 // picture, surface from the material.
 {
   vec3 face = triFaceColour( vTriPos, triW );
+
+  // Ground contact. Nothing in the pack casts an ambient occlusion term, so
+  // everything hovers: a building and its own shadow meet at a hard line and
+  // the eye reads the building as sitting on the ground rather than in it.
+  // Darkening the lowest tenth of every mesh is not occlusion, but it is where
+  // occlusion would be, and it costs one smoothstep.
+  face *= mix( 0.62, 1.0, smoothstep( 0.0, 0.09, vTriPos.y / max( triFaceSize.y, 1e-3 ) ) );
   // Clamped, because a pale material would otherwise multiply the picture past
   // white and a dark one would put it out altogether. The band is wide enough
   // for stone to read as stone and narrow enough that nothing is lost.

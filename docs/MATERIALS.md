@@ -29,6 +29,39 @@ and `top` covers anything facing up past the blend threshold. That is what puts
 slate on a roof and ashlar on the wall under it without the mesh, the generator
 or the manifest knowing that a roof is a thing.
 
+## Colour comes from the picture the mesh was made from
+
+Tiling materials give a surface back but not an arrangement, so a hut and a
+guildhall assigned the same stone end up the same colour. The thing that
+actually looked right was the concept image, and the reconstruction is in that
+image's own frame, so the two line up: height maps to height and the subject's
+bounding box maps to the image's.
+
+So the image ships with the mesh. Cropped back to its own subject, bled outward
+over the margin so the silhouette has no white rim, flattened to remove the
+shading the engine is about to redo, sharpened to survive the downscale, and
+saved at 256 to 512 square depending on how close the camera gets to that kind
+of thing. Twelve to forty-five kilobytes against a hundred for the mesh.
+
+The engine wraps it on cylindrically. Height always supplies the vertical
+coordinate; the horizontal one comes from whichever axis the surface faces. The
+front is therefore right, the sides are the image read across the object's own
+depth, and the back is the front again — which for a building is what the back
+looks like.
+
+The transfer takes the image's colour **and** its light and dark, because what
+the eye reads as a building is the dark window and the dark beam and neither
+survives a hue-only transfer. The tiling material comes back as *grain*: its
+luminance, normalised about its own average and clamped to a band, multiplying
+the picture. Colour from the image, surface from the material.
+
+Two things had to be got right for it to work at all. The background is found by
+flood-filling in from the border rather than thresholded against it, because the
+generator paints a vignette and a fixed threshold called two thirds of a
+knight's picture knight. And the transfer stays switched off until the image has
+actually loaded: three binds a black texture for one that has not, and
+multiplying by black paints every building in the city black.
+
 ## What an asset asks for
 
 ```json
@@ -42,6 +75,7 @@ or the manifest knowing that a roof is a thing.
 | `scale` | Multiplies the material's own world-units-per-tile, per asset |
 | `jitter` | How far individual instances may drift in brightness and hue |
 | `normalScale` | Multiplies the relief baked into the map. Defaults to 1 |
+| `colourMix` | How much of the concept image to take, and how much material grain rides on it |
 
 `jitter` is the difference between a street and a street of one house. It is
 applied per instance through instance colour, keyed on the prop id, so a house
@@ -124,7 +158,7 @@ and cobbles.
 
 | | |
 | --- | --- |
-| Texture fetches per fragment | 12 |
+| Texture fetches per fragment | 14 |
 | Programs, museum with 184 assets | 16 |
 | Frame time, museum, 195 draw calls, 737k triangles | 2.2 ms |
 

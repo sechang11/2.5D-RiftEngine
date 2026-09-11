@@ -158,6 +158,13 @@ instanced draw call each while two hundred simulated ones cost a pathfinder.
 creatures and people, drawn with one instanced draw call per asset type. See
 [docs/ASSET-PIPELINE.md](docs/ASSET-PIPELINE.md).
 
+**Colour.** The reconstructor keeps shape and throws away the image it worked
+from, which is the thing that looked right. That image ships with the mesh as a
+small colour map and the engine wraps it back on: height to height, the
+horizontal coordinate from whichever axis a surface faces. It supplies the
+colour and its own light and dark — the dark window, the dark beam — and the
+tiling material comes back over it as grain.
+
 **Materials.** Eighty-two tiling surfaces, a third of them tinted recolours that
 ship no bytes at all. Generated meshes have no UVs, so the texture is projected
 rather than mapped: each fragment samples a tiling surface down all three object-space

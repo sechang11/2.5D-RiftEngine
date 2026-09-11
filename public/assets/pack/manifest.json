@@ -1,5 +1,5 @@
 {
- "generated": "2026-09-11T05:55:36.703Z",
+ "generated": "2026-09-11T06:16:19.166Z",
  "assets": [
   {
    "id": "building_siege_ballista",
@@ -715,14 +715,14 @@
    "tags": [],
    "mesh": "civic_barracks.glb",
    "size": [
-    61.8753,
+    57.3105,
     18.2,
-    70.349
+    66.2805
    ],
-   "radius": 46.8442,
+   "radius": 43.811,
    "meshScale": 2.6,
-   "triangles": 5999,
-   "bytes": 109084,
+   "triangles": 5998,
+   "bytes": 110164,
    "material": {
     "side": "stone_rubble",
     "top": "roof_clay",
@@ -741,14 +741,14 @@
    ],
    "mesh": "civic_basilica.glb",
    "size": [
-    94.0594,
+    82.7869,
     33.8,
-    99.2319
+    81.7807
    ],
-   "radius": 68.3634,
+   "radius": 58.1844,
    "meshScale": 2.6,
    "triangles": 7499,
-   "bytes": 137168,
+   "bytes": 135080,
    "material": {
     "side": "stone_limestone",
     "top": "roof_tile_green",
@@ -1193,14 +1193,14 @@
    ],
    "mesh": "civic_hospice.glb",
    "size": [
-    15.6052,
+    17.2115,
     16.9,
-    23.6985
+    25.7184
    ],
-   "radius": 14.1874,
+   "radius": 15.4731,
    "meshScale": 2.6,
-   "triangles": 7499,
-   "bytes": 136152,
+   "triangles": 7498,
+   "bytes": 136360,
    "material": {
     "side": "stone_flint_pale",
     "top": "roof_pantile_grey",
@@ -1347,14 +1347,14 @@
    ],
    "mesh": "civic_granary_public.glb",
    "size": [
-    28.5904,
+    30.3142,
     23.4,
-    28.0561
+    26.9308
    ],
-   "radius": 20.0286,
+   "radius": 20.2745,
    "meshScale": 2.6,
-   "triangles": 5999,
-   "bytes": 108912,
+   "triangles": 6000,
+   "bytes": 108904,
    "material": {
     "side": "stone_ashlar_warm",
     "top": "flagstone",
@@ -5348,14 +5348,14 @@
    "tags": [],
    "mesh": "fort_caltrop_barricade.glb",
    "size": [
-    20.0386,
+    26.1641,
     5.28,
-    19.8782
+    27.9994
    ],
-   "radius": 14.1127,
+   "radius": 19.1606,
    "meshScale": 2.4,
    "triangles": 2600,
-   "bytes": 48052,
+   "bytes": 48412,
    "material": {
     "side": "wood_plank",
     "top": "wood_plank",
@@ -6743,14 +6743,14 @@
    ],
    "mesh": "house_courtyard.glb",
    "size": [
-    38.6271,
+    12.4257,
     12.3,
-    38.6915
+    12.4441
    ],
-   "radius": 27.3363,
+   "radius": 8.7929,
    "meshScale": 2.05,
-   "triangles": 5199,
-   "bytes": 94804,
+   "triangles": 6340,
+   "bytes": 114868,
    "material": {
     "side": "plaster_white",
     "top": "roof_clay",
@@ -6873,14 +6873,14 @@
    ],
    "mesh": "house_dyeworks.glb",
    "size": [
-    51.0464,
+    48.4134,
     10.66,
-    58.8227
+    53.5243
    ],
-   "radius": 38.9418,
+   "radius": 36.0857,
    "meshScale": 2.05,
-   "triangles": 5199,
-   "bytes": 95612,
+   "triangles": 5198,
+   "bytes": 95384,
    "material": {
     "side": "stone_mossy",
     "top": "roof_moss",
@@ -7159,14 +7159,14 @@
    ],
    "mesh": "house_broad.glb",
    "size": [
-    11.528,
+    10.8558,
     9.43,
-    12.8074
+    12.2762
    ],
-   "radius": 8.6157,
+   "radius": 8.1939,
    "meshScale": 2.05,
-   "triangles": 5200,
-   "bytes": 94448,
+   "triangles": 5199,
+   "bytes": 94408,
    "material": {
     "side": "plaster_white",
     "top": "roof_clay",
@@ -7185,14 +7185,14 @@
    ],
    "mesh": "house_cottage_b.glb",
    "size": [
-    19.8721,
+    24.1435,
     7.79,
-    22.9776
+    22.5174
    ],
-   "radius": 15.1895,
+   "radius": 16.507,
    "meshScale": 2.05,
-   "triangles": 4999,
-   "bytes": 91648,
+   "triangles": 5000,
+   "bytes": 91468,
    "material": {
     "side": "daub",
     "top": "roof_thatch_old",
@@ -7471,14 +7471,14 @@
    ],
    "mesh": "house_row_b.glb",
    "size": [
-    38.1146,
+    42.46,
     12.3,
-    40.8005
+    52.2076
    ],
-   "radius": 27.9169,
+   "radius": 33.6471,
    "meshScale": 2.05,
    "triangles": 4999,
-   "bytes": 91728,
+   "bytes": 91996,
    "material": {
     "side": "stone_rubble_dark",
     "top": "roof_slate_blue",
@@ -7497,14 +7497,14 @@
    ],
    "mesh": "house_tannery.glb",
    "size": [
-    25.2677,
+    26.2962,
     10.25,
-    22.5859
+    22.3819
    ],
-   "radius": 16.9453,
+   "radius": 17.2657,
    "meshScale": 2.05,
-   "triangles": 5000,
-   "bytes": 90028,
+   "triangles": 4998,
+   "bytes": 90460,
    "material": {
     "side": "wood_plank",
     "top": "roof_shingle",
@@ -9633,14 +9633,14 @@
    "tags": [],
    "mesh": "rural_barn.glb",
    "size": [
-    26.631,
+    31.3656,
     11.4,
-    29.4443
+    25.9303
    ],
-   "radius": 19.8506,
+   "radius": 20.3481,
    "meshScale": 1.9,
-   "triangles": 4499,
-   "bytes": 83248,
+   "triangles": 4500,
+   "bytes": 83056,
    "material": {
     "side": "wood_plank",
     "top": "roof_thatch",

@@ -42,6 +42,18 @@ FACE_DIR = os.path.join(ROOT, "out", "faces")
 MANIFEST = os.path.join(ROOT, "out", "manifest.json")
 
 SIZE = 256
+#: Bigger where it is looked at closely. Architecture is what the camera gets
+#: near and what fills the screen when it does; a barrel is neither.
+SIZE_BY_CATEGORY = {
+    "civic": 512,
+    "fort": 512,
+    "house": 512,
+    "rural": 384,
+    "dock": 384,
+    "folk": 384,
+    "creature": 384,
+    "building": 384,
+}
 #: Chroma is pushed out because the engine keeps the material's luminance and
 #: takes only the hue from here; a timid hue transfers as no hue at all.
 SATURATION = 1.5
@@ -140,6 +152,11 @@ def build(path, size=SIZE):
     # Square, because the engine addresses it in normalised coordinates and the
     # mesh's own extents supply the proportions.
     square = cv2.resize(crop, (size, size), interpolation=cv2.INTER_AREA)
+    # A light unsharp pass, because area-averaging a thousand pixels down to a
+    # few hundred costs exactly the edges — the window frames and the timber —
+    # that the transfer exists to carry.
+    blur = cv2.GaussianBlur(square, (0, 0), 1.1)
+    square = cv2.addWeighted(square, 1.45, blur, -0.45, 0)
     return saturate(flatten(square)), aspect
 
 
@@ -161,7 +178,8 @@ def main():
         if not os.path.exists(src):
             missing += 1
             continue
-        img, _aspect = build(src)
+        category = manifest["assets"][aid].get("category", "prop")
+        img, _aspect = build(src, SIZE_BY_CATEGORY.get(category, SIZE))
         if img is None:
             missing += 1
             continue

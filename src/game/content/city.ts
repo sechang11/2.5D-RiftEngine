@@ -243,7 +243,7 @@ const PALETTES: Record<string, string[]> = {
   ],
   merchant: [
     'house_timber_tall', 'house_half_timber_tall', 'house_gable_dutch', 'house_gable_curved',
-    'house_manor', 'house_stone_b', 'house_oriel', 'house_balcony', 'house_courtyard',
+    'house_manor', 'house_stone_b', 'house_oriel', 'house_balcony',
     'house_gallery_house', 'house_turret_house', 'civic_guild_tower', 'civic_treasury',
   ],
   // Clean trades. Long upper windows to work by, in the town proper.
@@ -265,7 +265,7 @@ const PALETTES: Record<string, string[]> = {
   // Tanners, dyers and fullers: they need the river, and everyone else needs
   // them to be downstream of it.
   tanners: [
-    'house_tannery', 'house_dyeworks', 'house_hovel', 'house_penthouse',
+    'house_tannery', 'house_hovel', 'house_penthouse',
     'house_half_ruin', 'house_broad', 'house_boat_builder',
   ],
   wharf: [
@@ -278,7 +278,7 @@ const PALETTES: Record<string, string[]> = {
   ],
   wards: [
     'house_timber_a', 'house_timber_b', 'house_timber_c', 'house_stone_a',
-    'house_row_a', 'house_row_b', 'house_cottage_a', 'house_dormer', 'house_hipped_roof',
+    'house_row_a', 'house_cottage_a', 'house_dormer', 'house_hipped_roof',
     'house_catslide', 'house_broad', 'house_shop_front', 'house_cellar',
     'house_stair_outside', 'house_gatehouse_house', 'house_courtyard_gate',
   ],
