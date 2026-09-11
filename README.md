@@ -111,8 +111,9 @@ Buildings are stamped into the nav grid as rectangles when the city is planned
 rather than left to blocking props, because a circle around a terrace either
 leaves its corners walkable or eats two metres of street on each side.
 
-![The market square at street level: striped awnings over trestle stalls, the
-stone market cross, townsfolk and a dog on the cobbles](docs/screenshot-crowd.jpg)
+![The market square at street level: trestle stalls on cobbles with townsfolk
+among them, each piece carrying the colour of the image it was reconstructed
+from](docs/screenshot-street.jpg)
 
 ![The buildings gallery: a portal arch, a stone keep, a tavern, a granary and a
 dragon statue on open ground, each captioned with its name, world size and

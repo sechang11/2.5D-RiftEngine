@@ -90,6 +90,8 @@ export interface MaterialSpec {
    * material's grain to modulate it by.
    */
   colourMix?: [number, number];
+  /** How hard the image's own edges push the surface normal around. */
+  relief?: number;
 }
 
 /**
@@ -106,6 +108,8 @@ export interface AssetFace {
   id: string;
   /** Object-space extents of the mesh, which the image is stretched over. */
   size: [number, number, number];
+  /** Pixels along one side of the map, for the relief gradient's step. */
+  resolution?: number;
   /**
    * How much the mesh is enlarged when placed.
    *
@@ -120,15 +124,21 @@ export interface AssetFace {
 /**
  * Colour strength, and how much of the material's grain rides on top of it.
  *
- * High on both. The image is the thing that looked right, and taking only a
- * timid hue from it was the mistake the sixteen-band version made: what the
- * eye reads as "a building" is the dark window and the dark beam, and those
- * are luminance, not hue. The grain term puts the stone and tile back over it.
+ * Found by looking rather than reasoned. Taking only a timid hue was the
+ * mistake the sixteen-band version made — what the eye reads as a building is
+ * the dark window and the dark beam, and those are luminance, not hue — but
+ * taking nearly all of it is a second mistake: the mesh is not the shape the
+ * picture was of, so at full strength a street reads as photographs wrapped
+ * round lumps. Two thirds keeps the windows and lets the stone assert itself,
+ * and the grain term is turned up to compensate.
  */
-const DEFAULT_COLOUR_MIX: [number, number] = [0.86, 0.72];
+const DEFAULT_COLOUR_MIX: [number, number] = [0.68, 0.85];
 
 /** What a delit albedo averages, used to normalise the material's grain. */
 const TEXTURE_MEAN_LUMA = 0.55;
+
+/** How hard the concept image's edges push the normal. Enough to catch light. */
+const DEFAULT_RELIEF = 2.6;
 
 const placeholderImages = new Map<string, HTMLCanvasElement>();
 
@@ -208,6 +218,7 @@ uniform vec3 triTopTint;
 uniform sampler2D triFace;
 uniform vec3 triFaceSize;    // object-space extents the image is stretched over
 uniform vec2 triColourMix;   // x: how much of the image, y: how much grain
+uniform vec2 triFaceRelief;  // x: relief strength, y: one texel of the image
 
 varying vec3 vTriPos;
 varying mat3 vTriBasis;
@@ -233,6 +244,14 @@ vec3 triFaceColour( vec3 p, vec3 w ) {
   float uz = clamp( p.x / max( triFaceSize.x, 1e-3 ) + 0.5, 0.0, 1.0 );
   return texture2D( triFace, vec2( ux, v ) ).rgb * w.x
        + texture2D( triFace, vec2( uz, v ) ).rgb * ( w.y + w.z );
+}
+
+/** Where the dominant plane reads the image, for the relief gradient. */
+vec2 triFaceUv( vec3 p, vec3 w ) {
+  float v = 1.0 - clamp( p.y / max( triFaceSize.y, 1e-3 ), 0.0, 1.0 );
+  float ux = clamp( p.z / max( triFaceSize.z, 1e-3 ) + 0.5, 0.0, 1.0 );
+  float uz = clamp( p.x / max( triFaceSize.x, 1e-3 ) + 0.5, 0.0, 1.0 );
+  return vec2( mix( uz, ux, step( 0.5, w.x ) ), v );
 }
 
 float triLuma( vec3 c ) {
@@ -292,6 +311,7 @@ vec3 triTopCol =
   + texture2D( triTopMap, triPy * triScale.y ).rgb * triW.y
   + texture2D( triTopMap, triPz * triScale.y ).rgb * triW.z;
 vec3 triAlbedo = mix( triSideCol * triSideTint, triTopCol * triTopTint, triUp );
+vec2 triFaceGrad = vec2( 0.0 );
 
 // The image supplies the colour *and* its own light and dark — a window is a
 // dark rectangle, a beam is a dark line, and neither survives a transfer that
@@ -307,6 +327,18 @@ vec3 triAlbedo = mix( triSideCol * triSideTint, triTopCol * triTopTint, triUp );
   // Darkening the lowest tenth of every mesh is not occlusion, but it is where
   // occlusion would be, and it costs one smoothstep.
   face *= mix( 0.62, 1.0, smoothstep( 0.0, 0.09, vTriPos.y / max( triFaceSize.y, 1e-3 ) ) );
+
+  // Relief from the picture. A window in the concept art is a dark rectangle
+  // with a hard edge, and a timber is a dark line with two: differencing the
+  // image's own luminance across a texel turns both back into surface, which
+  // no tiling material can do because no tiling material knows where the
+  // window is. Two extra fetches.
+  vec2 triFaceAt = triFaceUv( vTriPos, triW );
+  float triFaceL = triLuma( face );
+  triFaceGrad = vec2(
+    triLuma( texture2D( triFace, triFaceAt + vec2( triFaceRelief.y, 0.0 ) ).rgb ) - triFaceL,
+    triLuma( texture2D( triFace, triFaceAt + vec2( 0.0, triFaceRelief.y ) ).rgb ) - triFaceL
+  ) * triFaceRelief.x;
   // Clamped, because a pale material would otherwise multiply the picture past
   // white and a dark one would put it out altogether. The band is wide enough
   // for stone to read as stone and narrow enough that nothing is lost.
@@ -372,6 +404,9 @@ function patch(shader: WebGLProgramParametersWithUniforms, uniforms: Record<stri
            triUnpack( triTnZ.rg, triNrmScale.y ), triFaceN, triW ),
          triUp
        ) );
+       // The image's relief, folded in along the axis it was projected on.
+       vec3 triTangent = mix( vec3( 1.0, 0.0, 0.0 ), vec3( 0.0, 0.0, 1.0 ), step( 0.5, triW.x ) );
+       triN = normalize( triN - triTangent * triFaceGrad.x + vec3( 0.0, 1.0, 0.0 ) * triFaceGrad.y );
        normal = normalize( vTriBasis * triN );`,
     );
 }
@@ -554,6 +589,7 @@ export class MaterialLibrary {
       // one that has not loaded, and a transfer that multiplies by the picture
       // would paint every building black for the first second of a map.
       triColourMix: { value: [0, 0] },
+      triFaceRelief: { value: [spec.relief ?? DEFAULT_RELIEF, 1 / (face?.resolution ?? 256)] },
     };
 
     const material = new MeshStandardMaterial({
