@@ -50,14 +50,13 @@ export interface AssetEntry {
    */
   material?: MaterialSpec;
   /**
-   * The concept art's colour in sixteen bands from the ground up.
+   * True when a face map exists for this asset.
    *
-   * The reconstructor keeps shape and throws the colour away; this is it,
-   * recovered from the image the mesh was made from. Forty-eight bytes an
-   * asset, and the difference between a city of grey blocks and the picture
-   * the city was drawn from.
+   * The reconstructor keeps shape and throws the colour away. The image it
+   * worked from is the thing that looked right, so it ships alongside the mesh
+   * as a twelve-kilobyte colour map and the engine wraps it back on.
    */
-  palette?: string[];
+  face?: boolean;
   /**
    * How much the mesh is enlarged when placed, so it stands the right height
    * beside a person. `size` and `radius` already include it; the renderer has
@@ -290,20 +289,24 @@ export class AssetRegistry {
     const entry = this.entries.get(id);
     const spec = this.surfaceOf(id);
     if (spec && this.surfaces.ready) {
-      // The palette is sampled against object-space Y, which is the mesh's own
-      // unscaled height. `size` is the world size and already carries the
-      // pack's scale, so dividing it back out matters: left in, a building
-      // only ever sampled the bottom fortieth of its own palette and every
-      // wall in the city came out the colour of its plinth.
-      const meshScale = entry?.meshScale ?? 1;
-      const palette =
-        entry?.palette && entry.palette.length >= 16
-          ? { colours: entry.palette, height: entry.size[1] / meshScale, meshScale }
-          : undefined;
       const cached = this.assetMaterials.get(id);
       if (cached) return cached;
-      const material = this.surfaces.get(spec, palette);
-      if (palette) this.assetMaterials.set(id, material);
+      // The image is addressed in object space, which is the mesh's own
+      // unscaled frame. `size` is the world size and already carries the pack's
+      // scale, so it has to be divided back out: left in, a building sampled
+      // only the bottom fortieth of its own picture and every wall in the city
+      // came out the colour of its plinth.
+      const meshScale = entry?.meshScale ?? 1;
+      const face =
+        entry?.face && entry
+          ? {
+              id,
+              size: entry.size.map((v) => v / meshScale) as [number, number, number],
+              meshScale,
+            }
+          : undefined;
+      const material = this.surfaces.get(spec, face);
+      if (face) this.assetMaterials.set(id, material);
       return material;
     }
     return this.material(entry?.category ?? 'prop');

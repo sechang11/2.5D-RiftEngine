@@ -30,26 +30,26 @@ import { spawnUnit } from './scenario';
 const CELL = 1;
 
 /** Gap between the wall and the first exhibit. */
-const ROOM_PADDING = 3.5;
+const ROOM_PADDING = 9;
 
 /** Corridor width between galleries. */
-const CORRIDOR = 9;
+const CORRIDOR = 22;
 
 /** Wall thickness in world units. */
-const WALL = 1.6;
+const WALL = 3.2;
 
 /** Doorway width cut into a gallery's south wall. */
-const DOOR = 7;
+const DOOR = 16;
 
 /** Galleries are packed into rows no wider than this before starting a new one. */
-const MAX_ROW_WIDTH = 190;
+const MAX_ROW_WIDTH = 560;
 
 /** Space reserved around every exhibit, on top of its own footprint. */
-const EXHIBIT_MARGIN = 2.6;
+const EXHIBIT_MARGIN = 7;
 
 /** Clamp on exhibit spacing, so one huge asset does not spread out a gallery. */
-const MIN_CELL = 4.5;
-const MAX_CELL = 15;
+const MIN_CELL = 9;
+const MAX_CELL = 90;
 
 export interface Exhibit {
   assetId: string;

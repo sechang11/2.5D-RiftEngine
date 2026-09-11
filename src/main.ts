@@ -200,7 +200,7 @@ async function boot(): Promise<void> {
       labels.push({
         x: gallery.signX,
         y: gallery.signY,
-        height: 3.4,
+        height: 8,
         text: gallery.category.toUpperCase(),
         sub: `${gallery.count} assets`,
         size: 15,
@@ -213,7 +213,7 @@ async function boot(): Promise<void> {
         x: exhibit.x,
         y: exhibit.y,
         // Just above the mesh, so a tower's label is not buried in its roof.
-        height: exhibit.height + 0.55,
+        height: exhibit.height + 1.4,
         text: exhibit.name,
         // The surfaces are named in the caption because the museum is where a
         // wrong material gets caught, and "that roof is thatch" is not a
@@ -225,6 +225,7 @@ async function boot(): Promise<void> {
       });
     }
     renderer.overlay.labels = labels;
+    renderer.overlay.labelRange = 60;
     hud.log(`Museum: ${layout.exhibits.length} exhibits in ${layout.galleries.length} galleries.`);
     hud.toast('Right click to walk. Every asset in the pack is on this map.');
   } else if (cityMode && city) {

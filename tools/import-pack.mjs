@@ -46,6 +46,17 @@ try {
   palettes = {};
 }
 
+// Face maps: the concept image each mesh was reconstructed from, cropped and
+// flattened, which the engine wraps back round the geometry.
+const faceDir = join(stagingDir, 'faces');
+const faceOut = join(outDir, '..', 'faces');
+const faces = new Set();
+try {
+  for (const f of readdirSync(faceDir)) if (f.endsWith('.jpg')) faces.add(f.slice(0, -4));
+} catch {
+  // No face maps is a valid pack; assets fall back to their tiling material.
+}
+
 /**
  * How much bigger than its catalogue height each kind of thing is in the world.
  *
@@ -106,6 +117,7 @@ try {
 }
 
 mkdirSync(outDir, { recursive: true });
+mkdirSync(faceOut, { recursive: true });
 // Clear stale meshes so a reimport cannot leave orphans behind that the
 // manifest no longer mentions.
 for (const f of readdirSync(outDir)) {
@@ -146,8 +158,9 @@ for (const [id, entry] of Object.entries(raw.assets ?? {})) {
     // Which tiling surfaces to project onto this mesh. Absent for the first
     // pack, which predates materials; the runtime falls back to its category.
     ...(entry.material ? { material: entry.material } : {}),
-    ...(palettes[id] ? { palette: palettes[id] } : {}),
+    ...(faces.has(id) ? { face: true } : {}),
   });
+  if (faces.has(id)) copyFileSync(join(faceDir, `${id}.jpg`), join(faceOut, `${id}.jpg`));
   totalBytes += bytes;
   totalTris += info.triangles ?? 0;
 }
@@ -162,7 +175,7 @@ writeFileSync(
 const byCategory = {};
 for (const a of assets) byCategory[a.category] = (byCategory[a.category] ?? 0) + 1;
 
-const coloured = assets.filter((a) => a.palette).length;
+const coloured = assets.filter((a) => a.face).length;
 console.log(
   `imported ${assets.length} assets into ${resolve(outDir)}` +
     (coloured ? `, ${coloured} with concept colour` : ''),
