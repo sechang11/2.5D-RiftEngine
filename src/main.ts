@@ -13,18 +13,20 @@
  * it land in the same frame, which is the difference between controls that feel
  * immediate and controls that feel like they lag by one frame.
  *
- * Two worlds run through this same wiring, chosen by `?mode=`:
+ * Several worlds run through this same wiring, chosen by `?mode=`:
  *
- *   battle   the MOBA sandbox on Hollow Reach
- *   museum   every asset in the pack laid out as a gallery you walk through
+ *   battle     the MOBA sandbox on Hollow Reach
+ *   museum     every asset in the pack laid out as a gallery you walk through
+ *   city       Highhold, the pack assembled into a planned city
+ *   showcase   one authored character and one authored building, up close
  *
  * The museum is not a debug view bolted on the side. It is a second game built
  * from the same map, scenario and content layers, which is the only honest test
  * of whether those layers are actually separable.
  *
- * The editor sits alongside both rather than replacing them. Toggling it does
- * not tear anything down: the simulation keeps running underneath, which is why
- * a prop placed in the editor immediately blocks pathfinding and a weapon
+ * The editor sits alongside all of them rather than replacing them. Toggling it
+ * does not tear anything down: the simulation keeps running underneath, which
+ * is why a prop placed in the editor immediately blocks pathfinding and a weapon
  * dropped on the ground can be walked over the moment you switch back.
  */
 
@@ -36,14 +38,24 @@ import { buildMap01 } from './game/content/map01';
 import { buildScenario, spawnUnit, type Scenario } from './game/scenario';
 import { buildMuseum, populateMuseum, type MuseumLayout } from './game/museum';
 import { buildCity, populateCity, type CityMap } from './game/content/city';
+import {
+  buildShowcase,
+  populateShowcase,
+  SHOWCASE_BUILDING,
+  SHOWCASE_SUN,
+  type ShowcaseLayout,
+} from './game/showcase';
+import { ARCHETYPES } from './game/content/units';
 
 import { Renderer } from './render/renderer';
-import { InputState } from './input/input';
+import { InputState, MouseButton } from './input/input';
 import { PlayerController } from './input/controller';
 import { Hud } from './ui/hud';
 import { Minimap } from './ui/minimap';
 import { CommandType } from './core/sim/commands';
 import { AssetRegistry } from './render/assets';
+import { BuildingModels } from './render/buildings';
+import { CharacterModels } from './render/characters';
 import { PropStore } from './core/world/props';
 import { Editor } from './editor/editor';
 import { PickupSystem } from './game/pickups';
@@ -54,6 +66,9 @@ import * as scene from './game/scene';
 const MAP_SEED = 9090;
 const CITY_SEED = 4711;
 const SIM_SEED = 20260909;
+
+/** The photographed sky authored models are lit by. */
+const SKY_URL = '/assets/env/sky_1k.hdr';
 
 async function boot(): Promise<void> {
   const app = document.getElementById('app');
@@ -68,16 +83,28 @@ async function boot(): Promise<void> {
   const mode = params.get('mode') ?? 'battle';
   const museumMode = mode === 'museum';
   const cityMode = mode === 'city';
+  const showcaseMode = mode === 'showcase';
 
   // The asset pack is loaded first because the museum's layout is derived from
   // it: the map cannot be sized until the exhibits are known. Without a pack
   // the engine still runs, with procedural characters and an empty palette.
+  //
+  // Authored models load alongside it. One that fails leaves its units on
+  // primitives, or its plot empty, so no load waits on another succeeding.
   const assets = new AssetRegistry();
-  const assetCount = await assets.loadManifest();
+  const characters = new CharacterModels();
+  const buildings = new BuildingModels();
+  const models = Object.values(ARCHETYPES).flatMap((a) => (a.model ? [a.model] : []));
+  const [assetCount] = await Promise.all([
+    assets.loadManifest(),
+    characters.load(models),
+    showcaseMode ? buildings.load([SHOWCASE_BUILDING]) : Promise.resolve(),
+  ]);
 
   let map;
   let layout: MuseumLayout | null = null;
   let city: CityMap | null = null;
+  let showcase: ShowcaseLayout | null = null;
   if (museumMode) {
     layout = buildMuseum(assets, (params.get('category') ?? '').split(',').filter(Boolean));
     map = layout.map;
@@ -86,6 +113,11 @@ async function boot(): Promise<void> {
     // manifest and before anything that needs a map.
     city = buildCity(CITY_SEED, assets);
     map = city;
+  } else if (showcaseMode) {
+    // The building's footprint is stamped into the map, so it has to be known
+    // before the map exists.
+    showcase = buildShowcase(buildings.footprint(SHOWCASE_BUILDING));
+    map = showcase.map;
   } else {
     map = buildMap01(MAP_SEED);
   }
@@ -105,6 +137,8 @@ async function boot(): Promise<void> {
     visitor.name = 'Traveller';
     playerId = visitor.id;
     await assets.loadAll(new Set(props.props.map((p) => p.assetId)));
+  } else if (showcaseMode && showcase) {
+    playerId = populateShowcase(sim, showcase).player.id;
   } else {
     scenario = buildScenario(sim, map);
     playerId = scenario.player.id;
@@ -116,17 +150,49 @@ async function boot(): Promise<void> {
   const renderer = new Renderer(app, canvas, overlayCanvas, sim, map, {
     viewTeam: Team.Blue,
     // A gallery you cannot see across is not a gallery.
-    fogEnabled: !museumMode && !cityMode,
+    fogEnabled: !museumMode && !cityMode && !showcaseMode,
     // Gallery partitions, not cliffs: low enough to see over from the fixed
     // camera, high enough to read as rooms.
     wallHeight: museumMode ? 1.15 : undefined,
     wallVariation: museumMode ? 0.12 : undefined,
     // The city paves its streets with the lane mask, so that is what the
     // cobbles follow; outside the walls the same mask is the road.
-    ground: cityMode ? { base: 'grass_meadow', lane: 'cobblestone', dirt: 'dirt_grey' } : undefined,
+    ground: cityMode || showcaseMode ? { base: 'grass_meadow', lane: 'cobblestone', dirt: 'dirt_grey' } : undefined,
     assets,
+    characters,
     props,
+    // The showcase is for looking closely: down to eye level and looking at
+    // the face rather than the feet, with shadows tight enough to show a strap.
+    camera: showcaseMode
+      ? { distance: 12, minDistance: 1.4, maxDistance: 60, minPitchDegrees: 3, pitchEaseDistance: 24, focusHeight: 1.9 }
+      : undefined,
+    shadowExtent: showcaseMode ? 28 : undefined,
+    hazeScale: showcaseMode ? 0.45 : undefined,
+    groundShadows: showcaseMode,
+    // The meadow was generated to read from a hundred units up, where its
+    // green is a colour. At eye level it is most of the frame, and at full
+    // strength it is louder than anything standing on it.
+    groundTint: showcaseMode ? { base: 0xb4bc96 } : undefined,
+    groundSaturation: showcaseMode ? 0.6 : undefined,
   });
+
+  if (showcase?.building) {
+    const { id, x, z, turn } = showcase.building;
+    const building = buildings.create(id, x, z, turn);
+    if (building) renderer.scene.add(building);
+    buildings.setAnisotropy(renderer.renderer.capabilities.getMaxAnisotropy());
+  }
+
+  // Authored models are lit by a photographed sky in every world. The
+  // showcase gives the whole scene that sky, shows it, and turns it so the sun
+  // comes over the camera's shoulder.
+  void renderer
+    .loadSky(SKY_URL, {
+      world: showcaseMode,
+      background: showcaseMode,
+      sunAzimuth: showcaseMode ? SHOWCASE_SUN : undefined,
+    })
+    .catch((err) => console.warn('[sky] did not load:', err));
 
   const hud = new Hud(hudRoot);
   const input = new InputState(app);
@@ -147,7 +213,7 @@ async function boot(): Promise<void> {
       },
       onSpawnWave: () => {
         if (!scenario) {
-          hud.log('No lanes to march down in the museum');
+          hud.log('No lanes to march down here');
           return;
         }
         scenario.spawnWaves();
@@ -158,7 +224,14 @@ async function boot(): Promise<void> {
   );
 
   controller.playerUnit = playerId;
-  controller.toggles.fogEnabled = !museumMode && !cityMode;
+  controller.toggles.fogEnabled = !museumMode && !cityMode && !showcaseMode;
+  // Looking at one character means keeping him in frame, with nothing drawn
+  // round his feet that says which team he is on or how far he can shoot.
+  if (showcaseMode) {
+    controller.toggles.cameraLocked = true;
+    renderer.views.ringsVisible = false;
+    renderer.indicators.attackRangeVisible = false;
+  }
   renderer.views.selection.add(playerId);
   const player = sim.world.get(playerId);
   if (player) renderer.camera.jumpTo(player.pos.x, player.pos.y);
@@ -243,6 +316,10 @@ async function boot(): Promise<void> {
         `${city.plan.districts.length} districts, ${city.plan.gates.length} gates.`,
     );
     hud.toast('Right click to walk. Mouse wheel zooms right in.');
+  } else if (showcaseMode) {
+    hud.log(characters.has('ranger') ? 'Showcase: the Ranger.' : 'Showcase: the ranger model did not load.');
+    if (!showcase?.building) hud.log('Showcase: the cottage did not load.');
+    hud.toast('Right click to walk · Q W E R to cast · Z and C turn the view · wheel down to the face');
   } else {
     // Restore whatever was last being worked on, so a reload does not lose a
     // dressing session. With nothing saved and a pack available, scatter a
@@ -282,6 +359,17 @@ async function boot(): Promise<void> {
   let last = performance.now();
   let elapsed = 0;
   let statsTimer = 0;
+  let lastMouseX = input.mouseX;
+
+  /** Turns the showcase camera: Z and C, or dragging with the middle button. */
+  const orbit = (dt: number) => {
+    let turn = 0;
+    if (input.isHeld('KeyZ')) turn -= dt * 1.8;
+    if (input.isHeld('KeyC')) turn += dt * 1.8;
+    if (input.buttonsHeld.has(MouseButton.Middle)) turn -= (input.mouseX - lastMouseX) * 0.008;
+    lastMouseX = input.mouseX;
+    if (turn !== 0) renderer.camera.orbit(turn);
+  };
 
   const frame = (now: number) => {
     const dt = Math.min((now - last) / 1000, 0.1);
@@ -305,6 +393,7 @@ async function boot(): Promise<void> {
       editor.update(dt, rect.width, rect.height);
     } else {
       renderer.camera.edgePanEnabled = true;
+      if (showcaseMode) orbit(dt);
       controller.update(dt, rect.width, rect.height);
     }
 
@@ -325,6 +414,20 @@ async function boot(): Promise<void> {
     requestAnimationFrame(frame);
   };
 
+  // Compile the shaders the first frame needs before drawing it, in parallel
+  // where the browser allows. Left to the first frame, a building's materials,
+  // a character's and their shadow variants compile one after another on the
+  // main thread and the first frame waits for all of them. Unit views are made
+  // first so their materials are in the scene to be found.
+  //
+  // Bounded, because readiness is polled on a timer and a background tab
+  // stretches timers to a minute apart: a page opened out of sight would
+  // otherwise not start until long after it came back into view.
+  renderer.views.update(sim.alpha, 0, 0, controller.toggles.fogEnabled);
+  await Promise.race([
+    renderer.renderer.compileAsync(renderer.scene, renderer.camera.camera).catch(() => undefined),
+    new Promise((resolve) => setTimeout(resolve, 3000)),
+  ]);
   requestAnimationFrame(frame);
 
   /**
@@ -366,9 +469,12 @@ async function boot(): Promise<void> {
       controller,
       scenario,
       layout,
+      showcase,
       hud,
       minimap,
       assets,
+      characters,
+      buildings,
       props,
       editor,
       pickups,

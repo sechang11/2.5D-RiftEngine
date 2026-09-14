@@ -79,7 +79,7 @@ Sandbox keys while playing: `B` spawns a minion wave, `V` toggles fog of war,
 `engine.capture('docs/screenshot.jpg')` writes the current view to disk, which
 is how the image above was made; that endpoint is dev-server only.
 
-## Three worlds, one engine
+## Four worlds, one engine
 
 `?mode=` picks which one boots.
 
@@ -88,6 +88,7 @@ is how the image above was made; that endpoint is dev-server only.
 | `/` | The MOBA sandbox on Hollow Reach |
 | `/?mode=city` | Highhold: a walled castle city, its town and the country round it |
 | `/?mode=museum` | Every asset in the pack laid out as galleries you walk through |
+| `/?mode=showcase` | One authored character and one authored building, up close under a photographed sky |
 
 The museum is not a debug view. It is a second game built from the same map,
 scenario and content layers, with the same camera and the same controls. That
@@ -120,6 +121,26 @@ dragon statue on open ground, each captioned with its name, world size and
 triangle count, with the visitor among them for
 scale](docs/screenshot-museum.jpg)
 
+## Authored models
+
+![The ranger standing on a cobbled apron in front of a two-storey cottage of
+rubble stone and limewashed timber under a clay-tile roof, lit by a
+photographed sky](docs/screenshot-showcase.jpg)
+
+Everything above is generated, and a generated mesh has no UVs to paint, no
+topology to bend and no skeleton to move. `/?mode=showcase` is the other kind:
+one character and one building made the way a modern game's are. The ranger is
+assembled from Quaternius's CC0 character kits — an outfit, a head cut from a
+base body, hair and a beard — and moved by that author's animation library,
+retargeted onto his skeleton and blended by ground speed. The cottage is eighty-eight
+pieces of the same author's Medieval Village MegaKit, baked into one file with ten
+materials. Both are lit by a photographed sky, and the camera comes down to eye
+level and turns: Z and C, or drag with the middle mouse button.
+
+The ranger is also the player everywhere else. See
+[docs/AUTHORED.md](docs/AUTHORED.md) for where the models came from and how they
+are built.
+
 ## What is in the box
 
 **Simulation.** Fixed 60 Hz tick with an accumulator and render interpolation.
@@ -147,9 +168,12 @@ themselves in. Weapons and trinkets lying on the map are picked up by walking
 over them, and an equipped weapon's mesh is attached to the character's hand,
 where it inherits the whole attack animation.
 
-**Characters.** Two kinds. The ones that move are procedural, built from
-primitives and posed by rotating named joints, with three body plans: bipeds,
-quadrupeds and floating. The ones that stand still are generated meshes — a
+**Characters.** Three kinds. The player is an authored model, skinned to a
+humanoid rig and moved by retargeted animation clips: the legs blend walk, jog
+and sprint by ground speed while the arms take attacks and casts, timed to land
+on the tick the simulation fires them. Other units that move are procedural,
+built from primitives and posed by rotating named joints, with three body plans:
+bipeds, quadrupeds and floating. The ones that stand still are generated meshes — a
 hundred and fifty townsfolk, soldiers, monsters and animals at seven thousand
 triangles each — because a crowd reads as a crowd from the number of people in
 it long before any of them move, and two hundred static figures cost an
@@ -208,7 +232,8 @@ src/input/    raw input capture and the player controller
 src/ui/       HUD and minimap
 src/game/     content: maps, the city, champions, abilities, items, dressing
 tests/        determinism, navigation and combat tests
-tools/        headless benchmark, asset generation, pack importer
+tools/        headless benchmark, asset generation, pack importer,
+              character and building builders
 ```
 
 Deployed on Railway; see [docs/DEPLOY.md](docs/DEPLOY.md).
@@ -216,4 +241,5 @@ Deployed on Railway; see [docs/DEPLOY.md](docs/DEPLOY.md).
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for why it is shaped this way,
 [docs/ASSET-PIPELINE.md](docs/ASSET-PIPELINE.md) for how the mesh pack is made,
 [docs/MATERIALS.md](docs/MATERIALS.md) for how untextured meshes get textured,
+[docs/AUTHORED.md](docs/AUTHORED.md) for the authored character and building,
 and [docs/ROADMAP.md](docs/ROADMAP.md) for what a full MOBA still needs.

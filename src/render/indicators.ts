@@ -58,6 +58,9 @@ export class Indicators {
   private readonly coneMaterial: MeshBasicMaterial;
   private coneAngle = -1;
 
+  /** Whether the selected unit's auto-attack reach is drawn at all. */
+  attackRangeVisible = true;
+
   /** Ring showing the selected unit's auto-attack reach. */
   private readonly attackRing: Mesh;
   private readonly attackMaterial: MeshBasicMaterial;
@@ -259,7 +262,7 @@ export class Indicators {
 
   /** Ring showing where the selected unit can auto-attack. */
   showAttackRange(unit: Unit | null): void {
-    if (!unit || unit.hp <= 0) {
+    if (!unit || unit.hp <= 0 || !this.attackRangeVisible) {
       this.attackRing.visible = false;
       return;
     }

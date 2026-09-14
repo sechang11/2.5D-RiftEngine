@@ -320,7 +320,8 @@ export function populateMuseum(
 
 // --- helpers --------------------------------------------------------------
 
-function emptyMap(name: string, nav: NavGrid): GameMap {
+/** A map with nothing painted on it and no lanes, spawns or camps, for building on. */
+export function emptyMap(name: string, nav: NavGrid): GameMap {
   const cells = nav.cols * nav.rows;
   return {
     name,

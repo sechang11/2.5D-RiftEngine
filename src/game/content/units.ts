@@ -25,6 +25,12 @@ export interface Archetype {
   /** Which mesh builder to use. */
   mesh: 'character' | 'tower';
   style: Omit<CharacterStyle, 'accent'>;
+  /**
+   * An authored model to draw instead, by its id in `render/characters.ts`.
+   * The primitives stay as the fallback, so a model that is missing or fails
+   * to load costs the unit its looks and nothing else.
+   */
+  model?: string;
   /** Non-champions pick their own fights. */
   autoAcquire?: boolean;
   ai?: {
@@ -76,6 +82,7 @@ export const ARCHETYPES: Record<string, Archetype> = {
     abilities: RIFT_KIT,
     mesh: 'character',
     style: { primary: 0xcfd6e4, secondary: 0x3a4152, scale: 1, weapon: 'sword', cape: true, head: 'helm' },
+    model: 'ranger',
   },
 
   /** A second champion body, used for the enemy duellist. Melee and beefier. */

@@ -8,3 +8,9 @@ assets-staging/
 
 # Staging area for a generated material library.
 materials-staging/
+
+# Look-development captures written by engine.capture() while tuning models.
+lookdev/
+
+# Python bytecode from running the tools.
+__pycache__/

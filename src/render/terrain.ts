@@ -99,6 +99,7 @@ const groundFragmentShader = /* glsl */ `
   uniform sampler2D uDirtTex;
   uniform sampler2D uDirtNrm;
   uniform vec3 uGroundTiles;
+  uniform float uBaseSaturation;
   uniform vec3 uBaseTint;
   uniform vec3 uLaneTint;
   uniform vec3 uDirtTint;
@@ -157,6 +158,9 @@ const groundFragmentShader = /* glsl */ `
         texture2D(uBaseTex, uvBase * 0.23 + 0.37).rgb,
         smoothstep(0.32, 0.68, local.b)
       ) * uBaseTint;
+      // Pulled towards its own grey where the generated meadow is louder than
+      // what stands on it: fine from a hundred units up, most of the frame at eye level.
+      baseCol = mix(vec3(dot(baseCol, vec3(0.299, 0.587, 0.114))), baseCol, uBaseSaturation);
 
       base = mix(baseCol, texture2D(uDirtTex, uvDirt).rgb * uDirtTint, dirt);
       base = mix(base, texture2D(uLaneTex, uvLane).rgb * uLaneTint, lane);
@@ -343,6 +347,7 @@ export class Terrain {
         // A tinted variant is a real material choice here as much as it is on a
         // building: the generated dirt is dry orange earth, and the same file
         // cooled is the trodden mud a city yard is actually made of.
+        uBaseSaturation: { value: 1 },
         uBaseTint: { value: tintOf(ground.base) },
         uLaneTint: { value: tintOf(ground.lane) },
         uDirtTint: { value: tintOf(ground.dirt ?? DEFAULT_GROUND.dirt) },
@@ -464,6 +469,28 @@ export class Terrain {
 
   setGrid(enabled: boolean): void {
     this.groundMaterial.uniforms.uGridEnabled.value = enabled ? 1 : 0;
+  }
+
+  /**
+   * Points the ground's faked relief at wherever the sun actually is.
+   *
+   * The default matches the renderer's fixed sun. A scene lit by a
+   * photographed sky moves the sun to the photograph's, and cobbles shaded
+   * from one side under shadows falling from the other read as painted on.
+   */
+  setSunDirection(direction: Vector3): void {
+    (this.groundMaterial.uniforms.uSunDir.value as Vector3).copy(direction).normalize();
+  }
+
+  /** Recolours one ground layer, multiplying its texture. */
+  tintGround(layer: 'base' | 'lane' | 'dirt', colour: number): void {
+    const uniform = layer === 'base' ? 'uBaseTint' : layer === 'lane' ? 'uLaneTint' : 'uDirtTint';
+    (this.groundMaterial.uniforms[uniform].value as Color).multiply(new Color(colour));
+  }
+
+  /** How much of the open ground's own colour to keep: one as generated, zero grey. */
+  setGroundSaturation(amount: number): void {
+    this.groundMaterial.uniforms.uBaseSaturation.value = amount;
   }
 
   /**

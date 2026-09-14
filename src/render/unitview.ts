@@ -11,6 +11,11 @@
  * Positions are interpolated between the previous and current tick using the
  * simulation's leftover time, so a 60 Hz simulation renders smoothly at any
  * refresh rate.
+ *
+ * A unit is drawn one of two ways. Most are procedural rigs built from
+ * primitives. An archetype that names an authored model gets a skinned body
+ * instead, posed from exactly the same inputs, and falls back to primitives if
+ * that model never loaded.
  */
 
 import {
@@ -21,6 +26,7 @@ import {
   MeshBasicMaterial,
   Scene,
   Vector3,
+  type Object3D,
   type Texture,
 } from 'three';
 import type { World } from '../core/ecs/world';
@@ -38,10 +44,12 @@ import {
   poseCharacter,
   poseTower,
   type CharacterRig,
+  type PoseInput,
 } from './meshes/character';
 import { archetype, styleFor, TEAM_COLOR } from '../game/content/units';
 import { createRingTexture } from './textures/procedural';
 import type { AssetRegistry } from './assets';
+import type { CharacterModels, SkinnedBody } from './characters';
 
 /** Seconds a corpse stays on the field before its view is removed. */
 const CORPSE_DURATION = 1.4;
@@ -53,7 +61,12 @@ interface UnitView {
   id: EntityId;
   archetype: string;
   team: Team;
-  rig: CharacterRig;
+  /** The body built from primitives, or null when an authored model stands in. */
+  rig: CharacterRig | null;
+  /** The authored body, when the archetype names a model and it loaded. */
+  skinned: SkinnedBody | null;
+  /** Whichever of the two is drawn, for turning it to the unit's heading. */
+  body: Object3D;
   /** Asset ids currently attached, so equipment is only rebuilt when it changes. */
   equipped: Record<string, string>;
   /** Meshes added for equipment, removed on the next swap. */
@@ -80,6 +93,8 @@ export class UnitViews {
   readonly selection = new Set<EntityId>();
   /** Unit under the cursor, refreshed by `pickAt`. */
   hovered: EntityId = 0;
+  /** Whether the team rings under units are drawn. */
+  ringsVisible = true;
 
   private readonly views = new Map<EntityId, UnitView>();
   private readonly world: World;
@@ -90,11 +105,14 @@ export class UnitViews {
   private readonly seen = new Set<EntityId>();
   /** Optional: supplies meshes for equipped items. */
   private assets: AssetRegistry | null = null;
+  /** Optional: supplies authored bodies for archetypes that name one. */
+  private characters: CharacterModels | null = null;
 
-  constructor(scene: Scene, world: World, viewTeam: Team, assets?: AssetRegistry) {
+  constructor(scene: Scene, world: World, viewTeam: Team, assets?: AssetRegistry, characters?: CharacterModels) {
     this.world = world;
     this.viewTeam = viewTeam;
     this.assets = assets ?? null;
+    this.characters = characters ?? null;
     this.ringTexture = createRingTexture(256, 0.09, 0.03);
     scene.add(this.group);
   }
@@ -152,10 +170,19 @@ export class UnitViews {
     const arch = archetype(unit.archetype);
     const style = styleFor(unit.archetype, unit.team);
     const isTower = arch.mesh === 'tower';
-    const rig = isTower ? buildTower(style) : buildCharacter(style);
+
+    const skinned = !isTower && arch.model ? (this.characters?.create(arch.model) ?? null) : null;
+    let rig: CharacterRig | null = null;
+    let body: Object3D;
+    if (skinned) {
+      body = skinned.root;
+    } else {
+      rig = isTower ? buildTower(style) : buildCharacter(style);
+      body = rig.root;
+    }
 
     const group = new Group();
-    group.add(rig.root);
+    group.add(body);
 
     const ringMaterial = new MeshBasicMaterial({
       map: this.ringTexture,
@@ -179,6 +206,8 @@ export class UnitViews {
       archetype: unit.archetype,
       team: unit.team,
       rig,
+      skinned,
+      body,
       group,
       ring,
       ringMaterial,
@@ -196,7 +225,8 @@ export class UnitViews {
 
   private destroyView(view: UnitView): void {
     this.group.remove(view.group);
-    disposeCharacter(view.rig);
+    if (view.rig) disposeCharacter(view.rig);
+    view.skinned?.dispose();
     view.ringMaterial.dispose();
   }
 
@@ -216,7 +246,7 @@ export class UnitViews {
     view.group.position.set(x, 0, z);
     // Simulation facing is measured from +y with atan2(x, y), and the sim's y
     // axis is the world's z axis, so it maps to rotation.y with no correction.
-    view.rig.root.rotation.y = unit.facing;
+    view.body.rotation.y = unit.facing;
 
     this.syncEquipment(view, unit);
 
@@ -251,6 +281,9 @@ export class UnitViews {
       time,
       dt,
       attack: attackProgress,
+      // The damage lands where the windup ends, and the follow-through is what
+      // is left of the animation after it.
+      strike: 1 - ATTACK_FOLLOW_THROUGH / Math.max(0.001, view.attackTotal),
       cast: castProgress,
       death: deathProgress,
       lift,
@@ -274,7 +307,7 @@ export class UnitViews {
     view.ringMaterial.color.setHex(selected ? 0xffffff : TEAM_COLOR[unit.team]);
     const ringScale = unit.radius * (selected ? 1.75 : 1.5);
     view.ring.scale.setScalar(ringScale);
-    view.ring.visible = !view.isTower || selected || hovered;
+    view.ring.visible = this.ringsVisible && (!view.isTower || selected || hovered);
   }
 
   /**
@@ -284,10 +317,12 @@ export class UnitViews {
    * it, and it is parented to the same joint, so it inherits the whole attack
    * animation for free. That is the payoff for keeping the rig as plain scene
    * graph nodes: a mesh that has never been rigged still swings correctly
-   * because the arm it is attached to is what moves.
+   * because the arm it is attached to is what moves. A skinned body's hand is a
+   * bone, which is a scene graph node too, so the same holds for it.
    */
   private syncEquipment(view: UnitView, unit: Unit): void {
     if (!this.assets || view.isTower) return;
+    const { rig, skinned } = view;
 
     for (const slot of EQUIP_SLOTS) {
       const wanted = unit.equipment[slot] ?? '';
@@ -302,12 +337,18 @@ export class UnitViews {
       }
 
       view.equipped[slot] = wanted;
-      const joint = slot === 'weapon' ? view.rig.weapon : view.rig.leftArm;
+      const joint = skinned
+        ? slot === 'weapon'
+          ? skinned.weaponJoint
+          : skinned.offhandJoint
+        : slot === 'weapon'
+          ? (rig?.weapon ?? null)
+          : (rig?.leftArm ?? null);
       if (!joint) continue;
 
       // With nothing equipped, show the character's own weapon again.
       if (!wanted) {
-        if (slot === 'weapon') view.rig.weapon?.children.forEach((c) => (c.visible = true));
+        if (slot === 'weapon') rig?.weapon?.children.forEach((c) => (c.visible = true));
         continue;
       }
 
@@ -319,7 +360,7 @@ export class UnitViews {
         continue;
       }
 
-      if (slot === 'weapon') view.rig.weapon?.children.forEach((c) => (c.visible = false));
+      if (slot === 'weapon') rig?.weapon?.children.forEach((c) => (c.visible = false));
 
       const mesh = new Mesh(geo, this.assets.materialFor(wanted));
       mesh.userData.slot = slot;
@@ -328,11 +369,20 @@ export class UnitViews {
       // are scaled to whoever is actually holding them. Without this an imp
       // picking up a greatsword carries something taller than itself.
       const bearer = archetype(unit.archetype).style.scale ?? 1;
-      mesh.scale.setScalar(bearer);
-      // The mesh's origin is its base, which for a weapon is the butt of the
-      // grip, so it hangs from the hand with only a small offset.
-      mesh.position.set(0, -0.08 * bearer, 0);
-      mesh.rotation.set(slot === 'weapon' ? -0.35 : -1.45, 0, slot === 'weapon' ? 0 : Math.PI / 2);
+      if (skinned) {
+        // A bone lives inside a model scaled from metres to world units, so the
+        // item undoes that scale and its offset is in metres. The hand bone
+        // points along the fingers; a grip runs across them.
+        mesh.scale.setScalar(bearer / skinned.modelScale);
+        mesh.position.set(0, 0.09, 0.02);
+        mesh.rotation.set(slot === 'weapon' ? Math.PI / 2 : 0, 0, slot === 'weapon' ? 0 : Math.PI / 2);
+      } else {
+        mesh.scale.setScalar(bearer);
+        // The mesh's origin is its base, which for a weapon is the butt of the
+        // grip, so it hangs from the hand with only a small offset.
+        mesh.position.set(0, -0.08 * bearer, 0);
+        mesh.rotation.set(slot === 'weapon' ? -0.35 : -1.45, 0, slot === 'weapon' ? 0 : Math.PI / 2);
+      }
       joint.add(mesh);
       view.attached.push(mesh);
     }
@@ -403,7 +453,8 @@ export class UnitViews {
 
 const EQUIP_SLOTS = ['weapon', 'offhand'] as const;
 
-function poseFor(view: UnitView, input: Parameters<typeof poseCharacter>[1]): void {
-  if (view.isTower) poseTower(view.rig, input);
-  else poseCharacter(view.rig, input);
+function poseFor(view: UnitView, input: PoseInput): void {
+  if (view.skinned) view.skinned.pose(input);
+  else if (view.rig && view.isTower) poseTower(view.rig, input);
+  else if (view.rig) poseCharacter(view.rig, input);
 }

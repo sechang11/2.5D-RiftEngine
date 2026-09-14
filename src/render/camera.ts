@@ -9,6 +9,11 @@
  * The camera exposes that mapping in both directions: `screenToGround` for
  * turning clicks into orders, and `worldToScreen` for the 2D overlay that draws
  * health bars and floating text.
+ *
+ * The one exception is the showcase, which exists to look at a single model
+ * from every side. It turns the yaw and raises the point the camera looks at as
+ * it closes in. Neither changes anything while playing: the yaw stays at zero
+ * and the look height is zero at play distance.
  */
 
 import { PerspectiveCamera, Plane, Raycaster, Vector2, Vector3 } from 'three';
@@ -37,6 +42,14 @@ export interface RtsCameraOptions {
   /** Screen margin in pixels that triggers edge panning. */
   edgeMargin?: number;
   bounds?: CameraBounds;
+  /**
+   * Height the camera looks at when fully zoomed in, easing to the ground by
+   * `pitchEaseDistance`. Zero keeps it on the ground, which at eye level frames
+   * a character's feet.
+   */
+  focusHeight?: number;
+  /** Starting yaw in radians. Zero looks along -z. */
+  yaw?: number;
 }
 
 const GROUND = new Plane(new Vector3(0, 1, 0), 0);
@@ -53,6 +66,11 @@ export class RtsCamera {
   private readonly basePitch: number;
   private readonly minPitch: number;
   private readonly pitchEaseDistance: number;
+  private readonly focusHeight: number;
+
+  /** Rotation about the vertical, in radians. Zero while playing. */
+  yaw: number;
+  private smoothYaw: number;
 
   /**
    * Current angle below the horizon.
@@ -64,12 +82,19 @@ export class RtsCamera {
    * something, and from directly above a building is a roof.
    */
   get pitch(): number {
+    return this.minPitch + (this.basePitch - this.minPitch) * (1 - this.closeness);
+  }
+
+  /**
+   * How far into the close-up range the camera is: zero at `pitchEaseDistance`
+   * and beyond, one at `minDistance`. Eased, so the tilt is barely there for
+   * the first part of the zoom and arrives as the camera actually gets close.
+   */
+  private get closeness(): number {
     const span = this.pitchEaseDistance - this.minDistance;
-    if (span <= 1e-3) return this.basePitch;
+    if (span <= 1e-3) return 0;
     const t = clamp((this.smoothDistance - this.minDistance) / span, 0, 1);
-    // Eased rather than linear so the tilt is barely there for the first part
-    // of the zoom and arrives as the camera actually gets close.
-    return this.minPitch + (this.basePitch - this.minPitch) * (t * t);
+    return 1 - t * t;
   }
 
   /** When set, the camera follows this point every frame. */
@@ -100,6 +125,9 @@ export class RtsCamera {
     this.panSpeed = opts.panSpeed ?? 46;
     this.edgeMargin = opts.edgeMargin ?? 8;
     this.bounds = opts.bounds ?? { minX: -1000, minY: -1000, maxX: 1000, maxY: 1000 };
+    this.focusHeight = opts.focusHeight ?? 0;
+    this.yaw = opts.yaw ?? 0;
+    this.smoothYaw = this.yaw;
 
     // The far plane has to clear the whole map from the top of the zoom range,
     // and the near plane has to let the camera get close enough to read a
@@ -121,6 +149,7 @@ export class RtsCamera {
     this.focus.set(x, 0, y);
     this.smoothFocus.copy(this.focus);
     this.clampFocus(this.smoothFocus);
+    this.smoothYaw = this.yaw;
     this.applyTransform();
   }
 
@@ -128,7 +157,7 @@ export class RtsCamera {
     this.focus.set(x, 0, y);
   }
 
-  /** Pans in screen space. Up on screen is -z in the world at this fixed yaw. */
+  /** Pans in world space. */
   pan(dx: number, dz: number): void {
     this.focus.x += dx;
     this.focus.z += dz;
@@ -140,19 +169,29 @@ export class RtsCamera {
     this.distance = clamp(this.distance * Math.pow(1.12, steps), this.minDistance, this.maxDistance);
   }
 
+  /** Turns the view about the point it is centred on. */
+  orbit(radians: number): void {
+    this.yaw += radians;
+  }
+
   /**
    * Advances camera easing.
    *
    * `panX`/`panY` are normalised axis inputs in [-1,1] from keys and screen
-   * edges combined. Pan speed scales with zoom so a zoomed-out camera crosses
-   * the map at a sensible rate rather than crawling.
+   * edges combined, in screen directions: they are turned by the yaw, so up is
+   * away from the camera however it faces. Pan speed scales with zoom so a
+   * zoomed-out camera crosses the map at a sensible rate rather than crawling.
    */
   update(dt: number, panX: number, panY: number): void {
     if (panX !== 0 || panY !== 0) {
       const speed = this.panSpeed * (0.55 + this.smoothDistance / this.maxDistance);
       const len = Math.hypot(panX, panY) || 1;
-      this.focus.x += (panX / len) * speed * dt;
-      this.focus.z += (panY / len) * speed * dt;
+      const cos = Math.cos(this.smoothYaw);
+      const sin = Math.sin(this.smoothYaw);
+      const worldX = panX * cos + panY * sin;
+      const worldZ = -panX * sin + panY * cos;
+      this.focus.x += (worldX / len) * speed * dt;
+      this.focus.z += (worldZ / len) * speed * dt;
       this.followTarget = null;
     } else if (this.followTarget) {
       this.focus.x = this.followTarget.x;
@@ -165,6 +204,7 @@ export class RtsCamera {
     this.smoothFocus.x = damp(this.smoothFocus.x, this.focus.x, 18, dt);
     this.smoothFocus.z = damp(this.smoothFocus.z, this.focus.z, 18, dt);
     this.smoothDistance = damp(this.smoothDistance, this.distance, 12, dt);
+    this.smoothYaw = damp(this.smoothYaw, this.yaw, 12, dt);
 
     this.applyTransform();
   }
@@ -178,8 +218,13 @@ export class RtsCamera {
     const d = this.smoothDistance;
     const height = Math.sin(this.pitch) * d;
     const back = Math.cos(this.pitch) * d;
-    this.camera.position.set(this.smoothFocus.x, height, this.smoothFocus.z + back);
-    this.camera.lookAt(this.smoothFocus.x, 0, this.smoothFocus.z);
+    const lift = this.focusHeight * this.closeness;
+    this.camera.position.set(
+      this.smoothFocus.x + Math.sin(this.smoothYaw) * back,
+      height + lift,
+      this.smoothFocus.z + Math.cos(this.smoothYaw) * back,
+    );
+    this.camera.lookAt(this.smoothFocus.x, lift, this.smoothFocus.z);
     this.camera.updateMatrixWorld();
   }
 

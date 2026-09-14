@@ -105,6 +105,12 @@ export interface PoseInput {
   dt: number;
   /** 0..1 through an attack windup, or -1 when not attacking. */
   attack: number;
+  /**
+   * The fraction of the attack at which the blow lands. Skinned bodies line
+   * their clip's throw up with it; primitives swing on a fixed curve and
+   * ignore it.
+   */
+  strike?: number;
   /** 0..1 through a cast, or -1 when not casting. */
   cast: number;
   /** 0..1 death collapse, 0 when alive. */
