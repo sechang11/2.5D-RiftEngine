@@ -154,7 +154,7 @@ round it rather than through it.
 | --- | --- |
 | `render/characters.ts` | Loads character models and the clip library, retargets, splits clips into halves, and hands out `SkinnedBody`s that pose from the same inputs as the procedural rigs |
 | `render/buildings.ts` | Loads building models with their materials intact and places copies |
-| `render/unitview.ts` | Draws an authored body for any archetype that names a model, and primitives for the rest, or if the model failed to load |
+| `render/unitview.ts` | Draws an authored body for any archetype that names a model, and primitives for the rest or if the model failed to load. A picked-up weapon is laid across the fist the hand's own knuckle bones describe |
 | `render/renderer.ts` | `loadSky` lights authored materials with an HDR sky, and in the showcase lights, shows and turns it |
 | `game/showcase.ts` | The showcase map: the apron, the path to the door, the cottage's footprint |
 

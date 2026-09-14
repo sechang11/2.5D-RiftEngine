@@ -371,11 +371,17 @@ export class UnitViews {
       const bearer = archetype(unit.archetype).style.scale ?? 1;
       if (skinned) {
         // A bone lives inside a model scaled from metres to world units, so the
-        // item undoes that scale and its offset is in metres. The hand bone
-        // points along the fingers; a grip runs across them.
+        // item undoes that scale. A weapon goes where the hand's own knuckle
+        // bones put a fist; an off-hand item keeps a plain offset.
         mesh.scale.setScalar(bearer / skinned.modelScale);
-        mesh.position.set(0, 0.09, 0.02);
-        mesh.rotation.set(slot === 'weapon' ? Math.PI / 2 : 0, 0, slot === 'weapon' ? 0 : Math.PI / 2);
+        const grip = slot === 'weapon' ? skinned.grip(joint) : null;
+        if (grip) {
+          mesh.position.copy(grip.position);
+          mesh.quaternion.setFromUnitVectors(UP, grip.direction);
+        } else {
+          mesh.position.set(0, 0.09, 0.02);
+          mesh.rotation.set(0, 0, Math.PI / 2);
+        }
       } else {
         mesh.scale.setScalar(bearer);
         // The mesh's origin is its base, which for a weapon is the butt of the
@@ -452,6 +458,8 @@ export class UnitViews {
 }
 
 const EQUIP_SLOTS = ['weapon', 'offhand'] as const;
+
+const UP = new Vector3(0, 1, 0);
 
 function poseFor(view: UnitView, input: PoseInput): void {
   if (view.skinned) view.skinned.pose(input);

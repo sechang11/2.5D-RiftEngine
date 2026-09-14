@@ -418,6 +418,25 @@ export class SkinnedBody {
     this.mixer.uncacheRoot(this.model);
   }
 
+  /**
+   * Where an item held in a hand lies, in that hand's frame.
+   *
+   * The rig already says where a fist is: its knuckle bones. The butt of the
+   * grip goes at the little finger's knuckle and the item runs across the fist
+   * towards the index finger's, which is the line a handle takes through a
+   * closed hand, with the blade coming out past the thumb.
+   */
+  grip(hand: Object3D): { position: Vector3; direction: Vector3 } | null {
+    const side = hand.name.slice(-2);
+    const index = hand.getObjectByName(`index_01${side}`);
+    const little = hand.getObjectByName(`pinky_01${side}`);
+    if (!index || !little) return null;
+    return {
+      position: little.position.clone(),
+      direction: index.position.clone().sub(little.position).normalize(),
+    };
+  }
+
   private start(clip: AnimationClip): AnimationAction {
     const action = this.mixer.clipAction(clip);
     // Time is written by hand every frame, so the mixer only ever evaluates.
